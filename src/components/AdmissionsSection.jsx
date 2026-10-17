@@ -435,44 +435,6 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
           </div>
         )}
 
-        {/* Bottom Banner Navigating to Full Admissions Page */}
-        <div className="mt-12 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
-              <Award className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="font-bold text-base text-slate-900">
-                {isKh ? 'ត្រូវការឯកសារណែនាំការចុះឈ្មោះ និងកាលវិភាគពិនិត្យពាក្យ?' : 'Need comprehensive admission policies, brochures & deadlines?'}
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-500">
-                {isKh 
-                  ? 'ពិនិត្យមើលលម្អិតអំពីបែបបទផ្ទេរការសិក្សា វិញ្ញាបនបត្រសមមូល និងកិច្ចសន្យាអាហារូបករណ៍។' 
-                  : 'Check detailed credit transfer protocols, high school equivalency rules, and enrollment calendars.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => onOpenApply && onOpenApply()}
-              className="bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <span>{isKh ? 'ចុះឈ្មោះឥឡូវនេះ' : 'Apply Online'}</span>
-              <Send className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => onNavigate && onNavigate('admissions', '#admissions')}
-              className="bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <span>{isKh ? 'ព័ត៌មានចុះឈ្មោះពេញលេញ' : 'All Admissions Info'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
 
       </div>
     </section>
