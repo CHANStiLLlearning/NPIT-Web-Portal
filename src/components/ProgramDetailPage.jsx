@@ -1,0 +1,463 @@
+import React, { useState } from 'react';
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  HardHat, 
+  Laptop, 
+  Cpu, 
+  Cog, 
+  Award, 
+  Clock, 
+  BookOpen, 
+  CheckCircle2, 
+  ChevronRight, 
+  Share2, 
+  Printer, 
+  Copy, 
+  Check, 
+  Building2, 
+  ShieldCheck, 
+  Wrench,
+  Microscope,
+  Briefcase
+} from 'lucide-react';
+import { programsList } from '../data/programsData';
+
+export default function ProgramDetailPage({ 
+  lang, 
+  program, 
+  onSelectProgram, 
+  onBack, 
+  onBackHome, 
+  onOpenApply 
+}) {
+  const isKh = lang === 'kh';
+  const current = program || programsList[0];
+  const [activeYear, setActiveYear] = useState(1);
+  const [copied, setCopied] = useState(false);
+
+  const getProgramIcon = (iconName, className = "w-6 h-6 text-white") => {
+    switch (iconName) {
+      case 'HardHat':
+        return <HardHat className={className} />;
+      case 'Laptop':
+        return <Laptop className={className} />;
+      case 'Cpu':
+        return <Cpu className={className} />;
+      case 'Cog':
+        return <Cog className={className} />;
+      default:
+        return <Award className={className} />;
+    }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard?.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: current.name,
+        text: `NPIT Academic Program: ${current.name} (${current.nameKhmer})`,
+        url: window.location.href,
+      }).catch(() => {});
+    } else {
+      handleCopyLink();
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
+      
+      {/* 1. Sub-Header Breadcrumb & Action Toolbar */}
+      <div className="bg-white border-b border-slate-200 sticky top-[72px] sm:top-[76px] z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+          
+          {/* Breadcrumbs */}
+          <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-slate-500 overflow-x-auto py-1">
+            <button 
+              type="button" 
+              onClick={onBackHome} 
+              className="hover:text-blue-700 transition-colors cursor-pointer shrink-0 font-medium"
+            >
+              {isKh ? "ទំព័រដើម" : "Home"}
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+            <button 
+              type="button" 
+              onClick={onBack} 
+              className="hover:text-blue-700 transition-colors cursor-pointer shrink-0 font-medium"
+            >
+              {isKh ? "កម្មវិធីបណ្តុះបណ្តាល" : "Academic Programs"}
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+            <span className="text-blue-900 font-semibold truncate max-w-[220px] sm:max-w-xs">
+              {isKh ? current.nameKhmer : current.name}
+            </span>
+          </nav>
+
+          {/* Quick Actions */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-blue-700 font-medium transition-colors text-xs cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>{isKh ? "ថយក្រោយ" : "All Programs"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleShare}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium transition-colors text-xs cursor-pointer"
+              title="Share Program"
+            >
+              <Share2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{isKh ? "ចែករំលែក" : "Share"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium transition-colors text-xs cursor-pointer"
+              title="Copy link"
+            >
+              {copied ? <Check className="w-3.5 h-3.5 text-blue-700" /> : <Copy className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{copied ? (isKh ? "បានចម្លង" : "Copied!") : (isKh ? "ចម្លងតំណ" : "Copy Link")}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 font-medium transition-colors text-xs cursor-pointer"
+              title="Print Curriculum"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{isKh ? "បោះពុម្ព" : "Print"}</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* 2. Hero Header Banner */}
+      <div className="relative bg-slate-900 text-white overflow-hidden border-b border-slate-800">
+        <div className="absolute inset-0">
+          <img 
+            src={current.image} 
+            alt={current.name} 
+            className="w-full h-full object-cover opacity-35 filter brightness-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-900/60" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="max-w-3xl">
+            
+            {/* Top Tag Badges */}
+            <div className="flex flex-wrap items-center gap-2.5 mb-4">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-white/15 backdrop-blur-md text-white border border-white/20">
+                <Building2 className="w-3.5 h-3.5 text-amber-300" />
+                <span>{isKh ? current.facultyKh : current.faculty}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>National & BEC Accredited</span>
+              </span>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+              {current.name}
+            </h1>
+            <p className="text-xl sm:text-2xl font-bold font-khmer text-amber-300 mt-2">
+              {current.nameKhmer}
+            </p>
+
+            <p className="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
+              {isKh ? current.overviewKh : current.overview}
+            </p>
+
+            {/* Key Quick Badges */}
+            <div className="mt-8 flex flex-wrap items-center gap-4 text-xs sm:text-sm">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/15">
+                <Award className="w-4 h-4 text-amber-400" />
+                <span className="font-semibold text-white">{current.stats.degree}</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/15">
+                <Clock className="w-4 h-4 text-blue-300" />
+                <span className="font-semibold text-white">{current.stats.duration}</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/15">
+                <BookOpen className="w-4 h-4 text-amber-400" />
+                <span className="font-semibold text-white">{current.stats.credits}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => onOpenApply && onOpenApply(current)}
+                className="inline-flex items-center gap-2 bg-[#1b4b9b] hover:bg-[#12397c] text-white font-bold px-5 py-2 rounded-xl shadow-lg transition-all text-xs sm:text-sm ml-auto cursor-pointer"
+              >
+                <span>{isKh ? "ចុះឈ្មោះចូលរៀនជំនាញនេះ" : "Apply for this Program"}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Main Content Container - Matches header max-w-7xl width */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-10">
+        
+        {/* Key Program Highlights */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+              <div className="flex items-center gap-3 mb-6">
+                <div className={`p-2.5 rounded-xl ${current.cardBg} text-white shadow-md`}>
+                  {getProgramIcon(current.icon)}
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                    {isKh ? "ចំណុចលេចធ្លោនៃកម្មវិធីសិក្សា" : "Key Program Highlights"}
+                  </h2>
+                  <p className="text-xs text-slate-500 font-medium">
+                    National Polytechnic Institute Techo Sen Standards
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {(isKh ? current.highlightsKh : current.highlights).map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                    <CheckCircle2 className="w-5 h-5 text-blue-700 shrink-0 mt-0.5" />
+                    <span className="text-xs sm:text-sm text-slate-700 font-medium leading-snug">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Degree Tracks (Bachelor vs Associate) */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+              <div className="mb-6">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                  {isKh ? "កម្រិតសញ្ញាបត្រដែលត្រូវទទួលបាន" : "Degrees & Certification Levels"}
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Choose between the 4-year professional Bachelor or 2-year practical Higher Diploma
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {current.degrees.map((deg, idx) => (
+                  <div 
+                    key={idx}
+                    className={`p-5 rounded-2xl border ${idx === 0 ? 'border-blue-300 bg-blue-50/50' : 'border-slate-200 bg-slate-50'} flex flex-col justify-between`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${idx === 0 ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-800'}`}>
+                          {idx === 0 ? "Degree Track" : "Diploma Track"}
+                        </span>
+                        <span className="text-xs font-bold text-slate-500">{deg.credits} Credits</span>
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900">
+                        {isKh ? deg.levelKh : deg.level}
+                      </h3>
+                      <p className="text-xs text-slate-600 mt-2 flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-blue-600" />
+                        <span>{isKh ? deg.durationKh : deg.duration}</span>
+                      </p>
+                    </div>
+
+                    <div className="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-between">
+                      <span className="text-xs text-slate-500 font-medium">80% Hands-on Practice</span>
+                      <button
+                        type="button"
+                        onClick={() => onOpenApply && onOpenApply(current)}
+                        className="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1 cursor-pointer"
+                      >
+                        <span>Apply</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Detailed Year-by-Year Curriculum Breakdown */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                    {isKh ? "កម្មវិធីសិក្សាលម្អិតតាមឆ្នាំនីមួយៗ" : "Year-by-Year Curriculum Outline"}
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Structured modular course units with corresponding laboratory & workshop hours
+                  </p>
+                </div>
+
+                {/* Year Selector Tabs */}
+                <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 self-start sm:self-auto">
+                  {[1, 2, 3, 4].map((year) => (
+                    <button
+                      key={year}
+                      type="button"
+                      onClick={() => setActiveYear(year)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        activeYear === year 
+                          ? 'bg-[#1b4b9b] text-white shadow-xs' 
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {isKh ? `ឆ្នាំទី ${year}` : `Year ${year}`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Active Year Content */}
+              {current.curriculum.filter(c => c.year === activeYear).map((cur) => (
+                <div key={cur.year} className="space-y-4">
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between">
+                    <span className="text-xs sm:text-sm font-bold text-blue-900">
+                      {isKh ? cur.titleKh : cur.title}
+                    </span>
+                    <span className="text-xs font-semibold text-blue-700 bg-white px-2 py-0.5 rounded-md border border-blue-200">
+                      Year {cur.year} Total: ~34 Credits
+                    </span>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs sm:text-sm border-collapse">
+                      <thead>
+                        <tr className="border-b border-slate-200 text-slate-400 text-[11px] uppercase tracking-wider font-bold">
+                          <th className="py-2.5 px-3">Course Code</th>
+                          <th className="py-2.5 px-3">Module Name</th>
+                          <th className="py-2.5 px-3 text-center">Credits</th>
+                          <th className="py-2.5 px-3 text-right">Lab Hours</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {cur.courses.map((course, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                            <td className="py-3 px-3 font-mono font-bold text-blue-700">
+                              {course.code}
+                            </td>
+                            <td className="py-3 px-3 font-medium text-slate-800">
+                              {course.name}
+                            </td>
+                            <td className="py-3 px-3 text-center font-semibold text-slate-600">
+                              {course.credits}
+                            </td>
+                            <td className="py-3 px-3 text-right font-semibold text-blue-700">
+                              {course.lab}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Specialized Engineering Laboratories */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+              <div className="mb-6">
+                <div className="flex items-center gap-2 text-blue-600 mb-1">
+                  <Microscope className="w-5 h-5" />
+                  <span className="text-xs font-bold uppercase tracking-wider">Hands-on Facilities</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                  {isKh ? "មន្ទីរពិសោធន៍ និងរោងជាងបច្ចេកវិទ្យាជាក់ស្តែង" : "Specialized Laboratories & Workshop Centers"}
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Over 5,000 square meters of high-tech laboratory spaces dedicated to this faculty
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {current.laboratories.map((lab, idx) => (
+                  <div key={idx} className="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Wrench className="w-4 h-4 text-blue-600 shrink-0" />
+                        <h3 className="text-sm font-bold text-slate-900 leading-snug">
+                          {isKh ? lab.nameKh : lab.name}
+                        </h3>
+                      </div>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        {lab.desc}
+                      </p>
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+                      <span>NPIT Engineering Lab</span>
+                      <span className="text-blue-700 font-bold">Active 2026</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Career Opportunities & Industry Partners */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+              <div className="mb-6">
+                <div className="flex items-center gap-2 text-blue-600 mb-1">
+                  <Briefcase className="w-5 h-5" />
+                  <span className="text-xs font-bold uppercase tracking-wider">Career & Employment</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                  {isKh ? "ឱកាសការងារ និងដៃគូឧស្សាហកម្ម" : "Career Pathways & Industry Partners"}
+                </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Direct recruitment channels into leading domestic and multinational corporations
+                </p>
+              </div>
+
+              {/* Roles */}
+              <div className="mb-6">
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                  {isKh ? "មុខតំណែងការងារក្រោយបញ្ចប់ការសិក្សា" : "Target Career Roles"}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {(isKh ? current.careersKh : current.careers).map((role, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-slate-800 bg-blue-50/60 p-2.5 rounded-lg border border-blue-100">
+                      <Check className="w-4 h-4 text-blue-600 shrink-0" />
+                      <span className="font-semibold">{role}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Partners */}
+              <div>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                  {isKh ? "សហការជាមួយក្រុមហ៊ុន និងស្ថាប័នធំៗ" : "Top Employing Partners & Internships"}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {current.industryPartners.map((partner, idx) => (
+                    <span 
+                      key={idx}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200 hover:bg-slate-200 transition-colors"
+                    >
+                      <Building2 className="w-3.5 h-3.5 text-slate-500" />
+                      <span>{partner}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+      </div>
+
+    </div>
+  );
+}
