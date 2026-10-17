@@ -447,47 +447,6 @@ export default function AdmissionDetailPage({
               </div>
             )}
 
-            {/* Section 6: Direct Application Callout Banner */}
-            <div className="rounded-2xl bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 p-8 sm:p-10 text-white relative overflow-hidden shadow-lg">
-              <div className="absolute right-0 bottom-0 opacity-10 translate-x-8 translate-y-8">
-                <GraduationCap className="w-64 h-64 text-white" />
-              </div>
-
-              <div className="relative z-10 max-w-xl space-y-4">
-                <span className="inline-block bg-amber-400 text-slate-950 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-                  Admissions Open 2026 – 2027
-                </span>
-
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-                  {isKh ? "ត្រៀមខ្លួនរួចរាល់ដើម្បីចាប់ផ្តើម?" : "Ready to Start Your Application?"}
-                </h2>
-
-                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-khmer">
-                  {isKh
-                    ? "ដាក់ពាក្យស្នើសុំចូលរៀនតាមប្រព័ន្ធអនឡាញឥឡូវនេះ ងាយស្រួល រហ័ស និងមិនគិតថ្លៃសេវាដំណើរការឯកសារ។"
-                    : "Complete our streamlined online application in under 5 minutes. No registration fee required."}
-                </p>
-
-                <div className="pt-2 flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={onOpenApply}
-                    className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-6 py-3 rounded-full text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
-                  >
-                    <span>{isKh ? "ដាក់ពាក្យឥឡូវនេះ" : "Apply for this Admission"}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-
-                  <a
-                    href="tel:023999888"
-                    className="bg-white/10 hover:bg-white/20 text-white font-medium border border-white/30 px-5 py-3 rounded-full text-xs sm:text-sm backdrop-blur-xs transition-all flex items-center gap-2"
-                  >
-                    <Phone className="w-4 h-4 text-amber-300" />
-                    <span>023 999 888</span>
-                  </a>
-                </div>
-              </div>
-            </div>
 
             {/* Back Button Navigation at the bottom */}
             <div className="pt-4 flex items-center justify-between border-t border-slate-200">
