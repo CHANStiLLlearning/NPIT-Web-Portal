@@ -10,7 +10,6 @@ import {
   CheckCircle2, 
   ArrowRight, 
   Award,
-  Sparkles,
   HelpCircle,
   X
 } from 'lucide-react';

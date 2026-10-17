@@ -17,7 +17,6 @@ import {
   Send, 
   FileText, 
   Printer, 
-  Sparkles,
   HardHat,
   Laptop,
   Cpu,
@@ -245,7 +244,7 @@ export default function ApplyPage({
             <div className="space-y-3 max-w-3xl">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1 bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider shadow-sm">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Award className="w-3.5 h-3.5 text-slate-950" />
                   <span>Academic Year 2026 - 2027</span>
                 </span>
                 <span className="inline-flex items-center gap-1 bg-white/10 backdrop-blur-md text-white font-medium px-3 py-1 rounded-full text-xs border border-white/20">
@@ -403,7 +402,7 @@ export default function ApplyPage({
             {/* Next Steps Roadmap */}
             <div className="space-y-4 pt-2">
               <h3 className="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-500" />
+                <Award className="w-5 h-5 text-amber-500" />
                 <span>{isKh ? "ជំហានបន្តបន្ទាប់បន្ទាប់ពីការដាក់ពាក្យ" : "What Happens Next? (Admission Roadmap)"}</span>
               </h3>
 

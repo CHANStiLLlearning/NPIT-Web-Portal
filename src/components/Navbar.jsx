@@ -1,4 +1,5 @@
 import React from 'react';
+import { Search } from 'lucide-react';
 
 export default function Navbar({ 
   navItems, 
@@ -56,7 +57,8 @@ export default function Navbar({
               }}
               className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded text-xs transition shadow-xs"
             >
-              <span>🔍</span> Track Status
+              <Search className="w-3.5 h-3.5" />
+              <span>Track Status</span>
             </a>
           </div>
         </div>
@@ -92,9 +94,10 @@ export default function Navbar({
                     setMobileMenuOpen(false);
                     onNavigate ? onNavigate('track', '#track') : (window.location.hash = '#track');
                   }}
-                  className="block px-4 py-2 text-sm font-bold text-amber-300 hover:bg-blue-800 rounded"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-amber-300 hover:bg-blue-800 rounded"
                 >
-                  🔍 Track Application Status
+                  <Search className="w-4 h-4" />
+                  <span>Track Application Status</span>
                 </a>
               </li>
             </ul>

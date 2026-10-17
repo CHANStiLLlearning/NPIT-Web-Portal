@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, BookOpen, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronLeft, ChevronRight, Award } from 'lucide-react';
 
 export default function Hero({ heroData, onOpenApply, onExploreClick, lang = 'en' }) {
   const isKh = lang === 'kh';
@@ -178,7 +178,7 @@ export default function Hero({ heroData, onOpenApply, onExploreClick, lang = 'en
 
                 {/* Live Stat Indicator on Desktop */}
                 <div className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-full bg-black/40 border border-white/15 backdrop-blur-sm text-xs font-semibold text-slate-300">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <Award className="w-3.5 h-3.5 text-amber-400" />
                   <span>{activeSlide.stats}</span>
                 </div>
               </div>

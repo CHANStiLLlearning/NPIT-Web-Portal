@@ -15,7 +15,6 @@ import {
   Mail, 
   MapPin, 
   Download, 
-  Sparkles, 
   ChevronRight, 
   Share2, 
   Printer, 
@@ -139,7 +138,7 @@ export default function AdmissionDetailPage({
             
             {/* Topic Category Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/30 text-xs font-bold tracking-wide uppercase mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <Award className="w-3.5 h-3.5 text-amber-400" />
               <span>{currentItem.badge}</span>
             </div>
 

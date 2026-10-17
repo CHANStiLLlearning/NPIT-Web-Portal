@@ -12,7 +12,7 @@ import {
   ExternalLink,
   Cpu,
   Building2,
-  Sparkles
+  Award
 } from 'lucide-react';
 import { researchList, getResearchById } from '../data/researchData';
 
@@ -163,7 +163,7 @@ export default function ResearchPage({ lang = 'en', onOpenApply, onSelectResearc
             
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400 text-slate-950">
-                <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                <FlaskConical className="w-3.5 h-3.5 text-slate-950" />
                 {isKh ? "ការស្រាវជ្រាវ & នវានុវត្តន៍" : "Research & Innovation"}
               </span>
             </div>

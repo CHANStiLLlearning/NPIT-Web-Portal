@@ -20,8 +20,7 @@ import {
   MapPin,
   BookOpen,
   Users,
-  ShieldCheck,
-  Sparkles
+  ShieldCheck
 } from 'lucide-react';
 import { researchList } from '../data/researchData';
 import { submitResearchInquiry } from '../services/inquiryService';
@@ -194,7 +193,7 @@ export default function ResearchDetailPage({
             <div className="lg:col-span-8 space-y-4">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-amber-400 text-slate-950 shadow-xs">
-                  <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                  <Award className="w-3.5 h-3.5 text-slate-950" />
                   {isKh ? (current.badgeKh || current.badge) : current.badge}
                 </span>
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-white/15 text-white backdrop-blur-xs border border-white/20">
@@ -633,7 +632,7 @@ export default function ResearchDetailPage({
             {/* 3.7 Industry Collaboration & Inquiry Form */}
             <div className="bg-gradient-to-br from-[#0f2757] to-[#1b4b9b] text-white rounded-2xl p-6 shadow-md">
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-amber-300" />
+                <Award className="w-4 h-4 text-amber-300" />
                 <h3 className="text-xs font-extrabold uppercase tracking-wider text-amber-300">
                   {isKh ? "កិច្ចសហការឧស្សាហកម្ម" : "Industry Collaboration"}
                 </h3>

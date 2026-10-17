@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MonitorCheck, Handshake, GraduationCap, Search, CheckCircle2, ArrowRight, X, Sparkles, Building } from 'lucide-react';
+import { MonitorCheck, Handshake, GraduationCap, Search, CheckCircle2, ArrowRight, X, Award, Building } from 'lucide-react';
 
 export default function WhyNPIT({ whyData, lang = 'en', onNavigate }) {
   const isKh = lang === 'kh';
@@ -88,7 +88,7 @@ export default function WhyNPIT({ whyData, lang = 'en', onNavigate }) {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">
-              <Sparkles className="w-4 h-4" />
+              <Award className="w-4 h-4" />
               <span>{isKh ? 'ឧត្តមភាពនៃការអប់រំបច្ចេកទេស' : 'Polytechnic Distinction'}</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">

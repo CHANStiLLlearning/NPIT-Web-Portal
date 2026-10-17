@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Search, ArrowUpRight, ArrowRight, X, Sparkles, Newspaper } from 'lucide-react';
+import { Calendar, Search, ArrowUpRight, ArrowRight, X, Newspaper } from 'lucide-react';
 import { newsArticles } from '../data/newsData';
 
 export default function NewsAndEvents({ newsData, onSelectNews, lang = 'en', onNavigate }) {
@@ -50,7 +50,7 @@ export default function NewsAndEvents({ newsData, onSelectNews, lang = 'en', onN
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">
-              <Sparkles className="w-4 h-4" />
+              <Newspaper className="w-4 h-4 text-blue-700" />
               <span>{isKh ? 'ព្រឹត្តិការណ៍ និងសេចក្តីប្រកាសព័ត៌មាន' : 'Campus Press & Announcements'}</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">

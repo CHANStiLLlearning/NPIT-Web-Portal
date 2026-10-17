@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Clock, Send, CheckCircle2, ArrowRight, MessageSquare, Sparkles } from 'lucide-react';
+import { MapPin, Phone, Clock, Send, CheckCircle2, ArrowRight, MessageSquare, Award } from 'lucide-react';
 import { submitGeneralInquiry } from '../services/inquiryService';
 
 export default function HomeContactSection({ lang = 'en', onNavigate }) {
@@ -47,7 +47,7 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">
-              <Sparkles className="w-4 h-4" />
+              <Award className="w-4 h-4" />
               <span>{isKh ? 'ទំនាក់ទំនង និងទស្សនកិច្ចបរិវេណ' : 'Campus Admissions & Hotline'}</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
