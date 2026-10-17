@@ -22,11 +22,12 @@ export async function submitGeneralInquiry(data) {
 
   if (isFirebaseConfigured && db) {
     try {
-      const docRef = await addDoc(collection(db, 'inquiries'), {
+      const { doc, setDoc } = await import('firebase/firestore');
+      await setDoc(doc(db, 'inquiries', refNum), {
         ...record,
         createdAt: serverTimestamp()
       });
-      record.cloudId = docRef.id;
+      record.cloudId = refNum;
     } catch (err) {
       console.warn('[InquiryService] Firestore inquiry write failed, saving locally:', err);
     }
@@ -141,7 +142,12 @@ export async function getInquiryByReference(refNumber) {
 
   if (isFirebaseConfigured && db) {
     try {
-      const { getDocs, query, where } = await import('firebase/firestore');
+      const { doc, getDoc, getDocs, query, where } = await import('firebase/firestore');
+      const directSnap = await getDoc(doc(db, 'inquiries', clean));
+      if (directSnap.exists()) {
+        return { cloudId: directSnap.id, ...directSnap.data() };
+      }
+
       const q = query(collection(db, 'inquiries'), where('referenceNumber', '==', clean));
       const snap = await getDocs(q);
       if (!snap.empty) {

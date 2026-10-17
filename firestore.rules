@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email in ['admin@npit.edu.kh', 'reactjs35@gmail.com', 'kimchankeo1234@gmail.com']
+      );
+    }
+
+    // =========================================================================
+    // 1. Student Applications Collection
+    // =========================================================================
+    match /applications/{applicationId} {
+      // Direct document lookup is allowed for student tracking.
+      // Full collection listing is restricted to verified administrators.
+      allow get: if true;
+      allow list: if isAdmin();
+
+      // Anyone can submit a new application, with strict validation:
+      // - Must have referenceNumber formatted as NPIT-2026-APP-XXXXXX
+      // - Initial status CANNOT be set to 'accepted' by an attacker
+      // - Required applicant information must be present
+      allow create: if request.resource.data.referenceNumber is string
+                    && request.resource.data.referenceNumber.matches('^NPIT-2026-APP-[0-9]{6}$')
+                    && request.resource.data.status in ['pending_review', 'submitted']
+                    && request.resource.data.applicant is map
+                    && request.resource.data.applicant.fullName is string
+                    && request.resource.data.applicant.fullName.size() >= 2
+                    && request.resource.data.applicant.phone is string
+                    && request.resource.data.applicant.phone.size() >= 6;
+
+      // ONLY verified admin staff can update status or committee notes
+      allow update: if isAdmin();
+
+      // ONLY verified admin staff can delete applications
+      allow delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 2. Campus Contact Inquiries Collection
+    // =========================================================================
+    match /inquiries/{inquiryId} {
+      allow get: if true;
+      allow list: if isAdmin();
+
+      allow create: if request.resource.data.referenceNumber is string
+                    && request.resource.data.referenceNumber.matches('^NPIT-INQ-[0-9]{4,6}$')
+                    && request.resource.data.fullName is string
+                    && request.resource.data.fullName.size() >= 2;
+
+      allow update, delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 3. Research Collaboration Inquiries Collection
+    // =========================================================================
+    match /research_inquiries/{researchInquiryId} {
+      allow get, list: if isAdmin();
+      
+      allow create: if request.resource.data.referenceNumber is string
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() >= 2;
+
+      allow update, delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 4. Default Deny for all other collections
+    // =========================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

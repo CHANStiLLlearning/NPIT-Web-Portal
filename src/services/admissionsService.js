@@ -85,15 +85,16 @@ export async function submitApplication(formData) {
     }
   };
 
-  // 1. Save to Cloud Firestore if connected
+  // 1. Save to Cloud Firestore if connected (using referenceNumber as document ID for secure direct lookups)
   if (isFirebaseConfigured && db) {
     try {
-      const docRef = await addDoc(collection(db, 'applications'), {
+      const { doc, setDoc } = await import('firebase/firestore');
+      await setDoc(doc(db, 'applications', referenceNumber), {
         ...applicationRecord,
         createdAt: serverTimestamp()
       });
-      applicationRecord.cloudId = docRef.id;
-      console.log('[AdmissionsService] Saved to Cloud Firestore:', docRef.id);
+      applicationRecord.cloudId = referenceNumber;
+      console.log('[AdmissionsService] Saved to Cloud Firestore:', referenceNumber);
     } catch (firebaseErr) {
       console.warn('[AdmissionsService] Firestore write failed, saving locally:', firebaseErr);
     }
@@ -123,11 +124,19 @@ export async function getApplicationByReference(referenceNumber) {
   // 1. Try fetching from Cloud Firestore
   if (isFirebaseConfigured && db) {
     try {
+      const { doc, getDoc } = await import('firebase/firestore');
+      // A. Direct secure document get (allowed by rules without exposing full collection listing)
+      const directSnap = await getDoc(doc(db, 'applications', cleanRef));
+      if (directSnap.exists()) {
+        return { cloudId: directSnap.id, ...directSnap.data() };
+      }
+
+      // B. Fallback query for legacy auto-id records
       const q = query(collection(db, 'applications'), where('referenceNumber', '==', cleanRef));
       const snapshot = await getDocs(q);
       if (!snapshot.empty) {
-        const doc = snapshot.docs[0];
-        return { cloudId: doc.id, ...doc.data() };
+        const d = snapshot.docs[0];
+        return { cloudId: d.id, ...d.data() };
       }
     } catch (err) {
       console.warn('[AdmissionsService] Firestore lookup failed, falling back to local:', err);

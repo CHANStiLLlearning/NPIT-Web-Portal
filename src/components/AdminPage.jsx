@@ -26,11 +26,22 @@ import {
 import { getAllApplications, updateApplicationStatus } from '../services/admissionsService';
 import { getAllInquiries, getAllResearchInquiries } from '../services/inquiryService';
 
+import { auth, isFirebaseConfigured } from '../services/firebase';
+import { 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from 'firebase/auth';
+
 export default function AdminPage({ lang = 'en', onNavigate }) {
-  // Authentication state (simple secure PIN for campus staff)
+  // Real Firebase Authentication state
+  const [currentUser, setCurrentUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [pinInput, setPinInput] = useState('');
-  const [pinError, setPinError] = useState(false);
+  const [emailInput, setEmailInput] = useState('admin@npit.edu.kh');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isSubmittingAuth, setIsSubmittingAuth] = useState(false);
 
   // Data states
   const [activeTab, setActiveTab] = useState('applications'); // 'applications' | 'inquiries' | 'research'
@@ -49,6 +60,20 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   const [adminNoteInput, setAdminNoteInput] = useState('');
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
+  // Listen for real Firebase Auth state changes
+  useEffect(() => {
+    if (!auth) {
+      setAuthLoading(false);
+      return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setIsAuthenticated(Boolean(user));
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
   // Initial load once authenticated
   useEffect(() => {
     if (isAuthenticated) {
@@ -56,14 +81,48 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
     }
   }, [isAuthenticated]);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Default staff access passcode
-    if (pinInput.trim() === 'npit2026' || pinInput.trim() === 'admin') {
-      setIsAuthenticated(true);
-      setPinError(false);
-    } else {
-      setPinError(true);
+    setLoginError('');
+    setIsSubmittingAuth(true);
+
+    try {
+      if (auth) {
+        const userCred = await signInWithEmailAndPassword(auth, emailInput.trim(), passwordInput);
+        setCurrentUser(userCred.user);
+        setIsAuthenticated(true);
+      } else {
+        // Fallback for offline mode if Firebase Auth is unavailable
+        if (passwordInput === 'NPIT@Academic2026!' || passwordInput === 'npit2026') {
+          setIsAuthenticated(true);
+        } else {
+          setLoginError('Invalid credentials. Hint: NPIT@Academic2026!');
+        }
+      }
+    } catch (err) {
+      console.error('[AdminPage] Auth error:', err);
+      if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+        setLoginError('Invalid admin email or password. Please verify credentials.');
+      } else if (err.code === 'auth/too-many-requests') {
+        setLoginError('Too many failed attempts. Please wait a few moments.');
+      } else {
+        setLoginError(err.message || 'Authentication failed.');
+      }
+    } finally {
+      setIsSubmittingAuth(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      if (auth) {
+        await signOut(auth);
+      }
+    } catch (err) {
+      console.warn('[AdminPage] Sign out error:', err);
+    } finally {
+      setCurrentUser(null);
+      setIsAuthenticated(false);
     }
   };
 
@@ -149,14 +208,14 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
     document.body.removeChild(link);
   };
 
-  // 1. PIN Login Screen if not authenticated
+  // 1. Firebase Authentication Screen if not authenticated
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border border-slate-200">
           <div className="text-center mb-6">
             <div className="w-16 h-16 bg-[#002b80]/10 text-[#002b80] rounded-2xl flex items-center justify-center mx-auto mb-4 ring-8 ring-[#002b80]/5">
-              <Lock className="w-8 h-8 text-[#002b80]" />
+              <ShieldCheck className="w-8 h-8 text-[#002b80]" />
             </div>
             <h2 className="text-2xl font-bold font-serif text-[#002b80]">
               NPIT Staff Portal
@@ -164,35 +223,92 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
             <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
               Admissions & Institutional Admin
             </p>
+            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-800 text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              Cloud Firestore Security Enabled
+            </div>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Staff Access Passcode
+                Staff Email Address
+              </label>
+              <input 
+                type="email"
+                value={emailInput}
+                onChange={(e) => setEmailInput(e.target.value)}
+                placeholder="admin@npit.edu.kh"
+                required
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#002b80] focus:bg-white transition"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Password
               </label>
               <input 
                 type="password"
-                value={pinInput}
-                onChange={(e) => setPinInput(e.target.value)}
-                placeholder="Enter passcode (default: npit2026)"
-                autoFocus
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="••••••••••••"
+                required
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#002b80] focus:bg-white transition"
               />
-              {pinError && (
+              {loginError && (
                 <p className="text-xs text-red-600 mt-1.5 font-medium flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  Incorrect passcode. Hint: npit2026
+                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                  {loginError}
                 </p>
               )}
             </div>
 
+            {/* Quick pre-fill buttons for committee staff convenience */}
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                Quick Fill Authorized Accounts:
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmailInput('admin@npit.edu.kh');
+                    setPasswordInput('NPIT@Academic2026!');
+                  }}
+                  className="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-semibold text-[#002b80] transition"
+                >
+                  admin@npit.edu.kh
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmailInput('reactjs35@gmail.com');
+                    setPasswordInput('NPIT@Academic2026!');
+                  }}
+                  className="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-[11px] font-semibold text-slate-700 transition"
+                >
+                  reactjs35@gmail.com
+                </button>
+              </div>
+            </div>
+
             <button
               type="submit"
-              className="w-full py-3 bg-[#002b80] hover:bg-[#001a4d] text-white font-bold rounded-xl text-sm transition shadow-sm flex items-center justify-center gap-2"
+              disabled={isSubmittingAuth}
+              className="w-full py-3 bg-[#002b80] hover:bg-[#001a4d] disabled:opacity-50 text-white font-bold rounded-xl text-sm transition shadow-sm flex items-center justify-center gap-2"
             >
-              <Unlock className="w-4 h-4" />
-              Sign In to Admin Dashboard
+              {isSubmittingAuth ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  Verifying Cryptographic Token...
+                </>
+              ) : (
+                <>
+                  <Unlock className="w-4 h-4" />
+                  Sign In to Admin Dashboard
+                </>
+              )}
             </button>
           </form>
 
@@ -227,15 +343,21 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                Live Cloud Firestore Sync
+                Live Cloud Firestore Sync • Authenticated Session
               </span>
             </div>
             <h1 className="text-2xl font-bold font-serif text-[#002b80] mt-1">
               NPIT Academic & Admissions Administration
             </h1>
+            {currentUser && (
+              <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                Signed in as: <span className="font-semibold text-slate-800">{currentUser.email || 'Admin'}</span>
+              </p>
+            )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={loadAllData}
               disabled={loading}
@@ -250,6 +372,12 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
             >
               <Download className="w-3.5 h-3.5" />
               Export CSV
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="px-3.5 py-2.5 bg-red-50 hover:bg-red-100 text-[#d32f2f] font-bold rounded-xl text-xs transition border border-red-200"
+            >
+              Sign Out
             </button>
             <button
               onClick={() => onNavigate?.('home')}
