@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AcademicPrograms from './components/AcademicPrograms';
 import AdmissionsSection from './components/AdmissionsSection';
-import ResearchSection from './components/ResearchSection';
 import NewsAndEvents from './components/NewsAndEvents';
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
@@ -483,12 +482,6 @@ export default function App() {
               onNavigate={handleNavigate}
             />
 
-            {/* 6.5 Research & Innovation Section (id="research") */}
-            <ResearchSection
-              lang={lang}
-              onNavigate={handleNavigate}
-              onSelectResearch={handleResearchSelect}
-            />
 
             {/* 7. News & Events Section (id="news") */}
             <NewsAndEvents
