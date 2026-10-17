@@ -7,7 +7,6 @@ import AcademicPrograms from './components/AcademicPrograms';
 import AdmissionsSection from './components/AdmissionsSection';
 import ResearchSection from './components/ResearchSection';
 import NewsAndEvents from './components/NewsAndEvents';
-import HomeContactSection from './components/HomeContactSection';
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
 import ProgramsPage from './components/ProgramsPage';
@@ -504,12 +503,6 @@ export default function App() {
               newsData={t.news}
               lang={lang}
               onSelectNews={handleNewsSelect}
-              onNavigate={handleNavigate}
-            />
-
-            {/* 8. Campus Inquiries & Contact Section (id="contact") */}
-            <HomeContactSection
-              lang={lang}
               onNavigate={handleNavigate}
             />
           </>

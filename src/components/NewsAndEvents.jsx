@@ -241,34 +241,6 @@ export default function NewsAndEvents({ newsData, onSelectNews, lang = 'en', onN
 
         </div>
 
-        {/* Bottom Banner Navigating to Full News Page */}
-        <div className="mt-12 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
-              <Newspaper className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="font-bold text-base text-slate-900">
-                {isKh ? 'ចង់ស្វែងយល់បន្ថែមអំពីព្រឹត្តិការណ៍ និងវិចិត្រសាលរូបភាព?' : 'Want to explore all media archives, photo galleries & press?'}
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-500">
-                {isKh 
-                  ? 'អានអត្ថបទពេញលេញ ពិនិត្យវិចិត្រសាលរូបភាពសកម្មភាព និងព្រឹត្តិបត្រព័ត៌មានប្រចាំត្រីមាស។' 
-                  : 'Browse our complete chronological news feed, high-resolution gallery, and quarterly reports.'}
-              </p>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => onNavigate && onNavigate('news', '#news')}
-            className="shrink-0 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer w-fit"
-          >
-            <span>{isKh ? 'មើលព័ត៌មានទាំងអស់' : 'Browse All News & Press'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-
       </div>
     </section>
   );
