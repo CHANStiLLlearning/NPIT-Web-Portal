@@ -60,7 +60,8 @@ export default function ApplyPage({
     programId: initialProgramId,
     shift: 'morning', // 'morning' | 'afternoon' | 'weekend'
     scholarship: '100_state', // '100_state' | '50_tvet' | 'women_stem' | 'self_financed'
-    agreed: false
+    agreed: false,
+    honeypot: ''
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -134,6 +135,20 @@ export default function ApplyPage({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.agreed || submitting) return;
+
+    // Security: Anti-bot honeypot check
+    if (formData.honeypot) {
+      console.warn('[Security] Automated spam submission filtered.');
+      setRefNumber('NPIT-2026-APP-999999');
+      setSubmitDate(new Date().toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }));
+      setSubmitted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
     setSubmitting(true);
     setSubmitError(null);
@@ -481,6 +496,20 @@ export default function ApplyPage({
             {/* Form Content */}
             <form onSubmit={step === 4 ? handleSubmit : handleNext} className="p-6 sm:p-10 space-y-8">
               
+              {/* Security Honeypot Anti-Bot Field (Hidden from real users) */}
+              <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+                <label htmlFor="sys_campus_code">Campus Code</label>
+                <input
+                  type="text"
+                  id="sys_campus_code"
+                  name="sys_campus_code"
+                  value={formData.honeypot || ''}
+                  onChange={(e) => handleInputChange('honeypot', e.target.value)}
+                  tabIndex="-1"
+                  autoComplete="off"
+                />
+              </div>
+
               {/* STEP 1: Personal Information */}
               {step === 1 && (
                 <div className="space-y-6 animate-in fade-in duration-200">

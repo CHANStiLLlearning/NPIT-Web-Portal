@@ -2,6 +2,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 // Firebase configuration using Vite environment variables
 const firebaseConfig = {
@@ -24,6 +25,7 @@ let app = null;
 let db = null;
 let storage = null;
 let auth = null;
+let appCheck = null;
 
 if (isFirebaseConfigured) {
   try {
@@ -31,6 +33,24 @@ if (isFirebaseConfigured) {
     db = getFirestore(app);
     storage = getStorage(app);
     auth = getAuth(app);
+
+    // Optional Firebase App Check (reCAPTCHA v3) integration
+    const appCheckSiteKey = import.meta.env.VITE_FIREBASE_RECAPTCHA_SITE_KEY || '';
+    if (appCheckSiteKey && typeof window !== 'undefined') {
+      try {
+        if (import.meta.env.DEV) {
+          self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+        }
+        appCheck = initializeAppCheck(app, {
+          provider: new ReCaptchaV3Provider(appCheckSiteKey),
+          isTokenAutoRefreshEnabled: true
+        });
+        console.log('[NPIT Firebase] Firebase App Check initialized successfully.');
+      } catch (acErr) {
+        console.warn('[NPIT Firebase] App Check initialization skipped:', acErr.message);
+      }
+    }
+
     console.log('[NPIT Firebase] Cloud Firestore, Storage & Auth initialized successfully.');
   } catch (error) {
     console.warn('[NPIT Firebase] Failed to initialize Firebase:', error);
@@ -43,4 +63,4 @@ if (isFirebaseConfigured) {
   console.info('[NPIT Firebase] Running in resilient offline mode (localStorage persistence). To enable live cloud sync, configure .env with your Firebase project keys.');
 }
 
-export { app, db, storage, auth };
+export { app, db, storage, auth, appCheck };
