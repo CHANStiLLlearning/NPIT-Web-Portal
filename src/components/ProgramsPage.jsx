@@ -45,9 +45,9 @@ export default function ProgramsPage({
         ? "អាហារូបករណ៍ ១០០% ពីរដ្ឋាភិបាលលើ ៩ មុខជំនាញ។ លក្ខខណ្ឌ៖ ជាប់ ឬធ្លាក់បាក់ឌុប ក៏អាចចុះឈ្មោះចូលរៀនបានដោយឥតគិតថ្លៃ។"
         : "100% Government scholarship across 9 key technician majors. Open to both passed and failed Bac II graduates.",
       image: "/about-students.jpg",
-      headerBg: "bg-amber-500",
-      accent: "text-amber-600",
-      icon: <GraduationCap className="w-6 h-6 text-slate-950 font-bold" />
+      headerBg: "bg-[#002b80]",
+      accent: "text-[#002b80]",
+      icon: <GraduationCap className="w-6 h-6 text-white" />
     },
     {
       id: "bachelor",
@@ -58,8 +58,8 @@ export default function ProgramsPage({
         ? "ថ្នាក់បង់ថ្លៃ វេនយប់ និង ថ្ងៃសៅរ៍-អាទិត្យ លើ ៥ មុខជំនាញវិស្វកម្មទំនើប សម្រាប់សិស្សទូទៅ និងបុគ្គលិកកំពុងបំពេញការងារ។"
         : "4-Year degree across 5 modern engineering fields. Evening and Saturday-Sunday weekend sessions for working professionals.",
       image: "/news-conference.jpg",
-      headerBg: "bg-blue-600",
-      accent: "text-blue-600",
+      headerBg: "bg-[#002b80]",
+      accent: "text-[#002b80]",
       icon: <Award className="w-6 h-6 text-white" />
     },
     {
@@ -71,8 +71,8 @@ export default function ProgramsPage({
         ? "វគ្គបណ្តុះបណ្តាលជំនាញជាក់លាក់ដូចជា ការបញ្ជាម៉ាស៊ីន CNC ការតម្លើងសូឡា ការសរសេរកូដ និងប្រព័ន្ធ PLC ឧស្សាហកម្ម។"
         : "Specialized modular masterclasses in advanced PLC automation, CNC machining, solar PV installation, and cloud computing.",
       image: "/news-mini2.jpg",
-      headerBg: "bg-red-700",
-      accent: "text-red-700",
+      headerBg: "bg-[#002b80]",
+      accent: "text-[#002b80]",
       icon: <BookOpen className="w-6 h-6 text-white" />
     }
   ];
@@ -82,28 +82,28 @@ export default function ProgramsPage({
       step: 1,
       title: isKh ? "ជ្រើសរើសជំនាញសិក្សា" : "Choose Program",
       desc: isKh ? "ជ្រើសរើសជំនាញពីបញ្ជីផ្លូវការទាំង ៩ ឬ ៥ មុខជំនាញ" : "Explore and select from the official 9 Diploma or 5 Bachelor majors",
-      color: "bg-[#f59e0b]",
+      color: "bg-[#002b80]",
       icon: <BookOpen className="w-5 h-5 text-white" />
     },
     {
       step: 2,
       title: isKh ? "ដាក់ឯកសារស្នើសុំ" : "Submit Documents",
       desc: isKh ? "បំពេញពាក្យអនឡាញ ឬមកកាន់ទីតាំង NPIT ផ្លូវជាតិលេខ២១" : "Complete online form or register in person along National Road 21",
-      color: "bg-[#e11d48]",
+      color: "bg-[#002b80]",
       icon: <FileText className="w-5 h-5 text-white" />
     },
     {
       step: 3,
       title: isKh ? "ការប្រឡង ឬវាយតម្លៃ" : "Entrance Diagnostic",
       desc: isKh ? "ចូលរួមតេស្តសមត្ថភាពមូលដ្ឋាន ឬទទួលអាហារូបករណ៍ផ្ទាល់" : "Sit for foundational diagnostic or immediate scholarship enrollment",
-      color: "bg-[#2563eb]",
+      color: "bg-[#002b80]",
       icon: <Pencil className="w-5 h-5 text-white" />
     },
     {
       step: 4,
       title: isKh ? "ចុះឈ្មោះចូលរៀន" : "Enrollment & Batch",
       desc: isKh ? "ចូលរៀនលើកទី១: ១៣ វិច្ឆិកា ២០២៦ ឬ លើកទី២: ០៤ មករា ២០២៧" : "Batch 1: Nov 13, 2026 | Batch 2: Jan 04, 2027",
-      color: "bg-[#0d9488]",
+      color: "bg-[#002b80]",
       icon: <UserCheck className="w-5 h-5 text-white" />
     }
   ];
@@ -304,13 +304,13 @@ export default function ProgramsPage({
             </div>
 
             {/* Program Tabs */}
-            <div className="flex items-center bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+            <div className="flex items-center bg-slate-100 p-1.5 rounded-xl border border-slate-200">
               <button
                 type="button"
                 onClick={() => setActiveTab('diploma')}
-                className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                className={`px-5 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                   activeTab === 'diploma'
-                    ? 'bg-amber-400 text-slate-950 shadow-md ring-1 ring-amber-500/20'
+                    ? 'bg-[#002b80] text-white shadow-sm'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -319,9 +319,9 @@ export default function ProgramsPage({
               <button
                 type="button"
                 onClick={() => setActiveTab('bachelor')}
-                className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                className={`px-5 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                   activeTab === 'bachelor'
-                    ? 'bg-blue-700 text-white shadow-md'
+                    ? 'bg-[#002b80] text-white shadow-sm'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -333,9 +333,9 @@ export default function ProgramsPage({
           {/* Tab 1: 9 Higher Diploma Majors */}
           {activeTab === 'diploma' && (
             <div className="space-y-6">
-              <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="p-2 rounded-xl bg-amber-400 text-slate-950 font-bold">
+                  <span className="p-2 rounded-lg bg-[#002b80] text-white font-bold">
                     <Award className="w-5 h-5" />
                   </span>
                   <div>
@@ -350,7 +350,7 @@ export default function ProgramsPage({
                 <button
                   type="button"
                   onClick={onOpenApply}
-                  className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-5 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
+                  className="bg-[#002b80] hover:bg-blue-900 text-white font-bold px-5 py-2 rounded-lg text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
                 >
                   {isKh ? "ចុះឈ្មោះឥឡូវនេះ" : "Apply Online"}
                 </button>
@@ -360,20 +360,20 @@ export default function ProgramsPage({
                 {higherDiplomaMajors.map((prog) => (
                   <div
                     key={prog.id}
-                    className="p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-500 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                    className="p-5 rounded-xl border border-slate-200 hover:border-[#002b80] bg-white shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                     onClick={() => onSelectProgram && onSelectProgram(prog)}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <span className="w-7 h-7 rounded-lg bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center">
+                        <span className="w-7 h-7 rounded-lg bg-[#002b80] text-white font-bold text-xs flex items-center justify-center">
                           {prog.num}
                         </span>
-                        <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-200">
+                        <span className="text-[10px] font-semibold bg-blue-50 text-blue-900 px-2 py-0.5 rounded-md border border-blue-100">
                           {isKh ? "អាហារូបករណ៍ ១០០%" : "100% Free"}
                         </span>
                       </div>
 
-                      <h3 className="font-extrabold text-base text-slate-900 group-hover:text-blue-800 transition-colors font-khmer">
+                      <h3 className="font-bold text-base text-slate-900 group-hover:text-[#002b80] transition-colors font-khmer">
                         {isKh ? prog.nameKhmer : prog.name}
                       </h3>
                       <p className="text-xs text-slate-500 mt-0.5">
@@ -386,7 +386,7 @@ export default function ProgramsPage({
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-500 font-bold">
+                      <span className="text-[11px] font-mono text-slate-500 font-medium">
                         {prog.duration}
                       </span>
                       <button
@@ -395,7 +395,7 @@ export default function ProgramsPage({
                           e.stopPropagation();
                           if (onOpenApply) onOpenApply(prog);
                         }}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:text-blue-900 hover:underline cursor-pointer"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#002b80] hover:text-blue-950 hover:underline cursor-pointer"
                       >
                         <span>{isKh ? "ចុះឈ្មោះ" : "Apply"}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -410,9 +410,9 @@ export default function ProgramsPage({
           {/* Tab 2: 5 Bachelor Majors */}
           {activeTab === 'bachelor' && (
             <div className="space-y-6">
-              <div className="p-4 rounded-2xl bg-blue-50/80 border border-blue-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="p-2 rounded-xl bg-blue-700 text-white font-bold">
+                  <span className="p-2 rounded-lg bg-[#002b80] text-white font-bold">
                     <Award className="w-5 h-5" />
                   </span>
                   <div>
@@ -427,7 +427,7 @@ export default function ProgramsPage({
                 <button
                   type="button"
                   onClick={onOpenApply}
-                  className="bg-blue-700 hover:bg-blue-800 text-white font-bold px-5 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
+                  className="bg-[#002b80] hover:bg-blue-900 text-white font-bold px-5 py-2 rounded-lg text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
                 >
                   {isKh ? "ចុះឈ្មោះចូលរៀន" : "Apply for Bachelor"}
                 </button>
@@ -437,20 +437,20 @@ export default function ProgramsPage({
                 {bachelorMajors.map((prog) => (
                   <div
                     key={prog.id}
-                    className="p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-600 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                    className="p-5 rounded-xl border border-slate-200 hover:border-[#002b80] bg-white shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                     onClick={() => onSelectProgram && onSelectProgram(prog)}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <span className="w-7 h-7 rounded-lg bg-blue-700 text-white font-black text-xs flex items-center justify-center">
+                        <span className="w-7 h-7 rounded-lg bg-[#002b80] text-white font-bold text-xs flex items-center justify-center">
                           {prog.num}
                         </span>
-                        <span className="text-[10px] font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-full border border-blue-200">
+                        <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200">
                           {isKh ? "៤ ឆ្នាំ • បរិញ្ញាបត្រ" : "4 Years • B.Tech"}
                         </span>
                       </div>
 
-                      <h3 className="font-extrabold text-base text-slate-900 group-hover:text-blue-800 transition-colors font-khmer">
+                      <h3 className="font-bold text-base text-slate-900 group-hover:text-[#002b80] transition-colors font-khmer">
                         {isKh ? prog.nameKhmer : prog.name}
                       </h3>
                       <p className="text-xs text-slate-500 mt-0.5">
@@ -461,13 +461,13 @@ export default function ProgramsPage({
                         {isKh ? prog.overviewKh : prog.overview}
                       </p>
                       
-                      <div className="mt-3 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 font-khmer">
+                      <div className="mt-3 text-[11px] font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 font-khmer">
                         {isKh ? `វេនសិក្សា៖ ${prog.shiftsKh}` : `Shifts: ${prog.shiftsEn}`}
                       </div>
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-[11px] font-mono text-slate-500 font-bold">
+                      <span className="text-[11px] font-mono text-slate-500 font-medium">
                         {prog.duration}
                       </span>
                       <button
@@ -476,7 +476,7 @@ export default function ProgramsPage({
                           e.stopPropagation();
                           if (onOpenApply) onOpenApply(prog);
                         }}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:text-blue-900 hover:underline cursor-pointer"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#002b80] hover:text-blue-950 hover:underline cursor-pointer"
                       >
                         <span>{isKh ? "ចុះឈ្មោះ" : "Apply"}</span>
                         <ArrowRight className="w-3.5 h-3.5" />

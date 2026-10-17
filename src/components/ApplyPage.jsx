@@ -845,13 +845,13 @@ export default function ApplyPage({
                           handleInputChange('degreeLevel', 'diploma');
                           handleInputChange('programId', 'industrial');
                         }}
-                        className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
+                        className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
                           formData.degreeLevel === 'diploma'
-                            ? 'border-amber-500 bg-amber-50/70 ring-2 ring-amber-500/20'
+                            ? 'border-[#002b80] bg-blue-50/50 ring-1 ring-[#002b80]/20'
                             : 'border-slate-200 bg-white hover:border-slate-300'
                         }`}
                       >
-                        <div className={`p-2.5 rounded-xl shrink-0 ${formData.degreeLevel === 'diploma' ? 'bg-amber-500 text-slate-950' : 'bg-slate-100 text-slate-600'}`}>
+                        <div className={`p-2.5 rounded-xl shrink-0 ${formData.degreeLevel === 'diploma' ? 'bg-[#002b80] text-white' : 'bg-slate-100 text-slate-600'}`}>
                           <GraduationCap className="w-5 h-5 font-bold" />
                         </div>
                         <div>
@@ -859,7 +859,7 @@ export default function ApplyPage({
                             <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
                               {isKh ? "សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស" : "Higher Diploma of Technology"}
                             </h3>
-                            <span className="text-[10px] font-bold bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">
+                            <span className="text-[10px] font-semibold bg-[#002b80] text-white px-2 py-0.5 rounded-full">
                               {isKh ? "២ ឆ្នាំ • អាហារូបករណ៍ ១០០%" : "2 Years • 100% Free"}
                             </span>
                           </div>
@@ -877,13 +877,13 @@ export default function ApplyPage({
                           handleInputChange('degreeLevel', 'beng');
                           handleInputChange('programId', 'cybersecurity');
                         }}
-                        className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
+                        className={`p-4 rounded-xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
                           formData.degreeLevel === 'beng'
-                            ? 'border-blue-600 bg-blue-50/70 ring-2 ring-blue-600/20'
+                            ? 'border-[#002b80] bg-blue-50/50 ring-1 ring-[#002b80]/20'
                             : 'border-slate-200 bg-white hover:border-slate-300'
                         }`}
                       >
-                        <div className={`p-2.5 rounded-xl shrink-0 ${formData.degreeLevel === 'beng' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                        <div className={`p-2.5 rounded-xl shrink-0 ${formData.degreeLevel === 'beng' ? 'bg-[#002b80] text-white' : 'bg-slate-100 text-slate-600'}`}>
                           <Award className="w-5 h-5" />
                         </div>
                         <div>
@@ -891,7 +891,7 @@ export default function ApplyPage({
                             <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
                               {isKh ? "បរិញ្ញាបត្របច្ចេកទេស" : "Bachelor of Technology (B.Tech)"}
                             </h3>
-                            <span className="text-[10px] font-bold bg-blue-700 text-white px-2 py-0.5 rounded-full">
+                            <span className="text-[10px] font-semibold bg-slate-800 text-white px-2 py-0.5 rounded-full">
                               {isKh ? "៤ ឆ្នាំ • ថ្នាក់បង់ថ្លៃ" : "4 Years • Regular"}
                             </span>
                           </div>
@@ -914,7 +914,7 @@ export default function ApplyPage({
                           : (isKh ? "ជ្រើសរើសជំនាញបរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (៥ ជំនាញ) *" : "Select Bachelor Major (5 Official Majors) *")
                         }
                       </label>
-                      <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+                      <span className="text-[11px] font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                         {formData.degreeLevel === 'diploma' ? (isKh ? "អាហារូបករណ៍ ១០០%" : "100% Free Tuition") : (isKh ? "វេនយប់ & ចុងសប្តាហ៍" : "Night & Weekend")}
                       </span>
                     </div>
@@ -927,22 +927,22 @@ export default function ApplyPage({
                           <div
                             key={prog.id}
                             onClick={() => handleInputChange('programId', prog.id)}
-                            className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3 ${
+                            className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-start gap-3 ${
                               isSelected
-                                ? 'border-[#1b4b9b] bg-blue-50/80 shadow-md ring-2 ring-blue-500/15'
-                                : 'border-slate-200 bg-slate-50/50 hover:bg-white hover:border-slate-300'
+                                ? 'border-[#002b80] bg-blue-50/60 shadow-xs ring-1 ring-[#002b80]/15'
+                                : 'border-slate-200 bg-white hover:border-slate-300'
                             }`}
                           >
-                            <span className="w-6 h-6 rounded-lg bg-amber-400 text-slate-950 font-black flex items-center justify-center text-xs shrink-0 shadow-xs">
+                            <span className="w-6 h-6 rounded-lg bg-[#002b80] text-white font-bold flex items-center justify-center text-xs shrink-0 shadow-xs">
                               {prog.num || idx + 1}
                             </span>
                             <div className="min-w-0 flex-1">
                               <div className="flex items-center justify-between gap-1">
-                                <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug font-khmer">
+                                <h3 className="font-bold text-xs sm:text-sm text-slate-900 leading-snug font-khmer">
                                   {isKh ? prog.nameKhmer : prog.name}
                                 </h3>
                                 {isSelected && (
-                                  <span className="w-4 h-4 rounded-full bg-[#1b4b9b] text-white flex items-center justify-center shrink-0">
+                                  <span className="w-4 h-4 rounded-full bg-[#002b80] text-white flex items-center justify-center shrink-0">
                                     <Check className="w-2.5 h-2.5" />
                                   </span>
                                 )}

@@ -86,33 +86,33 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Official Admission Promotional Banner from Ministry & NPIT Flyer */}
-        <div className="mb-10 rounded-3xl overflow-hidden bg-gradient-to-r from-[#0d234d] via-[#153a7a] to-[#0c4a6e] text-white shadow-xl border border-blue-400/20 p-6 sm:p-8">
+        <div className="mb-10 rounded-2xl overflow-hidden bg-[#00225c] text-white shadow-lg border border-blue-900/50 p-6 sm:p-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="space-y-3 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider shadow-sm">
-                <Award className="w-4 h-4 text-slate-950" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/80 text-blue-100 text-xs font-semibold uppercase tracking-wider border border-blue-700/50">
+                <Award className="w-4 h-4 text-blue-200" />
                 <span>{isKh ? "សេចក្តីជូនដំណឹងជ្រើសរើសនិស្សិតផ្លូវការ" : "Official Enrollment Announcement"}</span>
               </div>
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black font-khmer leading-snug">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-khmer leading-snug">
                 {isKh ? "អាហារូបករណ៍ ១០០% ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (សិក្សា ២ឆ្នាំ)" : "100% Free Tuition Scholarship — Higher Diploma of Technology (2 Years)"}
               </h3>
-              <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed font-khmer">
+              <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-khmer">
                 {isKh 
                   ? "លក្ខខណ្ឌចូលរៀន៖ ជាប់ ឬធ្លាក់ សញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិ (បាក់ឌុប) អាចចុះឈ្មោះចូលរៀនបានដោយឥតគិតថ្លៃ ១០០% លើ ៩ មុខជំនាញ និងថ្នាក់បរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (វេនយប់ និង ថ្ងៃសៅរ៍-អាទិត្យ) លើ ៥ មុខជំនាញ។" 
                   : "Entry Condition: Both Passed or Failed Bac II / High School Diploma are eligible for 100% tuition scholarships across 9 technician majors, plus 5 Bachelor of Technology programs (Evening & Weekend shifts)."}
               </p>
               
-              <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-bold font-mono">
-                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15">
-                  <Calendar className="w-4 h-4 text-amber-400" />
+              <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-medium">
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                  <Calendar className="w-4 h-4 text-slate-300" />
                   <span>{isKh ? "ចូលរៀនលើកទី១: ១៣ វិច្ឆិកា ២០២៦" : "Batch 1 Starts: Nov 13, 2026"}</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15">
-                  <Calendar className="w-4 h-4 text-cyan-400" />
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                  <Calendar className="w-4 h-4 text-slate-300" />
                   <span>{isKh ? "ចូលរៀនលើកទី២: ០៤ មករា ២០២៧" : "Batch 2 Starts: Jan 04, 2027"}</span>
                 </div>
-                <div className="flex items-center gap-1.5 bg-amber-400 text-slate-950 px-3 py-1.5 rounded-xl font-bold">
-                  <Phone className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 font-mono">
+                  <Phone className="w-3.5 h-3.5 text-slate-300" />
                   <span>098 444 495 / 092 735 263</span>
                 </div>
               </div>
@@ -122,7 +122,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
               <button
                 type="button"
                 onClick={() => onOpenApply && onOpenApply()}
-                className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer text-sm transform hover:-translate-y-0.5"
+                className="bg-white hover:bg-slate-100 text-[#00225c] font-bold px-6 py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
               >
                 <span>{isKh ? "ចុះឈ្មោះយកអាហារូបករណ៍ ១០០%" : "Apply for 100% Scholarship"}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -130,7 +130,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
               <button
                 type="button"
                 onClick={() => setSelectedCategory('diploma')}
-                className="bg-white/15 hover:bg-white/25 text-white font-bold px-5 py-3 rounded-2xl border border-white/20 transition-all text-xs text-center cursor-pointer"
+                className="bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-2.5 rounded-xl border border-white/15 transition-all text-xs text-center cursor-pointer"
               >
                 {isKh ? "មើលជំនាញទាំង ៩ ឥតគិតថ្លៃ" : "View 9 Free Diploma Majors"}
               </button>
@@ -234,7 +234,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
 
                   {/* Top Floating Number & Icon Badge */}
                   <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                    <span className="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center text-xs shadow-md">
+                    <span className="w-8 h-8 rounded-xl bg-[#002b80] text-white font-bold flex items-center justify-center text-xs shadow-md ring-1 ring-white/30">
                       {prog.num || idx + 1}
                     </span>
                     <div className="p-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 shadow-md">
@@ -245,12 +245,12 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                   {/* Program Level Tag */}
                   <div className="absolute top-4 right-4 z-10">
                     {isDiploma && (
-                      <span className="text-[11px] font-bold bg-amber-400 text-slate-950 px-2.5 py-1 rounded-full shadow-sm">
+                      <span className="text-[11px] font-semibold bg-white/95 text-[#002b80] px-2.5 py-1 rounded-full shadow-sm border border-blue-200/50">
                         {isKh ? 'អាហារូបករណ៍ ១០០% (២ឆ្នាំ)' : '100% Scholarship (2Y)'}
                       </span>
                     )}
                     {isBeng && (
-                      <span className="text-[11px] font-bold bg-blue-600 text-white px-2.5 py-1 rounded-full shadow-sm">
+                      <span className="text-[11px] font-semibold bg-[#002b80] text-white px-2.5 py-1 rounded-full shadow-sm">
                         {isKh ? 'បរិញ្ញាបត្រ (៤ឆ្នាំ)' : 'Bachelor (4Y)'}
                       </span>
                     )}
@@ -261,7 +261,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                     <h3 className="text-lg sm:text-xl font-bold leading-tight drop-shadow-md">
                       {isKh ? prog.nameKhmer : prog.name}
                     </h3>
-                    <p className="text-xs text-amber-300 font-medium mt-0.5 drop-shadow-xs">
+                    <p className="text-xs text-blue-200 font-medium mt-0.5 drop-shadow-xs">
                       {isKh ? prog.name : prog.nameKhmer}
                     </p>
                   </div>
@@ -270,7 +270,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                 {/* Card Middle Info */}
                 <div className="p-4 bg-white flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="inline-block text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-100 mb-2">
+                    <span className="inline-block text-[11px] font-medium text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200 mb-2">
                       {isKh ? prog.facultyKh : prog.faculty}
                     </span>
                     <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
@@ -281,33 +281,33 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                   <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-1.5 text-[11px] text-slate-600">
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-slate-700 flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-blue-600" />
+                        <Clock className="w-3.5 h-3.5 text-blue-800" />
                         <span>{isKh ? prog.durationKh : prog.duration}</span>
                       </span>
                       <span className="text-slate-500 font-mono font-bold">{prog.code}</span>
                     </div>
                     {prog.shiftsKh && (
-                      <div className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                      <div className="text-[11px] text-slate-700 font-medium bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                         {isKh ? `វេនសិក្សា៖ ${prog.shiftsKh}` : `Shifts: ${prog.shiftsEn}`}
                       </div>
                     )}
                     {prog.entryConditionKh && (
-                      <div className="text-[11px] text-amber-800 font-bold bg-amber-50 px-2 py-0.5 rounded">
+                      <div className="text-[11px] text-blue-900 font-medium bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
                         {isKh ? `លក្ខខណ្ឌ៖ ${prog.entryConditionKh}` : `Condition: Pass/Fail Bac II`}
                       </div>
                     )}
                   </div>
                 </div>
 
-                {/* Bottom Color Banner with Dual Actions */}
-                <div className={`px-4 py-3 ${prog.cardBg || 'bg-blue-800'} text-white flex items-center justify-between transition-colors`}>
+                {/* Bottom Card Footer with Actions */}
+                <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       if (onSelectProgram) onSelectProgram(prog);
                     }}
-                    className="flex items-center gap-1 text-xs font-bold text-white hover:underline focus:outline-none cursor-pointer"
+                    className="flex items-center gap-1 text-xs font-bold text-[#002b80] hover:text-blue-950 focus:outline-none cursor-pointer"
                   >
                     <span>{isKh ? 'ព័ត៌មានលម្អិត' : 'Learn More'}</span>
                     <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -319,7 +319,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                       e.stopPropagation();
                       if (onOpenApply) onOpenApply(prog);
                     }}
-                    className="bg-white/20 hover:bg-white text-white hover:text-slate-900 text-xs font-bold px-3 py-1 rounded-full border border-white/40 transition-all flex items-center gap-1 cursor-pointer"
+                    className="bg-[#002b80] hover:bg-blue-900 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
                   >
                     <span>{isKh ? 'ចុះឈ្មោះរៀន' : 'Apply'}</span>
                     <Send className="w-3 h-3" />

@@ -116,13 +116,13 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
                   
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="bg-blue-600/90 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    <span className="bg-[#002b80] text-white text-[11px] font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
                       Entry Criteria
                     </span>
                   </div>
 
                   <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <p className="text-xs font-khmer text-amber-300 font-semibold">
+                    <p className="text-xs font-khmer text-blue-200 font-medium">
                       {isKh ? "លក្ខខណ្ឌជ្រើសរើស" : "លក្ខខណ្ឌនៃការជ្រើសរើស"}
                     </p>
                     <h3 className="text-lg font-bold text-white drop-shadow-xs">
@@ -163,7 +163,7 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
             </div>
 
             {/* Card 2: Government Scholarships */}
-            <div className="bg-white rounded-2xl border border-blue-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col justify-between group">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col justify-between group">
               <div>
                 <div className="relative h-48 overflow-hidden bg-slate-900">
                   <img 
@@ -174,13 +174,13 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
                   
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="bg-amber-500 text-slate-950 text-[11px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    <span className="bg-[#002b80] text-white text-[11px] font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
                       100% & 50% State-Funded
                     </span>
                   </div>
 
                   <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <p className="text-xs font-khmer text-amber-300 font-semibold">
+                    <p className="text-xs font-khmer text-blue-200 font-medium">
                       {isKh ? "អាហារូបករណ៍រដ្ឋាភិបាល" : "អាហារូបករណ៍រដ្ឋាភិបាល"}
                     </p>
                     <h3 className="text-lg font-bold text-white drop-shadow-xs">
@@ -195,7 +195,7 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                       ? "ក្រសួងការងារ និងបណ្តុះបណ្តាលវិជ្ជាជីវៈ ផ្តល់អាហារូបករណ៍ពេញលេញ ១០០% និង ៥០% សម្រាប់សិស្សឆ្នើមទូទាំងប្រទេស។"
                       : "Full 100% and 50% state-sponsored tuition scholarships available for high-achieving high school graduates nationwide."}
                   </p>
-                  <div className="p-2.5 rounded-lg bg-blue-50/70 border border-blue-100 text-xs font-semibold text-blue-800">
+                  <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700">
                     {isKh ? "• អាហារូបករណ៍សមធម៌ និងអាទិភាពសិស្សនារីក្នុងវិស័យ STEM" : "• Equity quotas & women-in-STEM priority subsidies"}
                   </div>
                 </div>
@@ -210,7 +210,7 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                   <span>{isKh ? "អានបន្ថែម" : "Read More"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
-                <span className="text-[11px] text-amber-600 font-semibold">100% Scholarship</span>
+                <span className="text-[11px] text-[#002b80] font-semibold">100% Scholarship</span>
               </div>
             </div>
 
@@ -226,13 +226,13 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-transparent" />
                   
                   <div className="absolute top-3 left-3 flex items-center gap-2">
-                    <span className="bg-blue-800/90 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                      3 Shift Options
+                    <span className="bg-[#002b80] text-white text-[11px] font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      Flexible Shifts
                     </span>
                   </div>
 
                   <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <p className="text-xs font-khmer text-amber-300 font-semibold">
+                    <p className="text-xs font-khmer text-blue-200 font-medium">
                       {isKh ? "វេនសិក្សាបត់បែន" : "វេនសិក្សាបត់បែន"}
                     </p>
                     <h3 className="text-lg font-bold text-white drop-shadow-xs">
