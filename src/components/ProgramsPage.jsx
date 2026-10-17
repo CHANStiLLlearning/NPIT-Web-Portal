@@ -632,37 +632,6 @@ export default function ProgramsPage({
             ))}
           </div>
 
-          {/* Campus Location & Hotline Footer Card */}
-          <div className="mt-12 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex items-start sm:items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
-                <MapPin className="w-6 h-6 text-blue-700" />
-              </div>
-              <div>
-                <h4 className="font-bold text-base text-slate-900">
-                  {isKh ? "ទីតាំងវិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន (NPIT)" : "National Polytechnic Institute Techo Sen Campus"}
-                </h4>
-                <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
-                  {isKh ? officialAdmissionInfo.officialAddressKh : officialAdmissionInfo.officialAddressEn}
-                </p>
-                <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-blue-800 font-bold">
-                  <span>Hotline: 098 444 495 / 092 735 263 / 016 475 544</span>
-                  <span>• Website: www.npit-edu.com</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={onOpenApply}
-                className="bg-[#1b4b9b] hover:bg-[#12397c] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
-              >
-                <span>{isKh ? 'ចុះឈ្មោះចូលរៀនឥឡូវនេះ' : 'Apply Online Now'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
 
         </div>
       </section>
