@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import WhyNPIT from './components/WhyNPIT';
 import AcademicPrograms from './components/AcademicPrograms';
 import AdmissionsSection from './components/AdmissionsSection';
 import ResearchSection from './components/ResearchSection';
@@ -465,13 +464,6 @@ export default function App() {
               lang={lang}
               onOpenApply={handleApplyClick}
               onExploreClick={() => handleNavigate('programs', '#programs')}
-            />
-
-            {/* 4. Why NPIT Section (id="about") */}
-            <WhyNPIT 
-              whyData={t.whyNPIT} 
-              lang={lang}
-              onNavigate={handleNavigate}
             />
 
             {/* 5. Academic Programs Grid Section (id="programs") */}
