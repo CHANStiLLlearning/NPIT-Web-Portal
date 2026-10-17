@@ -14,35 +14,36 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
     if (grade === 'A' || grade === 'B') {
       return {
         percent: '100%',
-        title: isKh ? 'អាហារូបករណ៍រដ្ឋពេញលេញ ១០០%' : '100% Full State Merit Scholarship',
-        tuition: '$0 / Year (100% Free)',
+        title: isKh ? 'អាហារូបករណ៍រដ្ឋពេញលេញ ១០០% (ថ្នាក់បរិញ្ញាបត្រ ឬ សញ្ញាបត្រជាន់ខ្ពស់)' : '100% Full State Merit Scholarship (Bachelor or Diploma)',
+        tuition: '$0 / Year (100% Free Tuition)',
         desc: isKh 
-          ? 'ឧបត្ថម្ភថ្លៃសិក្សា ១០០% ដោយក្រសួងការងារ និងបណ្តុះបណ្តាលវិជ្ជាជីវៈ (MLVT) សម្រាប់រយៈពេល ៤ ឆ្នាំពេញ។'
-          : 'Full 100% tuition coverage sponsored by MLVT for all 4 years of Bachelor study.',
-        badge: 'Top Tier • Full Waiver',
-        badgeColor: 'bg-amber-600'
+          ? 'ឧបត្ថម្ភថ្លៃសិក្សា ១០០% ដោយក្រសួងការងារ និងបណ្តុះបណ្តាលវិជ្ជាជីវៈ (MLVT) សម្រាប់រយៈពេល ៤ ឆ្នាំពេញ ឬ ២ ឆ្នាំ។'
+          : 'Full 100% tuition coverage sponsored by MLVT for your entire engineering degree program.',
+        badge: 'Top Tier • 100% Free',
+        badgeColor: 'bg-amber-500 text-slate-950 font-bold'
       };
     } else if (grade === 'C') {
       return {
-        percent: '50%',
-        title: isKh ? 'អាហារូបករណ៍រដ្ឋ ៥០%' : '50% State-Funded Academic Scholarship',
-        tuition: '$250 / Year ($125/Semester)',
+        percent: '100% / 50%',
+        title: isKh ? 'អាហារូបករណ៍ ១០០% ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់ ឬ ៥០% បរិញ្ញាបត្រ' : '100% Diploma Grant or 50% Bachelor Subsidy',
+        tuition: '$0 (Diploma 2Y) / $190/sem (Bachelor)',
         desc: isKh 
-          ? 'ឧបត្ថម្ភថ្លៃសិក្សា ៥០% សម្រាប់សិស្សឆ្នើមមធ្យម ជាមួយនឹងឱកាសដំឡើងទៅ ១០០% ប្រសិនទទួលបាន GPA ខ្ពស់។'
-          : '50% tuition subsidy with annual performance reviews to qualify for 100% upgrade.',
-        badge: 'Merit Tier • 50% Subsidy',
-        badgeColor: 'bg-amber-600'
+          ? 'សិស្សនិទ្ទេស C អាចទទួលបានអាហារូបករណ៍ ១០០% សម្រាប់ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់ ២ឆ្នាំ (៩ ជំនាញ) ឬ ៥០% សម្រាប់បរិញ្ញាបត្រ។'
+          : 'Grade C candidates receive guaranteed 100% tuition waiver for 2-Year Higher Diploma or 50% subsidy for Bachelor.',
+        badge: 'State Priority Grant',
+        badgeColor: 'bg-blue-600'
       };
     } else {
+      // D, E, or Fail
       return {
-        percent: '30%',
-        title: isKh ? 'អាហារូបករណ៍សមធម៌ និងការលើកទឹកចិត្ត' : 'Equity & High-Demand STEM Subsidy',
-        tuition: '$350 / Year ($175/Semester)',
+        percent: '100%',
+        title: isKh ? 'អាហារូបករណ៍ ១០០% ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (ជាប់ ឬធ្លាក់បាក់ឌុប)' : '100% Free Tuition Higher Diploma (Bac II Pass or Fail)',
+        tuition: '$0 / 2 Years (100% Free)',
         desc: isKh 
-          ? 'កញ្ចប់ឧបត្ថម្ភសមធម៌ពីរដ្ឋាភិបាលសម្រាប់និស្សិតមកពីខេត្ត និងអាទិភាពសិស្សនារីក្នុងវិស័យវិស្វកម្ម។'
-          : 'Government equity subsidies available for provincial students and women-in-STEM candidates.',
-        badge: 'Priority Support Tier',
-        badgeColor: 'bg-blue-600'
+          ? 'សេចក្តីប្រកាសផ្លូវការរបស់ក្រសួង៖ សិស្សជាប់ ឬធ្លាក់បាក់ឌុប ទទួលបានអាហារូបករណ៍ ១០០% ឥតគិតថ្លៃសិក្សា ២ឆ្នាំពេញ លើ ៩ មុខជំនាញបច្ចេកទេស! ចូលរៀនលើកទី១: ១៣ វិច្ឆិកា ២០២៦ | លើកទី២: ០៤ មករា ២០២៧។'
+          : 'Official MLVT Program: Candidates who passed or failed Bac II receive 100% free tuition for the 2-Year Higher Diploma across 9 technician majors. Batch 1: Nov 13, 2026 | Batch 2: Jan 04, 2027.',
+        badge: '100% Government TVET Grant',
+        badgeColor: 'bg-emerald-600'
       };
     }
   };
@@ -297,19 +298,25 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
                     {isKh ? '១. និទ្ទេសប្រឡងបាក់ឌុប (Bac II Grade)' : '1. High School Bac II Exam Grade'}
                   </label>
-                  <div className="grid grid-cols-4 gap-2.5">
-                    {['A', 'B', 'C', 'D'].map((g) => (
+                  <div className="grid grid-cols-5 gap-2">
+                    {[
+                      { id: 'A', label: 'Grade A' },
+                      { id: 'B', label: 'Grade B' },
+                      { id: 'C', label: 'Grade C' },
+                      { id: 'D', label: 'Grade D/E' },
+                      { id: 'F', label: isKh ? 'ធ្លាក់ (Fail)' : 'Failed' }
+                    ].map((g) => (
                       <button
-                        key={g}
+                        key={g.id}
                         type="button"
-                        onClick={() => setGrade(g)}
-                        className={`py-2.5 px-3 rounded-xl font-bold text-sm transition-all cursor-pointer ${
-                          grade === g
+                        onClick={() => setGrade(g.id)}
+                        className={`py-2 px-1 rounded-xl font-bold text-xs sm:text-sm transition-all cursor-pointer ${
+                          grade === g.id
                             ? 'bg-blue-700 text-white shadow-md ring-2 ring-blue-600 ring-offset-2'
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                         }`}
                       >
-                        Grade {g}
+                        {g.label}
                       </button>
                     ))}
                   </div>
@@ -318,20 +325,24 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                 {/* Question 2: Department of Choice */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                    {isKh ? '២. ដេប៉ាតឺម៉ង់ដែលចង់សិក្សា' : '2. Engineering Field of Interest'}
+                    {isKh ? '២. មុខជំនាញដែលចង់សិក្សា' : '2. Field of Interest'}
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {[
-                      { id: 'civil', label: isKh ? 'សំណង់ស៊ីវិល' : 'Civil Eng' },
-                      { id: 'it', label: isKh ? 'បច្ចេកវិទ្យាព័ត៌មាន' : 'IT Software' },
-                      { id: 'electrical', label: isKh ? 'អគ្គិសនី' : 'Electrical' },
-                      { id: 'mechanical', label: isKh ? 'មេកានិច' : 'Mechanical' }
+                      { id: 'industrial', label: isKh ? '១. ឧស្សាហកម្ម' : 'Industrial' },
+                      { id: 'electrical', label: isKh ? '២. អគ្គិសនី' : 'Electrical' },
+                      { id: 'hvac', label: isKh ? '៣. បរិក្ខារត្រជាក់' : 'HVAC' },
+                      { id: 'it', label: isKh ? '៤. ព័ត៌មានវិទ្យា' : 'IT Software' },
+                      { id: 'automotive', label: isKh ? '៥. យន្តសាស្ត្ររថយន្ត' : 'Automotive' },
+                      { id: 'civil', label: isKh ? '៦. សំណង់ស៊ីវិល' : 'Civil Eng' },
+                      { id: 'cybersecurity', label: isKh ? '៧. សន្តិសុខសាយប័រ' : 'Cybersecurity' },
+                      { id: 'business', label: isKh ? '៨. គ្រប់គ្រង/ភាសា' : 'BA/English' }
                     ].map((p) => (
                       <button
                         key={p.id}
                         type="button"
                         onClick={() => setProgramChoice(p.id)}
-                        className={`py-2 px-2.5 rounded-lg text-xs font-bold text-center transition-all cursor-pointer ${
+                        className={`py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold text-center transition-all cursor-pointer font-khmer ${
                           programChoice === p.id
                             ? 'bg-blue-900 text-white shadow-xs'
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -348,17 +359,18 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
                     {isKh ? '៣. វេនសិក្សាដែលពេញចិត្ត' : '3. Preferred Study Shift'}
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {[
                       { id: 'morning', label: isKh ? 'វេនព្រឹក (Morning)' : 'Morning (7:30AM)' },
                       { id: 'afternoon', label: isKh ? 'វេនរសៀល (Afternoon)' : 'Afternoon (1:30PM)' },
+                      { id: 'evening', label: isKh ? 'វេនយប់ (Evening)' : 'Evening (5:30PM)' },
                       { id: 'weekend', label: isKh ? 'ចុងសប្តាហ៍ (Weekend)' : 'Weekend (Sat-Sun)' }
                     ].map((s) => (
                       <button
                         key={s.id}
                         type="button"
                         onClick={() => setShift(s.id)}
-                        className={`py-2 px-2 rounded-lg text-xs font-semibold text-center transition-all cursor-pointer ${
+                        className={`py-2 px-2 rounded-lg text-[11px] sm:text-xs font-semibold text-center transition-all cursor-pointer ${
                           shift === s.id
                             ? 'bg-blue-800 text-white shadow-xs'
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'

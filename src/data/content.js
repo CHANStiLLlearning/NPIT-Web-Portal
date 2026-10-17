@@ -21,11 +21,14 @@ export const contentData = {
         label: "Academic Programs", 
         href: "#programs",
         dropdown: [
-          { label: "Civil Engineering", href: "#programs" },
-          { label: "Information Technology", href: "#programs" },
-          { label: "Electrical & Electronics", href: "#programs" },
-          { label: "Mechanical Engineering", href: "#programs" },
-          { label: "Automotive Technology", href: "#programs" }
+          { label: "Industrial Engineering (វិស្វកម្មឧស្សាហកម្ម)", href: "#programs" },
+          { label: "Electrical Engineering (វិស្វកម្មអគ្គិសនី)", href: "#programs" },
+          { label: "Refrigeration & HVAC (បរិក្ខារត្រជាក់)", href: "#programs" },
+          { label: "IT & Software Engineering (ព័ត៌មានវិទ្យា)", href: "#programs" },
+          { label: "Automotive Technology (យន្តសាស្ត្ររថយន្ត)", href: "#programs" },
+          { label: "Civil Engineering (សំណង់ស៊ីវិល)", href: "#programs" },
+          { label: "Smart Digital & Cybersecurity (សន្តិសុខសាយប័រ)", href: "#programs" },
+          { label: "English, Veterinary & Business Management", href: "#programs" }
         ]
       },
       { 
@@ -190,12 +193,12 @@ export const contentData = {
       aboutText: "National Polytechnic Institute Techo Sen is a premier public polytechnic higher education institution established under the Ministry of Labour and Vocational Training of the Royal Government of Cambodia.",
       quickLinksTitle: "Quick Links",
       programsTitle: "Departments",
-      contactTitle: "Campus Contact",
-      address: "National Road 2, Ta Khmau City, Kandal Province, Kingdom of Cambodia",
-      phone: "+855 (0) 23 888 999 / +855 (0) 12 345 678",
-      email: "info@npit.edu.kh / admission@npit.edu.kh",
-      hours: "Monday - Friday: 7:30 AM - 5:00 PM",
-      copyright: "© 2026 National Polytechnic Institute Techo Sen. All Rights Reserved."
+      contactTitle: "Campus Contact & Admissions",
+      address: "National Road 21, Prek Samraong 3 Village, Sangkat Ta Khmau, Ta Khmau City, Kandal Province",
+      phone: "098 444 495 / 092 735 263 / 016 475 544 / 012 216 169",
+      email: "info@npit-edu.com / admission@npit.edu.kh",
+      hours: "Monday - Friday: 7:30 AM - 5:00 PM | Sat - Sun: 8:00 AM - 4:30 PM",
+      copyright: "© 2026 National Polytechnic Institute Techo Sen (NPIT). All Rights Reserved."
     }
   },
   kh: {
@@ -220,10 +223,14 @@ export const contentData = {
         label: "កម្មវិធីសិក្សា", 
         href: "#programs",
         dropdown: [
-          { label: "វិស្វកម្មសំណង់ស៊ីវិល", href: "#programs" },
-          { label: "បច្ចេកវិទ្យាព័ត៌មាន", href: "#programs" },
-          { label: "វិស្វកម្មអគ្គិសនី និងអេឡិចត្រូនិក", href: "#programs" },
-          { label: "វិស្វកម្មមេកានិច", href: "#programs" }
+          { label: "១. វិស្វកម្មឧស្សាហកម្ម", href: "#programs" },
+          { label: "២. វិស្វកម្មអគ្គិសនី", href: "#programs" },
+          { label: "៣. បរិក្ខារត្រជាក់", href: "#programs" },
+          { label: "៤. វិស្វកម្មព័ត៌មានវិទ្យា", href: "#programs" },
+          { label: "៥. យន្តសាស្ត្ររថយន្ត", href: "#programs" },
+          { label: "៦. វិស្វកម្មសំណង់ស៊ីវិល", href: "#programs" },
+          { label: "៧. សន្តិសុខសាយប័រ & ឌីជីថល", href: "#programs" },
+          { label: "៨. អក្សរសាស្ត្រ, បសុព្យាបាល, គ្រប់គ្រង", href: "#programs" }
         ]
       },
       { 
@@ -381,12 +388,12 @@ export const contentData = {
       aboutText: "វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន គឺជាគ្រឹះស្ថានឧត្តមសិក្សាបច្ចេកទេសសាធារណៈឈានមុខគេ ស្ថិតក្រោមក្រសួងការងារ និងបណ្តុះបណ្តាលវិជ្ជាជីវៈ នៃព្រះរាជាណាចក្រកម្ពុជា។",
       quickLinksTitle: "តំណភ្ជាប់រហ័ស",
       programsTitle: "ដេប៉ាតឺម៉ង់បណ្តុះបណ្តាល",
-      contactTitle: "ទំនាក់ទំនង",
-      address: "ផ្លូវជាតិលេខ២ ក្រុងតាខ្មៅ ខេត្តកណ្តាល ព្រះរាជាណាចក្រកម្ពុជា",
-      phone: "+855 (0) 23 888 999 / +855 (0) 12 345 678",
-      email: "info@npit.edu.kh / admission@npit.edu.kh",
-      hours: "ច័ន្ទ - សុក្រ: ៧:៣០ ព្រឹក - ៥:០០ ល្ងាច",
-      copyright: "© ២០២៦ វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន។ រក្សាសិទ្ធិគ្រប់យ៉ាង។"
+      contactTitle: "ទំនាក់ទំនងការិយាល័យចុះឈ្មោះ",
+      address: "ផ្លូវជាតិលេខ២១ ភូមិព្រែកសំរោង៣ សង្កាត់តាខ្មៅ ក្រុងតាខ្មៅ ខេត្តកណ្តាល",
+      phone: "098 444 495 / 092 735 263 / 016 475 544 / 012 216 169",
+      email: "info@npit-edu.com / admission@npit.edu.kh",
+      hours: "ច័ន្ទ - សុក្រ: ៧:៣០ ព្រឹក - ៥:០០ ល្ងាច | សៅរ៍ - អាទិត្យ: ៨:០០ ព្រឹក - ៤:៣០ ល្ងាច",
+      copyright: "© ២០២៦ វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន (NPIT)។ រក្សាសិទ្ធិគ្រប់យ៉ាង។"
     }
   }
 };

@@ -1,42 +1,82 @@
 import React, { useState } from 'react';
-import { HardHat, Laptop, Cpu, Cog, ChevronRight, Search, Clock, ArrowRight, X, GraduationCap, BookOpen, Send } from 'lucide-react';
+import { 
+  HardHat, 
+  Laptop, 
+  Cpu, 
+  Cog, 
+  ChevronRight, 
+  Search, 
+  Clock, 
+  ArrowRight, 
+  X, 
+  GraduationCap, 
+  BookOpen, 
+  Send,
+  Award,
+  Sparkles,
+  Calendar,
+  CheckCircle2,
+  Phone,
+  MapPin
+} from 'lucide-react';
+import { 
+  higherDiplomaMajors, 
+  bachelorMajors, 
+  programsList, 
+  officialAdmissionInfo 
+} from '../data/programsData';
 
 export default function AcademicPrograms({ programsData, onSelectProgram, onOpenApply, lang = 'en', onNavigate }) {
   const isKh = lang === 'kh';
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all'); // 'all' | 'diploma' | 'bachelor'
 
   const getProgramIcon = (icon) => {
     switch (icon) {
       case 'HardHat':
-        return <HardHat className="w-7 h-7 text-white" />;
+        return <HardHat className="w-6 h-6 text-white" />;
       case 'Laptop':
-        return <Laptop className="w-7 h-7 text-white" />;
+        return <Laptop className="w-6 h-6 text-white" />;
       case 'Cpu':
-        return <Cpu className="w-7 h-7 text-white" />;
+        return <Cpu className="w-6 h-6 text-white" />;
       case 'Cog':
-        return <Cog className="w-7 h-7 text-white" />;
+        return <Cog className="w-6 h-6 text-white" />;
+      case 'BookOpen':
+        return <BookOpen className="w-6 h-6 text-white" />;
       default:
-        return <Laptop className="w-7 h-7 text-white" />;
+        return <Award className="w-6 h-6 text-white" />;
     }
   };
 
   const categories = [
-    { id: 'all', label: isKh ? 'គ្រប់ដេប៉ាតឺម៉ង់ (៤)' : 'All Departments (4)' },
-    { id: 'civil', label: isKh ? 'សំណង់ស៊ីវិល' : 'Civil Engineering' },
-    { id: 'it', label: isKh ? 'បច្ចេកវិទ្យាព័ត៌មាន' : 'Information Tech' },
-    { id: 'electrical', label: isKh ? 'អគ្គិសនី & អេឡិចត្រូនិក' : 'Electrical & Power' },
-    { id: 'mechanical', label: isKh ? 'មេកានិច & ស្វ័យប្រវត្តិកម្ម' : 'Mechanical & CNC' },
+    { 
+      id: 'all', 
+      label: isKh ? 'គ្រប់ជំនាញទាំងអស់ (១៤)' : 'All Programs (14)' 
+    },
+    { 
+      id: 'diploma', 
+      label: isKh ? 'សញ្ញាបត្រជាន់ខ្ពស់ ២ឆ្នាំ (អាហារូបករណ៍ ១០០% - ៩ ជំនាញ)' : 'Higher Diploma 2Y (100% Scholarship - 9 Majors)' 
+    },
+    { 
+      id: 'bachelor', 
+      label: isKh ? 'បរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (វេនយប់/ចុងសប្តាហ៍ - ៥ ជំនាញ)' : 'Bachelor of Tech 4Y (Night/Weekend - 5 Majors)' 
+    },
   ];
 
-  const list = programsData?.list || [];
+  const fullList = programsList;
 
-  const filteredList = list.filter((prog) => {
-    const matchesCategory = selectedCategory === 'all' || prog.id === selectedCategory;
+  const filteredList = fullList.filter((prog) => {
+    const matchesCategory = 
+      selectedCategory === 'all' || 
+      (selectedCategory === 'diploma' && (prog.degreeType === 'diploma' || prog.degreeType === 'both' || prog.level?.toLowerCase().includes('diploma'))) ||
+      (selectedCategory === 'bachelor' && (prog.degreeType === 'beng' || prog.degreeType === 'bachelor' || prog.level?.toLowerCase().includes('bachelor')));
+
     const matchesSearch = 
       prog.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       prog.nameKhmer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prog.overview.toLowerCase().includes(searchQuery.toLowerCase());
+      prog.shortName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      prog.overview.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (prog.overviewKh && prog.overviewKh.includes(searchQuery));
 
     return matchesCategory && matchesSearch;
   });
@@ -45,21 +85,74 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
     <section id="programs" className="py-16 md:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Official Admission Promotional Banner from Ministry & NPIT Flyer */}
+        <div className="mb-10 rounded-3xl overflow-hidden bg-gradient-to-r from-[#0d234d] via-[#153a7a] to-[#0c4a6e] text-white shadow-xl border border-blue-400/20 p-6 sm:p-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-3 max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider shadow-sm">
+                <Award className="w-4 h-4 text-slate-950" />
+                <span>{isKh ? "សេចក្តីជូនដំណឹងជ្រើសរើសនិស្សិតផ្លូវការ" : "Official Enrollment Announcement"}</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black font-khmer leading-snug">
+                {isKh ? "អាហារូបករណ៍ ១០០% ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (សិក្សា ២ឆ្នាំ)" : "100% Free Tuition Scholarship — Higher Diploma of Technology (2 Years)"}
+              </h3>
+              <p className="text-sm sm:text-base text-blue-100/90 leading-relaxed font-khmer">
+                {isKh 
+                  ? "លក្ខខណ្ឌចូលរៀន៖ ជាប់ ឬធ្លាក់ សញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិ (បាក់ឌុប) អាចចុះឈ្មោះចូលរៀនបានដោយឥតគិតថ្លៃ ១០០% លើ ៩ មុខជំនាញ និងថ្នាក់បរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (វេនយប់ និង ថ្ងៃសៅរ៍-អាទិត្យ) លើ ៥ មុខជំនាញ។" 
+                  : "Entry Condition: Both Passed or Failed Bac II / High School Diploma are eligible for 100% tuition scholarships across 9 technician majors, plus 5 Bachelor of Technology programs (Evening & Weekend shifts)."}
+              </p>
+              
+              <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-bold font-mono">
+                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15">
+                  <Calendar className="w-4 h-4 text-amber-400" />
+                  <span>{isKh ? "ចូលរៀនលើកទី១: ១៣ វិច្ឆិកា ២០២៦" : "Batch 1 Starts: Nov 13, 2026"}</span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15">
+                  <Calendar className="w-4 h-4 text-cyan-400" />
+                  <span>{isKh ? "ចូលរៀនលើកទី២: ០៤ មករា ២០២៧" : "Batch 2 Starts: Jan 04, 2027"}</span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-amber-400 text-slate-950 px-3 py-1.5 rounded-xl font-bold">
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>098 444 495 / 092 735 263</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+              <button
+                type="button"
+                onClick={() => onOpenApply && onOpenApply()}
+                className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer text-sm transform hover:-translate-y-0.5"
+              >
+                <span>{isKh ? "ចុះឈ្មោះយកអាហារូបករណ៍ ១០០%" : "Apply for 100% Scholarship"}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('diploma')}
+                className="bg-white/15 hover:bg-white/25 text-white font-bold px-5 py-3 rounded-2xl border border-white/20 transition-all text-xs text-center cursor-pointer"
+              >
+                {isKh ? "មើលជំនាញទាំង ៩ ឥតគិតថ្លៃ" : "View 9 Free Diploma Majors"}
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Header with Search */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">
               <GraduationCap className="w-4 h-4 text-blue-700" />
-              <span>{isKh ? 'កម្មវិធីបរិញ្ញាបត្រវិស្វកម្ម ៤ ឆ្នាំ' : '4-Year Bachelor of Engineering'}</span>
+              <span>{isKh ? 'កម្មវិធីបណ្តុះបណ្តាលផ្លូវការ NPIT' : 'Official NPIT Academic & Polytechnic Majors'}</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-              {programsData?.title || (isKh ? 'កម្មវិធីសិក្សា និងដេប៉ាតឺម៉ង់វិស្វកម្ម' : 'Academic Programs Grid')}
+              {isKh ? 'បញ្ជីមុខជំនាញបណ្តុះបណ្តាលផ្លូវការ' : 'Official Academic Programs & Majors'}
             </h2>
             <div className="w-16 h-1 bg-blue-700 mt-2 rounded-full"></div>
             <p className="mt-2 text-sm text-slate-600 max-w-xl">
               {isKh 
-                ? 'កម្មវិធីសិក្សាស្តង់ដារជាតិ និងតំបន់ ដែលរួមបញ្ចូលទ្រឹស្តី ៣០% និងការអនុវត្តមន្ទីរពិសោធន៍ ៧០%។' 
-                : 'Nationally accredited curricula integrating 30% theory and 70% intensive hands-on laboratory mastery.'}
+                ? 'កម្មវិធីសិក្សាស្តង់ដារជាតិ រួមមានសញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (សិក្សា ២ឆ្នាំ) និងបរិញ្ញាបត្របច្ចេកទេស (សិក្សា ៤ឆ្នាំ)។' 
+                : 'National accredited curricula featuring 2-Year Higher Diploma (100% Scholarship) and 4-Year Bachelor of Technology (Evening & Weekend).'}
             </p>
           </div>
 
@@ -68,10 +161,10 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
             <div className="relative flex-1">
               <input
                 type="text"
-                placeholder={programsData?.searchPlaceholder || (isKh ? 'ស្វែងរកកម្មវិធីសិក្សា...' : 'Search academic programs...')}
+                placeholder={isKh ? 'ស្វែងរកជំនាញ (ឧទាហរណ៍៖ អគ្គិសនី, បរិក្ខារត្រជាក់, សាយប័រ)...' : 'Search majors (e.g. Electrical, HVAC, Cyber)...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-3.5 pr-8 py-2 text-sm border border-slate-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600 bg-white transition-colors"
+                className="w-full pl-3.5 pr-8 py-2.5 text-sm border border-slate-300 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-white transition-colors"
               />
               {searchQuery && (
                 <button
@@ -85,25 +178,25 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
             </div>
             <button
               type="button"
-              className="bg-[#1b4b9b] hover:bg-[#163c7c] text-white p-2.5 rounded-r-md transition-colors flex items-center justify-center shrink-0 cursor-pointer"
+              className="bg-[#1b4b9b] hover:bg-[#163c7c] text-white p-2.5 rounded-r-xl transition-colors flex items-center justify-center shrink-0 cursor-pointer"
               title="Filter Programs"
             >
-              <Search className="w-4 h-4" />
+              <Search className="w-5 h-5" />
             </button>
           </div>
         </div>
 
         {/* Category Pills */}
-        <div className="mt-6 flex flex-wrap items-center gap-2">
+        <div className="mt-6 flex flex-wrap items-center gap-2.5">
           {categories.map((cat) => (
             <button
               key={cat.id}
               type="button"
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 selectedCategory === cat.id
-                  ? 'bg-blue-700 text-white shadow-sm'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
+                  ? 'bg-blue-700 text-white shadow-md ring-2 ring-blue-700/20'
+                  : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
               {cat.label}
@@ -116,67 +209,98 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
           )}
         </div>
 
-        {/* 4 Cards Grid Matching Reference Design */}
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredList.map((prog) => {
+        {/* Cards Grid */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredList.map((prog, idx) => {
+            const isDiploma = prog.level?.includes('Diploma') || prog.degreeType === 'diploma';
+            const isBeng = prog.level?.includes('Bachelor') || prog.degreeType === 'beng';
+
             return (
               <div
-                key={prog.id}
+                key={`${prog.id}-${idx}`}
                 className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col bg-white border border-slate-200 cursor-pointer"
                 onClick={() => onSelectProgram && onSelectProgram(prog)}
               >
                 {/* Image Section with Integrated Header */}
-                <div className="relative h-64 overflow-hidden bg-slate-900">
+                <div className="relative h-56 overflow-hidden bg-slate-900">
                   <img
                     src={prog.image}
                     alt={prog.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   
-                  {/* Subtle tinted overlay based on card color */}
+                  {/* Subtle tinted overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
 
-                  {/* Top Floating Icon Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <div className="p-2.5 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 shadow-md">
+                  {/* Top Floating Number & Icon Badge */}
+                  <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center text-xs shadow-md">
+                      {prog.num || idx + 1}
+                    </span>
+                    <div className="p-2 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 shadow-md">
                       {getProgramIcon(prog.icon)}
                     </div>
                   </div>
 
-                  {/* Degree Badge */}
+                  {/* Program Level Tag */}
                   <div className="absolute top-4 right-4 z-10">
-                    <span className="text-[11px] font-semibold bg-black/60 text-white backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
-                      {isKh ? 'បរិញ្ញាបត្រ' : 'Bachelor'}
-                    </span>
+                    {isDiploma && (
+                      <span className="text-[11px] font-bold bg-amber-400 text-slate-950 px-2.5 py-1 rounded-full shadow-sm">
+                        {isKh ? 'អាហារូបករណ៍ ១០០% (២ឆ្នាំ)' : '100% Scholarship (2Y)'}
+                      </span>
+                    )}
+                    {isBeng && (
+                      <span className="text-[11px] font-bold bg-blue-600 text-white px-2.5 py-1 rounded-full shadow-sm">
+                        {isKh ? 'បរិញ្ញាបត្រ (៤ឆ្នាំ)' : 'Bachelor (4Y)'}
+                      </span>
+                    )}
                   </div>
 
                   {/* Title overlay inside the card image bottom */}
                   <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
-                    <h3 className="text-xl font-bold leading-tight drop-shadow-md">
-                      {prog.name}
+                    <h3 className="text-lg sm:text-xl font-bold leading-tight drop-shadow-md">
+                      {isKh ? prog.nameKhmer : prog.name}
                     </h3>
-                    <p className="text-xs text-amber-300 font-khmer mt-0.5 font-medium drop-shadow-xs">
-                      {prog.nameKhmer}
+                    <p className="text-xs text-amber-300 font-medium mt-0.5 drop-shadow-xs">
+                      {isKh ? prog.name : prog.nameKhmer}
                     </p>
                   </div>
                 </div>
 
                 {/* Card Middle Info */}
                 <div className="p-4 bg-white flex-1 flex flex-col justify-between">
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                    {prog.overview}
-                  </p>
+                  <div>
+                    <span className="inline-block text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md border border-blue-100 mb-2">
+                      {isKh ? prog.facultyKh : prog.faculty}
+                    </span>
+                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                      {isKh ? prog.overviewKh : prog.overview}
+                    </p>
+                  </div>
 
-                  <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium">
-                    <div className="flex items-center gap-1 text-slate-700">
-                      <Clock className="w-3.5 h-3.5 text-blue-600" />
-                      <span>4 Years • {prog.totalCredits || 130}+ Credits</span>
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-1.5 text-[11px] text-slate-600">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-700 flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5 text-blue-600" />
+                        <span>{isKh ? prog.durationKh : prog.duration}</span>
+                      </span>
+                      <span className="text-slate-500 font-mono font-bold">{prog.code}</span>
                     </div>
+                    {prog.shiftsKh && (
+                      <div className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                        {isKh ? `វេនសិក្សា៖ ${prog.shiftsKh}` : `Shifts: ${prog.shiftsEn}`}
+                      </div>
+                    )}
+                    {prog.entryConditionKh && (
+                      <div className="text-[11px] text-amber-800 font-bold bg-amber-50 px-2 py-0.5 rounded">
+                        {isKh ? `លក្ខខណ្ឌ៖ ${prog.entryConditionKh}` : `Condition: Pass/Fail Bac II`}
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Bottom Color Banner with Dual Actions (Learn More + Apply) */}
-                <div className={`px-4 py-3 ${prog.cardBg} text-white flex items-center justify-between transition-colors`}>
+                {/* Bottom Color Banner with Dual Actions */}
+                <div className={`px-4 py-3 ${prog.cardBg || 'bg-blue-800'} text-white flex items-center justify-between transition-colors`}>
                   <button
                     type="button"
                     onClick={(e) => {
@@ -185,7 +309,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                     }}
                     className="flex items-center gap-1 text-xs font-bold text-white hover:underline focus:outline-none cursor-pointer"
                   >
-                    <span>{programsData?.learnMore || (isKh ? 'ព័ត៌មានលម្អិត' : 'Learn More')}</span>
+                    <span>{isKh ? 'ព័ត៌មានលម្អិត' : 'Learn More'}</span>
                     <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                   </button>
 
@@ -197,7 +321,7 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                     }}
                     className="bg-white/20 hover:bg-white text-white hover:text-slate-900 text-xs font-bold px-3 py-1 rounded-full border border-white/40 transition-all flex items-center gap-1 cursor-pointer"
                   >
-                    <span>{isKh ? 'ដាក់ពាក្យ' : 'Apply'}</span>
+                    <span>{isKh ? 'ចុះឈ្មោះរៀន' : 'Apply'}</span>
                     <Send className="w-3 h-3" />
                   </button>
                 </div>
@@ -216,43 +340,46 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="mt-3 text-xs font-bold text-blue-700 hover:underline"
+              className="mt-3 text-xs font-bold text-blue-700 hover:underline cursor-pointer"
             >
               Reset Filters
             </button>
           </div>
         )}
 
-        {/* Bottom Banner Navigating to Full Programs Page */}
-        <div className="mt-12 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
-              <BookOpen className="w-6 h-6" />
+        {/* Contact Info Footer Strip from Poster */}
+        <div className="mt-12 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-start sm:items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
+              <MapPin className="w-6 h-6 text-blue-700" />
             </div>
             <div>
               <h4 className="font-bold text-base text-slate-900">
-                {isKh ? 'ត្រូវការពិនិត្យតារាងមុខវិជ្ជា និងកម្មវិធីបណ្តុះបណ្តាលវិជ្ជាជីវៈកម្រិតខ្ពស់?' : 'Need to review complete semester syllabi & higher diplomas?'}
+                {isKh ? "ទីតាំងវិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន (NPIT)" : "National Polytechnic Institute Techo Sen Campus"}
               </h4>
-              <p className="text-xs sm:text-sm text-slate-500">
-                {isKh 
-                  ? 'ពិនិត្យមើលលម្អិតអំពីក្រេឌីត មុខវិជ្ជាស្នូល មន្ទីរពិសោធន៍អនុវត្ត និងឱកាសការងារ។' 
-                  : 'Explore course structures, laboratory credit hours, graduation prerequisites, and career roadmaps.'}
+              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                {isKh ? officialAdmissionInfo.officialAddressKh : officialAdmissionInfo.officialAddressEn}
               </p>
+              <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-blue-800 font-bold">
+                <span>Hotline: 098 444 495 / 092 735 263 / 016 475 544</span>
+                <span>• Website: www.npit-edu.com</span>
+              </div>
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => onNavigate && onNavigate('programs', '#programs')}
-            className="shrink-0 bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer w-fit"
-          >
-            <span>{isKh ? 'មើលកម្មវិធីសិក្សាពេញលេញ' : 'View Full Programs Guide'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => onOpenApply && onOpenApply()}
+              className="bg-[#1b4b9b] hover:bg-[#12397c] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <span>{isKh ? 'ចុះឈ្មោះចូលរៀនឥឡូវនេះ' : 'Apply Online Now'}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
       </div>
     </section>
   );
 }
-

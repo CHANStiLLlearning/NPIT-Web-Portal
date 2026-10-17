@@ -84,15 +84,15 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
               </div>
               <div>
                 <h4 className="text-sm font-bold text-slate-900">
-                  {isKh ? 'ទីតាំងបរិវេណវិទ្យាស្ថាន' : 'Campus Location'}
+                  {isKh ? 'ទីតាំងបរិវេណវិទ្យាស្ថានផ្លូវការ' : 'Official Campus Location'}
                 </h4>
-                <p className="mt-1 text-xs text-slate-600 leading-relaxed">
+                <p className="mt-1 text-xs text-slate-600 leading-relaxed font-khmer">
                   {isKh 
-                    ? 'ផ្លូវជាតិលេខ២ ក្រុងតាខ្មៅ ខេត្តកណ្តាល ព្រះរាជាណាចក្រកម្ពុជា' 
-                    : 'National Road 2, Ta Khmau City, Kandal Province, Kingdom of Cambodia'}
+                    ? 'ផ្លូវជាតិលេខ២១ ភូមិព្រែកសំរោង៣ សង្កាត់តាខ្មៅ ក្រុងតាខ្មៅ ខេត្តកណ្តាល' 
+                    : 'National Road 21, Prek Samraong 3 Village, Sangkat Ta Khmau, Ta Khmau City, Kandal Province'}
                 </p>
                 <span className="inline-block mt-2 text-[11px] font-semibold text-blue-700">
-                  {isKh ? '• ១៥ នាទីពីរង្វង់មូលចាក់អង្រែ' : '• 15 mins from Chak Angre Circle'}
+                  {isKh ? '• ១៥ នាទីពីរង្វង់មូលចាក់អង្រែ • ក្រុងតាខ្មៅ' : '• 15 mins from Chak Angre Circle • Ta Khmau City'}
                 </span>
               </div>
             </div>
@@ -104,13 +104,16 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
               </div>
               <div>
                 <h4 className="text-sm font-bold text-slate-900">
-                  {isKh ? 'ទូរស័ព្ទទំនាក់ទំនង & Telegram' : 'Admissions Hotline & Telegram'}
+                  {isKh ? 'ទូរស័ព្ទទំនាក់ទំនង & Telegram ចុះឈ្មោះ' : 'Admissions Hotline & Telegram'}
                 </h4>
-                <p className="mt-1 text-xs text-slate-600 font-mono">
-                  +855 (0) 23 888 999 / +855 (0) 12 345 678
+                <p className="mt-1 text-xs text-slate-700 font-mono font-bold leading-relaxed">
+                  098 444 495 / 092 735 263 / 016 475 544
                 </p>
-                <span className="inline-block mt-1 text-[11px] text-blue-700 font-semibold">
-                  {isKh ? '• ផ្តល់ការប្រឹក្សាដោយឥតគិតថ្លៃ' : '• Free academic counseling available'}
+                <p className="text-xs text-slate-600 font-mono">
+                  012 216 169 / 011 674 567 • www.npit-edu.com
+                </p>
+                <span className="inline-block mt-1 text-[11px] text-emerald-700 font-semibold font-khmer">
+                  {isKh ? '• ផ្តល់ការប្រឹក្សាអាហារូបករណ៍ ១០០% ដោយឥតគិតថ្លៃ' : '• Free 100% scholarship counseling'}
                 </span>
               </div>
             </div>

@@ -12,8 +12,18 @@ import {
   FileText, 
   Pencil, 
   UserCheck, 
-  ChevronRight
+  ChevronRight,
+  Clock,
+  Calendar,
+  Phone,
+  MapPin,
+  Send
 } from 'lucide-react';
+import { 
+  higherDiplomaMajors, 
+  bachelorMajors, 
+  officialAdmissionInfo 
+} from '../data/programsData';
 
 export default function ProgramsPage({ 
   lang, 
@@ -23,89 +33,47 @@ export default function ProgramsPage({
   onSelectAdmissionDetail 
 }) {
   const isKh = lang === 'kh';
+  const [activeTab, setActiveTab] = useState('diploma'); // 'diploma' | 'bachelor'
 
   const studyLevels = [
     {
       id: "associate",
-      title: "Associate Degree",
-      titleKh: "សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកវិទ្យា",
-      degree: "Higher Diploma (2-3 Years)",
+      title: "Higher Diploma of Technology",
+      titleKh: "កម្រិតសញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស",
+      degree: "2 Years (100% Scholarship)",
       desc: isKh 
-        ? "កម្មវិធីសិក្សាផ្តោតលើជំនាញបច្ចេកទេស និងការអនុវត្តផ្ទាល់ ដើម្បីត្រៀមខ្លួនចូលបម្រើការងារក្នុងវិស័យឧស្សាហកម្មយ៉ាងឆាប់រហ័ស។"
-        : "Industry-aligned programs with intense hands-on workshop training designed for rapid career entry.",
+        ? "អាហារូបករណ៍ ១០០% ពីរដ្ឋាភិបាលលើ ៩ មុខជំនាញ។ លក្ខខណ្ឌ៖ ជាប់ ឬធ្លាក់បាក់ឌុប ក៏អាចចុះឈ្មោះចូលរៀនបានដោយឥតគិតថ្លៃ។"
+        : "100% Government scholarship across 9 key technician majors. Open to both passed and failed Bac II graduates.",
       image: "/about-students.jpg",
-      headerBg: "bg-blue-600",
-      accent: "text-blue-600",
-      icon: <GraduationCap className="w-6 h-6 text-white" />
+      headerBg: "bg-amber-500",
+      accent: "text-amber-600",
+      icon: <GraduationCap className="w-6 h-6 text-slate-950 font-bold" />
     },
     {
       id: "bachelor",
-      title: "Bachelor's Degree",
-      titleKh: "សញ្ញាបត្របរិញ្ញាបត្រ",
-      degree: "Bachelor of Engineering (4 Years)",
+      title: "Bachelor of Technology",
+      titleKh: "កម្រិតបរិញ្ញាបត្របច្ចេកទេស",
+      degree: "4 Years (Night & Weekend)",
       desc: isKh 
-        ? "បណ្តុះបណ្តាលវិស្វករជំនាញកម្រិតឧត្តមសិក្សា ជាមួយទ្រឹស្តីស៊ីជម្រៅ ការស្រាវជ្រាវ និងការរៀបចំគម្រោងបញ្ចប់ការសិក្សា។"
-        : "Empowering your future with industry-aligned engineering programs, rigorous technical theory, and innovative curricula.",
+        ? "ថ្នាក់បង់ថ្លៃ វេនយប់ និង ថ្ងៃសៅរ៍-អាទិត្យ លើ ៥ មុខជំនាញវិស្វកម្មទំនើប សម្រាប់សិស្សទូទៅ និងបុគ្គលិកកំពុងបំពេញការងារ។"
+        : "4-Year degree across 5 modern engineering fields. Evening and Saturday-Sunday weekend sessions for working professionals.",
       image: "/news-conference.jpg",
-      headerBg: "bg-red-700",
-      accent: "text-red-700",
+      headerBg: "bg-blue-600",
+      accent: "text-blue-600",
       icon: <Award className="w-6 h-6 text-white" />
     },
     {
       id: "technical",
       title: "Technical & Short Courses",
-      titleKh: "វគ្គសិក្សាបច្ចេកទេស និងខ្លីៗ",
+      titleKh: "វគ្គបណ្តុះបណ្តាលបច្ចេកទេសខ្លីៗ",
       degree: "Certificates (3 - 6 Months)",
       desc: isKh 
         ? "វគ្គបណ្តុះបណ្តាលជំនាញជាក់លាក់ដូចជា ការបញ្ជាម៉ាស៊ីន CNC ការតម្លើងសូឡា ការសរសេរកូដ និងប្រព័ន្ធ PLC ឧស្សាហកម្ម។"
         : "Specialized modular masterclasses in advanced PLC automation, CNC machining, solar PV installation, and cloud computing.",
       image: "/news-mini2.jpg",
-      headerBg: "bg-amber-500",
-      accent: "text-amber-600",
+      headerBg: "bg-red-700",
+      accent: "text-red-700",
       icon: <BookOpen className="w-6 h-6 text-white" />
-    }
-  ];
-
-  const faculties = [
-    {
-      id: "civil",
-      name: "Faculty of Civil Engineering",
-      nameKh: "មហាវិទ្យាល័យវិស្វកម្មសំណង់ស៊ីវិល",
-      desc: isKh 
-        ? "សំណង់ស៊ីវិល ស្ថាបត្យកម្ម ការគ្រប់គ្រងការដ្ឋាន និងបច្ចេកវិទ្យាគំរូព័ត៌មានអគារ (BIM)។"
-        : "Structural design, geotechnical analysis, infrastructure construction, and Building Information Modeling (BIM).",
-      image: "/program-civil.jpg",
-      icon: <HardHat className="w-6 h-6 text-amber-400" />
-    },
-    {
-      id: "electrical",
-      name: "Faculty of Electrical & Electronics Engineering",
-      nameKh: "មហាវិទ្យាល័យវិស្វកម្មអគ្គិសនី និងអេឡិចត្រូនិក",
-      desc: isKh 
-        ? "ប្រព័ន្ធបណ្តាញអគ្គិសនី ស្វ័យប្រវត្តិកម្មឧស្សាហកម្ម PLC អេឡិចត្រូនិក និងថាមពលកកើតឡើងវិញ។"
-        : "Power grid engineering, industrial automation & PLC, embedded systems, microelectronics, and solar energy.",
-      image: "/program-electrical.jpg",
-      icon: <Cpu className="w-6 h-6 text-blue-400" />
-    },
-    {
-      id: "it",
-      name: "Faculty of Information Technology",
-      nameKh: "មហាវិទ្យាល័យព័ត៌មានវិទ្យា",
-      desc: isKh 
-        ? "ការអភិវឌ្ឍសូហ្វវែរ សន្តិសុខប្រព័ន្ធអ៊ីនធឺណិត បញ្ញាសិប្បនិម្មិត (AI) និងការគ្រប់គ្រងទិន្នន័យពពក។"
-        : "Full-stack software engineering, cybersecurity defense, artificial intelligence, cloud infrastructure, and data science.",
-      image: "/program-it.jpg",
-      icon: <Laptop className="w-6 h-6 text-blue-400" />
-    },
-    {
-      id: "mechanical",
-      name: "Faculty of Mechanical & Manufacturing",
-      nameKh: "មហាវិទ្យាល័យវិស្វកម្មមេកានិច និងផលិតកម្ម",
-      desc: isKh 
-        ? "ការរចនាម៉ាស៊ីនឧស្សាហកម្ម CAD/CAM ម៉ាស៊ីន CNC ស្វ័យប្រវត្តិកម្ម និងបច្ចេកវិទ្យាយានយន្ត។"
-        : "Precision CNC machining, CAD/CAM design, industrial robotics, mechatronics, and automotive powertrain engineering.",
-      image: "/program-mechanical.jpg",
-      icon: <Cog className="w-6 h-6 text-red-500" />
     }
   ];
 
@@ -113,33 +81,29 @@ export default function ProgramsPage({
     {
       step: 1,
       title: isKh ? "ជ្រើសរើសជំនាញសិក្សា" : "Choose Program",
-      desc: isKh ? "ជ្រើសរើសជំនាញវិស្វកម្មដែលត្រូវនឹងចំណង់ចំណូលចិត្ត" : "Explore and select your preferred engineering discipline",
+      desc: isKh ? "ជ្រើសរើសជំនាញពីបញ្ជីផ្លូវការទាំង ៩ ឬ ៥ មុខជំនាញ" : "Explore and select from the official 9 Diploma or 5 Bachelor majors",
       color: "bg-[#f59e0b]",
-      border: "border-[#f59e0b]",
       icon: <BookOpen className="w-5 h-5 text-white" />
     },
     {
       step: 2,
       title: isKh ? "ដាក់ឯកសារស្នើសុំ" : "Submit Documents",
-      desc: isKh ? "បំពេញពាក្យអនឡាញ និងភ្ជាប់សញ្ញាបត្របាក់ឌុប" : "Complete online application and upload academic transcripts",
+      desc: isKh ? "បំពេញពាក្យអនឡាញ ឬមកកាន់ទីតាំង NPIT ផ្លូវជាតិលេខ២១" : "Complete online form or register in person along National Road 21",
       color: "bg-[#e11d48]",
-      border: "border-[#e11d48]",
       icon: <FileText className="w-5 h-5 text-white" />
     },
     {
       step: 3,
-      title: isKh ? "ការប្រឡង ឬវាយតម្លៃ" : "Entrance Exam",
-      desc: isKh ? "ចូលរួមប្រឡងតេស្តសមត្ថភាពមូលដ្ឋានគណិត និងរូបវិទ្យា" : "Participate in STEM foundation evaluation test",
+      title: isKh ? "ការប្រឡង ឬវាយតម្លៃ" : "Entrance Diagnostic",
+      desc: isKh ? "ចូលរួមតេស្តសមត្ថភាពមូលដ្ឋាន ឬទទួលអាហារូបករណ៍ផ្ទាល់" : "Sit for foundational diagnostic or immediate scholarship enrollment",
       color: "bg-[#2563eb]",
-      border: "border-[#2563eb]",
       icon: <Pencil className="w-5 h-5 text-white" />
     },
     {
       step: 4,
-      title: isKh ? "ចុះឈ្មោះចូលរៀន" : "Enrollment",
-      desc: isKh ? "ទទួលលទ្ធផល បង់ថ្លៃសិក្សា ឬទទួលអាហារូបករណ៍" : "Receive admission letter, finalize schedule, and start classes",
+      title: isKh ? "ចុះឈ្មោះចូលរៀន" : "Enrollment & Batch",
+      desc: isKh ? "ចូលរៀនលើកទី១: ១៣ វិច្ឆិកា ២០២៦ ឬ លើកទី២: ០៤ មករា ២០២៧" : "Batch 1: Nov 13, 2026 | Batch 2: Jan 04, 2027",
       color: "bg-[#0d9488]",
-      border: "border-[#0d9488]",
       icon: <UserCheck className="w-5 h-5 text-white" />
     }
   ];
@@ -161,20 +125,25 @@ export default function ProgramsPage({
 
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16 md:py-24">
-          <div className="max-w-2xl text-white">
+          <div className="max-w-3xl text-white">
             
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider mb-3">
+              <Award className="w-4 h-4 text-slate-950" />
+              <span>{isKh ? "សេចក្តីជូនដំណឹងជ្រើសរើសនិស្សិតផ្លូវការ" : "Official Enrollment Announcement"}</span>
+            </div>
+
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight font-sans">
-              ACADEMIC PROGRAMS
+              ACADEMIC PROGRAMS & MAJORS
             </h1>
 
             <p className="mt-2 text-xl sm:text-2xl font-bold font-khmer text-amber-300">
-              {isKh ? "កម្មវិធីសិក្សាថ្នាក់ឧត្តមសិក្សា និងបច្ចេកទេស" : "កម្មវិធីសិក្សា"}
+              {isKh ? "កម្មវិធីបណ្តុះបណ្តាលផ្លូវការ វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន (NPIT)" : "National Polytechnic Institute Techo Sen (NPIT)"}
             </p>
 
             <p className="mt-4 text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
               {isKh 
-                ? "កសាងអនាគតរបស់អ្នកជាមួយនឹងកម្មវិធីសិក្សាដែលឆ្លើយតបនឹងទីផ្សារការងារ ការអនុវត្តផ្ទាល់ក្នុងមន្ទីរពិសោធន៍ និងកម្មវិធីសិក្សាទំនើបស្របតាមស្តង់ដារអន្តរជាតិ។"
-                : "Empowering your future with industry-aligned programs, hands-on training, and innovative curricula."}
+                ? "ក្រសួងការងារ និងបណ្តុះបណ្តាលវិជ្ជាជីវៈ ផ្តល់អាហារូបករណ៍ ១០០% ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (សិក្សា ២ឆ្នាំ) លើ ៩ មុខជំនាញ (ជាប់ ឬធ្លាក់បាក់ឌុប) និងថ្នាក់បរិញ្ញាបត្របច្ចេកទេស (សិក្សា ៤ឆ្នាំ) វេនយប់ និង ថ្ងៃសៅរ៍-អាទិត្យ លើ ៥ មុខជំនាញ។"
+                : "Ministry of Labour and Vocational Training (MLVT) provides 100% full scholarships for 2-Year Higher Diploma (9 majors, passed or failed Bac II) and 4-Year Bachelor of Technology (5 majors, evening & weekend shifts)."}
             </p>
 
             {/* CTAs */}
@@ -184,14 +153,14 @@ export default function ProgramsPage({
                 onClick={onOpenApply}
                 className="bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-bold px-7 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base cursor-pointer"
               >
-                {isKh ? "ចុះឈ្មោះឥឡូវនេះ" : "Apply Now"}
+                {isKh ? "ចុះឈ្មោះយកអាហារូបករណ៍ ១០០%" : "Apply for 100% Scholarship"}
               </button>
 
               <a
-                href="#study-levels"
+                href="#official-majors"
                 className="bg-black/40 hover:bg-black/60 text-white font-medium border border-white/50 px-7 py-3 rounded-full backdrop-blur-xs transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base cursor-pointer"
               >
-                {isKh ? "បញ្ជីមុខវិជ្ជាសិក្សា" : "Course Catalog"}
+                {isKh ? "ពិនិត្យមុខជំនាញទាំង ១៤" : "Explore All 14 Majors"}
               </a>
             </div>
 
@@ -199,7 +168,36 @@ export default function ProgramsPage({
         </div>
       </section>
 
-      {/* 2. "Study Levels Offered" / "កម្រិតសិក្សាដែលផ្តល់ជូន" */}
+      {/* 2. Official Admission Notice Callout Strip from Poster */}
+      <section className="bg-gradient-to-r from-[#0d234d] via-[#153a7a] to-[#0c4a6e] text-white py-6 border-b border-blue-900/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-xs sm:text-sm">
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="font-extrabold text-amber-300 font-khmer text-sm">
+                {isKh ? "កាលបរិច្ឆេទចូលរៀនផ្លូវការ៖" : "Official Class Starts:"}
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/20">
+                <Calendar className="w-4 h-4 text-amber-400" />
+                <span>{isKh ? "លើកទី១: ១៣ វិច្ឆិកា ២០២៦" : "Batch 1: Nov 13, 2026"}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/20">
+                <Calendar className="w-4 h-4 text-cyan-400" />
+                <span>{isKh ? "លើកទី២: ០៤ មករា ២០២៧" : "Batch 2: Jan 04, 2027"}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-bold px-3 py-1 rounded-full">
+                <span>{isKh ? "លក្ខខណ្ឌ៖ ជាប់ ឬធ្លាក់បាក់ឌុប" : "Condition: Bac II Pass/Fail"}</span>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3 text-amber-300 font-bold font-mono">
+              <Phone className="w-4 h-4" />
+              <span>098 444 495 / 092 735 263 / 016 475 544</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. "Study Levels Offered" / "កម្រិតសិក្សាដែលផ្តល់ជូន" */}
       <section id="study-levels" className="py-16 md:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -208,12 +206,12 @@ export default function ProgramsPage({
               Study Levels Offered
             </h2>
             <h3 className="text-xl md:text-2xl font-bold font-khmer text-blue-900 mt-1">
-              {isKh ? "កម្រិតសិក្សាដែលផ្តល់ជូន" : "កម្រិតសិក្សាដែលផ្តល់ជូន"}
+              {isKh ? "កម្រិតសិក្សាដែលផ្តល់ជូននៅ NPIT" : "កម្រិតសិក្សាដែលផ្តល់ជូន"}
             </h3>
             <div className="w-16 h-1 bg-blue-700 mt-3 rounded-full"></div>
           </div>
 
-          {/* 3 Colorful Study Level Cards Matching Mockup */}
+          {/* 3 Study Level Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {studyLevels.map((lvl) => (
               <div 
@@ -251,7 +249,7 @@ export default function ProgramsPage({
                     <p className="text-xs font-khmer text-blue-700 font-semibold mt-1">
                       {lvl.titleKh}
                     </p>
-                    <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-khmer">
                       {lvl.desc}
                     </p>
                   </div>
@@ -260,17 +258,22 @@ export default function ProgramsPage({
                     <button
                       type="button"
                       onClick={() => {
-                        if (lvl.id === 'technical') {
-                          if (onSelectAdmissionDetail) onSelectAdmissionDetail('vocational');
-                          else if (onOpenApply) onOpenApply();
+                        if (lvl.id === 'associate') {
+                          setActiveTab('diploma');
+                          const elem = document.getElementById('official-majors');
+                          if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+                        } else if (lvl.id === 'bachelor') {
+                          setActiveTab('bachelor');
+                          const elem = document.getElementById('official-majors');
+                          if (elem) elem.scrollIntoView({ behavior: 'smooth' });
                         } else {
-                          if (onSelectAdmissionDetail) onSelectAdmissionDetail('degrees');
+                          if (onSelectAdmissionDetail) onSelectAdmissionDetail('vocational');
                           else if (onOpenApply) onOpenApply();
                         }
                       }}
                       className={`text-xs font-bold ${lvl.accent} hover:underline flex items-center gap-1 group-hover:translate-x-1 transition-transform cursor-pointer`}
                     >
-                      <span>{isKh ? "ស្វែងយល់បន្ថែម" : "Learn More"}</span>
+                      <span>{isKh ? "ពិនិត្យមុខជំនាញ" : "View Majors"}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                     <span className="text-[11px] text-slate-400">NPIT Academic Dept</span>
@@ -284,73 +287,211 @@ export default function ProgramsPage({
         </div>
       </section>
 
-      {/* 3. "Our Faculties" / "មហាវិទ្យាល័យរបស់យើង" */}
-      <section className="py-16 md:py-20 bg-white border-b border-slate-200">
+      {/* 4. Complete Official Majors Section (From Ministry & NPIT Poster) */}
+      <section id="official-majors" className="py-16 md:py-20 bg-white border-b border-slate-200 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="mb-10">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Our Faculties
-            </h2>
-            <h3 className="text-xl md:text-2xl font-bold font-khmer text-blue-900 mt-1">
-              {isKh ? "មហាវិទ្យាល័យវិស្វកម្មរបស់យើង" : "មហាវិទ្យាល័យរបស់យើង"}
-            </h3>
-            <div className="w-16 h-1 bg-blue-700 mt-3 rounded-full"></div>
-          </div>
-
-          {/* 4 Large Faculty Cards in 2x2 Grid with Photo Background & Overlay */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {faculties.map((fac) => (
-              <div 
-                key={fac.id}
-                onClick={() => {
-                  if (onSelectProgram) onSelectProgram(fac.id);
-                  else if (onSelectFaculty) onSelectFaculty(fac);
-                }}
-                className="group relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 h-64 sm:h-72 cursor-pointer transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1"
-              >
-                {/* Background Image */}
-                <img 
-                  src={fac.image} 
-                  alt={fac.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                
-                {/* Dark Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/30 group-hover:from-slate-950/95 transition-all" />
-
-                {/* Top Icon Badge */}
-                <div className="absolute top-4 left-4 z-10">
-                  <div className="p-2.5 rounded-xl bg-white/20 backdrop-blur-md border border-white/30">
-                    {fac.icon}
-                  </div>
-                </div>
-
-                {/* Bottom Content */}
-                <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
-                  <h3 className="text-lg sm:text-xl font-bold text-white drop-shadow-md">
-                    {fac.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm font-khmer text-amber-300 font-semibold mt-0.5 drop-shadow-xs">
-                    {fac.nameKh}
-                  </p>
-                  <p className="mt-2 text-xs text-slate-200 line-clamp-2 leading-relaxed">
-                    Brief info: {fac.desc}
-                  </p>
-                  
-                  <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-amber-300 group-hover:text-white transition-colors">
-                    <span>{isKh ? "ស្វែងយល់បន្ថែម & មើលកម្មវិធីសិក្សា" : "Learn More & View Curriculum"}</span>
-                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">
+                <GraduationCap className="w-4 h-4 text-blue-700" />
+                <span>{isKh ? "មុខជំនាញផ្លូវការរបស់ក្រសួងការងារ និងវិទ្យាស្ថាន NPIT" : "Official Ministry & NPIT Majors"}</span>
               </div>
-            ))}
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                {isKh ? "មុខជំនាញបណ្តុះបណ្តាលផ្លូវការ" : "Official Polytechnic Majors"}
+              </h2>
+              <div className="w-16 h-1 bg-blue-700 mt-2 rounded-full"></div>
+            </div>
+
+            {/* Program Tabs */}
+            <div className="flex items-center bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+              <button
+                type="button"
+                onClick={() => setActiveTab('diploma')}
+                className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  activeTab === 'diploma'
+                    ? 'bg-amber-400 text-slate-950 shadow-md ring-1 ring-amber-500/20'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {isKh ? "សញ្ញាបត្រជាន់ខ្ពស់ ២ឆ្នាំ (អាហារូបករណ៍ ១០០% - ៩ ជំនាញ)" : "Higher Diploma (100% Scholarship - 9 Majors)"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('bachelor')}
+                className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  activeTab === 'bachelor'
+                    ? 'bg-blue-700 text-white shadow-md'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {isKh ? "បរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (វេនយប់/ចុងសប្តាហ៍ - ៥ ជំនាញ)" : "Bachelor of Tech (Night & Weekend - 5 Majors)"}
+              </button>
+            </div>
           </div>
+
+          {/* Tab 1: 9 Higher Diploma Majors */}
+          {activeTab === 'diploma' && (
+            <div className="space-y-6">
+              <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="p-2 rounded-xl bg-amber-400 text-slate-950 font-bold">
+                    <Award className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <h4 className="font-extrabold text-sm sm:text-base text-slate-900 font-khmer">
+                      {isKh ? "អាហារូបករណ៍ ១០០% សម្រាប់កម្រិតសញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (សិក្សា ២ឆ្នាំ)" : "100% Scholarship for 2-Year Higher Diploma"}
+                    </h4>
+                    <p className="text-xs text-slate-600 font-khmer">
+                      {isKh ? "លក្ខខណ្ឌ៖ ជាប់ ឬធ្លាក់ សញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិ (បាក់ឌុប) ទទួលបានអាហារូបករណ៍ ១០០% ឥតគិតថ្លៃ" : "Eligibility: Passed or Failed Bac II / High School Diploma are directly eligible for 100% free tuition."}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={onOpenApply}
+                  className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-5 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
+                >
+                  {isKh ? "ចុះឈ្មោះឥឡូវនេះ" : "Apply Online"}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {higherDiplomaMajors.map((prog) => (
+                  <div
+                    key={prog.id}
+                    className="p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-500 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                    onClick={() => onSelectProgram && onSelectProgram(prog)}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="w-7 h-7 rounded-lg bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center">
+                          {prog.num}
+                        </span>
+                        <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-200">
+                          {isKh ? "អាហារូបករណ៍ ១០០%" : "100% Free"}
+                        </span>
+                      </div>
+
+                      <h3 className="font-extrabold text-base text-slate-900 group-hover:text-blue-800 transition-colors font-khmer">
+                        {isKh ? prog.nameKhmer : prog.name}
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {isKh ? prog.name : prog.nameKhmer}
+                      </p>
+
+                      <p className="text-xs text-slate-600 mt-3 line-clamp-2 leading-relaxed font-khmer">
+                        {isKh ? prog.overviewKh : prog.overview}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-slate-500 font-bold">
+                        {prog.duration}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onOpenApply) onOpenApply(prog);
+                        }}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:text-blue-900 hover:underline cursor-pointer"
+                      >
+                        <span>{isKh ? "ចុះឈ្មោះ" : "Apply"}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Tab 2: 5 Bachelor Majors */}
+          {activeTab === 'bachelor' && (
+            <div className="space-y-6">
+              <div className="p-4 rounded-2xl bg-blue-50/80 border border-blue-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="p-2 rounded-xl bg-blue-700 text-white font-bold">
+                    <Award className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <h4 className="font-extrabold text-sm sm:text-base text-slate-900 font-khmer">
+                      {isKh ? "ថ្នាក់បង់ថ្លៃ កម្រិតបរិញ្ញាបត្របច្ចេកទេស (សិក្សា ៤ឆ្នាំ)" : "4-Year Bachelor of Technology (Fee-Paying)"}
+                    </h4>
+                    <p className="text-xs text-slate-600 font-khmer">
+                      {isKh ? "វេនសិក្សា៖ វេនយប់ (ចន្ទ-សុក្រ ៥:៣០-៨:៣០ យប់) និង ថ្ងៃសៅរ៍-អាទិត្យ (៨:០០ ព្រឹក-៥:០០ ល្ងាច)" : "Study Shifts: Evening Shift (Mon-Fri 5:30-8:30 PM) & Weekend Shift (Sat-Sun 8:00 AM-5:00 PM)."}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={onOpenApply}
+                  className="bg-blue-700 hover:bg-blue-800 text-white font-bold px-5 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-xs cursor-pointer shrink-0"
+                >
+                  {isKh ? "ចុះឈ្មោះចូលរៀន" : "Apply for Bachelor"}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {bachelorMajors.map((prog) => (
+                  <div
+                    key={prog.id}
+                    className="p-5 rounded-2xl border-2 border-slate-200 hover:border-blue-600 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                    onClick={() => onSelectProgram && onSelectProgram(prog)}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="w-7 h-7 rounded-lg bg-blue-700 text-white font-black text-xs flex items-center justify-center">
+                          {prog.num}
+                        </span>
+                        <span className="text-[10px] font-bold bg-blue-100 text-blue-900 px-2 py-0.5 rounded-full border border-blue-200">
+                          {isKh ? "៤ ឆ្នាំ • បរិញ្ញាបត្រ" : "4 Years • B.Tech"}
+                        </span>
+                      </div>
+
+                      <h3 className="font-extrabold text-base text-slate-900 group-hover:text-blue-800 transition-colors font-khmer">
+                        {isKh ? prog.nameKhmer : prog.name}
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {isKh ? prog.name : prog.nameKhmer}
+                      </p>
+
+                      <p className="text-xs text-slate-600 mt-3 line-clamp-2 leading-relaxed font-khmer">
+                        {isKh ? prog.overviewKh : prog.overview}
+                      </p>
+                      
+                      <div className="mt-3 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 font-khmer">
+                        {isKh ? `វេនសិក្សា៖ ${prog.shiftsKh}` : `Shifts: ${prog.shiftsEn}`}
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-slate-500 font-bold">
+                        {prog.duration}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onOpenApply) onOpenApply(prog);
+                        }}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:text-blue-900 hover:underline cursor-pointer"
+                      >
+                        <span>{isKh ? "ចុះឈ្មោះ" : "Apply"}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
       </section>
 
-      {/* 4. "Admission Steps" / "ដំណាក់កាលនៃការចុះឈ្មោះចូលរៀន" */}
+      {/* 5. "Admission Steps" / "ដំណាក់កាលនៃការចុះឈ្មោះចូលរៀន" */}
       <section className="py-16 md:py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -364,43 +505,55 @@ export default function ProgramsPage({
             <div className="w-16 h-1 bg-blue-700 mt-3 rounded-full"></div>
           </div>
 
-          {/* Horizontal Step Process with Connecting Line */}
-          <div className="relative">
-            {/* Connecting Track Line */}
-            <div className="hidden md:block absolute top-7 left-12 right-12 h-0.5 bg-slate-300 z-0"></div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
-              {admissionSteps.map((s) => (
-                <div key={s.step} className="flex flex-col items-center text-center group">
-                  {/* Circle Badge */}
-                  <div className={`w-14 h-14 rounded-full ${s.color} text-white flex items-center justify-center shadow-md ring-4 ring-white mb-4 group-hover:scale-110 transition-transform duration-200`}>
-                    {s.icon}
-                  </div>
-
-                  {/* Title */}
-                  <h4 className="text-sm sm:text-base font-bold text-slate-900">
-                    {s.step}. {s.title}
-                  </h4>
-
-                  {/* Description */}
-                  <p className="mt-2 text-xs text-slate-600 leading-relaxed max-w-xs">
-                    {s.desc}
-                  </p>
+          {/* Horizontal Step Process */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {admissionSteps.map((s) => (
+              <div key={s.step} className="flex flex-col items-center text-center group bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div className={`w-14 h-14 rounded-full ${s.color} text-white flex items-center justify-center shadow-md mb-4 group-hover:scale-110 transition-transform duration-200 font-bold text-lg`}>
+                  {s.icon}
                 </div>
-              ))}
-            </div>
+
+                <h4 className="text-sm sm:text-base font-bold text-slate-900 font-khmer">
+                  {s.step}. {s.title}
+                </h4>
+
+                <p className="mt-2 text-xs text-slate-600 leading-relaxed font-khmer">
+                  {s.desc}
+                </p>
+              </div>
+            ))}
           </div>
 
-          {/* CTA under steps */}
-          <div className="mt-12 text-center">
-            <button
-              type="button"
-              onClick={onOpenApply}
-              className="inline-flex items-center gap-2 bg-[#1b4b9b] hover:bg-[#12397c] text-white font-bold px-8 py-3 rounded-full shadow-md hover:shadow-lg transition-all text-sm cursor-pointer"
-            >
-              <span>{isKh ? "ចាប់ផ្តើមការចុះឈ្មោះ" : "Start Admission Application"}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          {/* Campus Location & Hotline Footer Card */}
+          <div className="mt-12 p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex items-start sm:items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center shrink-0">
+                <MapPin className="w-6 h-6 text-blue-700" />
+              </div>
+              <div>
+                <h4 className="font-bold text-base text-slate-900">
+                  {isKh ? "ទីតាំងវិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន (NPIT)" : "National Polytechnic Institute Techo Sen Campus"}
+                </h4>
+                <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                  {isKh ? officialAdmissionInfo.officialAddressKh : officialAdmissionInfo.officialAddressEn}
+                </p>
+                <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-blue-800 font-bold">
+                  <span>Hotline: 098 444 495 / 092 735 263 / 016 475 544</span>
+                  <span>• Website: www.npit-edu.com</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={onOpenApply}
+                className="bg-[#1b4b9b] hover:bg-[#12397c] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <span>{isKh ? 'ចុះឈ្មោះចូលរៀនឥឡូវនេះ' : 'Apply Online Now'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
         </div>

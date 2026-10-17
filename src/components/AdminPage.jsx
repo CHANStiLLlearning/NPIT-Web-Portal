@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { getAllApplications, updateApplicationStatus } from '../services/admissionsService';
 import { getAllInquiries, getAllResearchInquiries } from '../services/inquiryService';
+import { programsList } from '../data/programsData';
 
 import { auth, isFirebaseConfigured } from '../services/firebase';
 import { 
@@ -176,7 +177,11 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
       (app.applicant?.email || '').toLowerCase().includes(q);
 
     const matchesStatus = statusFilter === 'all' || app.status === statusFilter;
-    const matchesProgram = programFilter === 'all' || app.programSelection?.programId === programFilter;
+    const matchesProgram = programFilter === 'all' || 
+      app.programSelection?.programId === programFilter ||
+      app.programSelection?.majorId === programFilter ||
+      (app.programSelection?.programName || '').toLowerCase().includes(programFilter.toLowerCase()) ||
+      (app.programSelection?.department || '').toLowerCase().includes(programFilter.toLowerCase());
 
     return matchesSearch && matchesStatus && matchesProgram;
   });
@@ -506,11 +511,21 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                   onChange={(e) => setProgramFilter(e.target.value)}
                   className="px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#002b80]"
                 >
-                  <option value="all">All Departments</option>
-                  <option value="civil">Civil Engineering</option>
-                  <option value="it">Information Technology</option>
-                  <option value="electrical">Electrical & Electronics</option>
-                  <option value="mechanical">Mechanical Engineering</option>
+                  <option value="all">All Majors & Programs ({programsList.length})</option>
+                  <optgroup label="Higher Diploma (100% Scholarship - 2 Years)">
+                    {programsList.filter(p => p.degreeType === 'diploma').map(p => (
+                      <option key={p.id} value={p.id}>
+                        {p.num}. {p.nameKhmer} ({p.name})
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Bachelor Degree (Fee-Paying - 4 Years)">
+                    {programsList.filter(p => p.degreeType === 'bachelor').map(p => (
+                      <option key={p.id} value={p.id}>
+                        {p.num}. {p.nameKhmer} ({p.name})
+                      </option>
+                    ))}
+                  </optgroup>
                 </select>
               </div>
             </div>

@@ -135,12 +135,12 @@ export default function ContactPage({ lang, onNavigate }) {
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                    {isKh ? "អាសយដ្ឋាន" : "Address"}
+                    {isKh ? "អាសយដ្ឋានផ្លូវការ" : "Official Address"}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1 font-khmer">
                     {isKh 
-                      ? "ផ្លូវជាតិលេខ២ ក្រុងតាខ្មៅ ខេត្តកណ្តាល ព្រះរាជាណាចក្រកម្ពុជា"
-                      : "National Road 2, Ta Khmau City, Kandal Province, Cambodia"}
+                      ? "ផ្លូវជាតិលេខ២១ ភូមិព្រែកសំរោង៣ សង្កាត់តាខ្មៅ ក្រុងតាខ្មៅ ខេត្តកណ្តាល"
+                      : "National Road 21, Prek Samraong 3 Village, Sangkat Ta Khmau, Ta Khmau City, Kandal Province"}
                   </p>
                   <a 
                     href="https://www.google.com/maps/dir//National+Polytechnic+Institute+Techo+Sen,+Ta+Khmau/@11.4644588,104.9505676,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x31095974d7d331ed:0xd006dcb2951e6187!2m2!1d104.9622168!2d11.4502745?entry=ttu"
@@ -162,11 +162,11 @@ export default function ContactPage({ lang, onNavigate }) {
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                    {isKh ? "លេខទូរស័ព្ទ" : "Phone"}
+                    {isKh ? "លេខទូរស័ព្ទ & Telegram ចុះឈ្មោះ" : "Phone & Telegram Inquiries"}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1 font-sans">
-                    +855 (0) 23 123 456<br />
-                    +855 (0) 12 345 678
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1 font-mono font-bold">
+                    098 444 495 / 092 735 263<br />
+                    016 475 544 / 012 216 169 / 011 674 567
                   </p>
                 </div>
               </div>

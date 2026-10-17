@@ -27,7 +27,7 @@ import {
   AlertCircle,
   Loader2
 } from 'lucide-react';
-import { programsList } from '../data/programsData';
+import { programsList, higherDiplomaMajors, bachelorMajors, officialAdmissionInfo } from '../data/programsData';
 import { submitApplication } from '../services/admissionsService';
 
 export default function ApplyPage({ 
@@ -808,103 +808,150 @@ export default function ApplyPage({
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="border-b border-slate-100 pb-4">
                     <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                      {isKh ? "ជំហានទី ៣៖ ជម្រើសជំនាញវិស្វកម្ម និងវេនសិក្សា" : "Step 3: Engineering Major, Degree Track & Schedule"}
+                      {isKh ? "ជំហានទី ៣៖ ជម្រើសជំនាញបណ្តុះបណ្តាល និងវេនសិក្សា" : "Step 3: Program Major, Degree Track & Schedule"}
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                      Select your target degree credential, engineering department, and preferred shift.
+                      {isKh 
+                        ? "ជ្រើសរើសកម្រិតសញ្ញាបត្រ មុខជំនាញដែលចង់សិក្សា និងវេនសិក្សាស្របតាមសេចក្តីប្រកាសផ្លូវការរបស់ក្រសួង។" 
+                        : "Select your target credential, official major from MLVT/NPIT announcement, and preferred shift."}
                     </p>
+                  </div>
+
+                  {/* Official Admission Notice Box */}
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm border border-blue-700/40">
+                    <div className="space-y-1">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] uppercase">
+                        <Award className="w-3.5 h-3.5" />
+                        <span>{isKh ? "អាហារូបករណ៍ ១០០% (ជាប់ ឬធ្លាក់បាក់ឌុប)" : "100% Scholarship (Pass/Fail Bac II)"}</span>
+                      </div>
+                      <p className="text-xs text-blue-100 font-khmer">
+                        {isKh ? "កាលបរិច្ឆេទចូលរៀនផ្លូវការ៖ លើកទី១: ១៣ វិច្ឆិកា ២០២៦ | លើកទី២: ០៤ មករា ២០២៧" : "Official Class Starts: Batch 1: Nov 13, 2026 | Batch 2: Jan 04, 2027"}
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-mono text-amber-300 font-bold bg-white/10 px-3 py-1.5 rounded-xl border border-white/15 w-fit">
+                      Hotline: 098 444 495 / 092 735 263
+                    </span>
                   </div>
 
                   {/* Degree Credential Level */}
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                      Choose Degree Level *
+                      {isKh ? "ជ្រើសរើសកម្រិតសិក្សា *" : "Choose Degree Level *"}
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {/* 1. Higher Diploma (2 Years - 100% Scholarship) */}
                       <div 
-                        onClick={() => handleInputChange('degreeLevel', 'beng')}
+                        onClick={() => {
+                          handleInputChange('degreeLevel', 'diploma');
+                          handleInputChange('programId', 'industrial');
+                        }}
                         className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
-                          formData.degreeLevel === 'beng'
-                            ? 'border-blue-600 bg-blue-50/60 ring-2 ring-blue-600/10'
+                          formData.degreeLevel === 'diploma'
+                            ? 'border-amber-500 bg-amber-50/70 ring-2 ring-amber-500/20'
                             : 'border-slate-200 bg-white hover:border-slate-300'
                         }`}
                       >
-                        <div className={`p-2.5 rounded-xl ${formData.degreeLevel === 'beng' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                          <Award className="w-5 h-5" />
+                        <div className={`p-2.5 rounded-xl shrink-0 ${formData.degreeLevel === 'diploma' ? 'bg-amber-500 text-slate-950' : 'bg-slate-100 text-slate-600'}`}>
+                          <GraduationCap className="w-5 h-5 font-bold" />
                         </div>
                         <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-extrabold text-sm sm:text-base text-slate-900">Bachelor of Engineering (B.Eng)</h3>
-                            <span className="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded-full">4 Years</span>
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
+                              {isKh ? "សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស" : "Higher Diploma of Technology"}
+                            </h3>
+                            <span className="text-[10px] font-bold bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full">
+                              {isKh ? "២ ឆ្នាំ • អាហារូបករណ៍ ១០០%" : "2 Years • 100% Free"}
+                            </span>
                           </div>
-                          <p className="text-xs text-slate-500 mt-1">
-                            {isKh ? "ថ្នាក់បរិញ្ញាបត្រវិស្វកម្មពេញលេញ (១៣០ - ១៣៦ ក្រេឌីត) មានសិទ្ធិប្រឡងក្របខ័ណ្ឌរដ្ឋ និងគណៈវិស្វករ" : "Comprehensive engineering program (130-136 Credits) qualifying for Board of Engineers Cambodia license."}
+                          <p className="text-xs text-slate-600 font-khmer mt-1 leading-relaxed">
+                            {isKh 
+                              ? "សិក្សា ២ឆ្នាំ (៩ មុខជំនាញ) • លក្ខខណ្ឌ៖ ជាប់ ឬធ្លាក់បាក់ឌុប ក៏ទទួលបានអាហារូបករណ៍ ១០០% ពីរដ្ឋាភិបាល" 
+                              : "2-Year technical study across 9 majors. Both passed or failed Bac II graduates receive 100% scholarship."}
                           </p>
                         </div>
                       </div>
 
+                      {/* 2. Bachelor of Technology (4 Years - Fee-Paying Night & Weekend) */}
                       <div 
-                        onClick={() => handleInputChange('degreeLevel', 'diploma')}
+                        onClick={() => {
+                          handleInputChange('degreeLevel', 'beng');
+                          handleInputChange('programId', 'cybersecurity');
+                        }}
                         className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
-                          formData.degreeLevel === 'diploma'
-                            ? 'border-blue-600 bg-blue-50/60 ring-2 ring-blue-600/10'
+                          formData.degreeLevel === 'beng'
+                            ? 'border-blue-600 bg-blue-50/70 ring-2 ring-blue-600/20'
                             : 'border-slate-200 bg-white hover:border-slate-300'
                         }`}
                       >
-                        <div className={`p-2.5 rounded-xl ${formData.degreeLevel === 'diploma' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                          <GraduationCap className="w-5 h-5" />
+                        <div className={`p-2.5 rounded-xl shrink-0 ${formData.degreeLevel === 'beng' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                          <Award className="w-5 h-5" />
                         </div>
                         <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-extrabold text-sm sm:text-base text-slate-900">Higher Diploma of Technology</h3>
-                            <span className="text-[10px] font-bold bg-slate-700 text-white px-2 py-0.5 rounded-full">2 Years</span>
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <h3 className="font-extrabold text-sm sm:text-base text-slate-900">
+                              {isKh ? "បរិញ្ញាបត្របច្ចេកទេស" : "Bachelor of Technology (B.Tech)"}
+                            </h3>
+                            <span className="text-[10px] font-bold bg-blue-700 text-white px-2 py-0.5 rounded-full">
+                              {isKh ? "៤ ឆ្នាំ • ថ្នាក់បង់ថ្លៃ" : "4 Years • Regular"}
+                            </span>
                           </div>
-                          <p className="text-xs text-slate-500 mt-1">
-                            {isKh ? "សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកវិទ្យា (៧២ ក្រេឌីត) ការបណ្តុះបណ្តាលអនុវត្តផ្ទាល់ ៨០% អាចបន្តយកបរិញ្ញាបត្របាន" : "Practical technician diploma (72 Credits) focusing 80% on lab work with direct pathway to bridge into B.Eng."}
+                          <p className="text-xs text-slate-600 font-khmer mt-1 leading-relaxed">
+                            {isKh 
+                              ? "សិក្សា ៤ឆ្នាំ (៥ មុខជំនាញ) • វេនយប់ និង ថ្ងៃសៅរ៍-អាទិត្យ សម្រាប់សិស្សទូទៅ និងបុគ្គលិកកំពុងបំពេញការងារ" 
+                              : "4-Year degree across 5 engineering majors. Evening & Saturday-Sunday weekend shifts available."}
                           </p>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* 4 Engineering Majors Cards */}
+                  {/* Dynamic Official Majors List */}
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                      Choose Preferred Engineering Major *
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                      {programsList.map((prog) => {
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                        {formData.degreeLevel === 'diploma'
+                          ? (isKh ? "ជ្រើសរើសជំនាញសញ្ញាបត្រជាន់ខ្ពស់ ២ឆ្នាំ (៩ ជំនាញ) *" : "Select Higher Diploma Major (9 Official Majors) *")
+                          : (isKh ? "ជ្រើសរើសជំនាញបរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (៥ ជំនាញ) *" : "Select Bachelor Major (5 Official Majors) *")
+                        }
+                      </label>
+                      <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+                        {formData.degreeLevel === 'diploma' ? (isKh ? "អាហារូបករណ៍ ១០០%" : "100% Free Tuition") : (isKh ? "វេនយប់ & ចុងសប្តាហ៍" : "Night & Weekend")}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                      {(formData.degreeLevel === 'diploma' ? higherDiplomaMajors : bachelorMajors).map((prog, idx) => {
                         const isSelected = formData.programId === prog.id;
 
                         return (
                           <div
                             key={prog.id}
                             onClick={() => handleInputChange('programId', prog.id)}
-                            className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
+                            className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3 ${
                               isSelected
-                                ? 'border-[#1b4b9b] bg-blue-50/70 shadow-sm ring-2 ring-blue-500/15'
+                                ? 'border-[#1b4b9b] bg-blue-50/80 shadow-md ring-2 ring-blue-500/15'
                                 : 'border-slate-200 bg-slate-50/50 hover:bg-white hover:border-slate-300'
                             }`}
                           >
-                            <div className={`p-2.5 rounded-xl ${prog.cardBg} text-white shadow-xs shrink-0`}>
-                              {getMajorIcon(prog.icon)}
-                            </div>
+                            <span className="w-6 h-6 rounded-lg bg-amber-400 text-slate-950 font-black flex items-center justify-center text-xs shrink-0 shadow-xs">
+                              {prog.num || idx + 1}
+                            </span>
                             <div className="min-w-0 flex-1">
-                              <div className="flex items-center justify-end gap-2 min-h-[20px]">
+                              <div className="flex items-center justify-between gap-1">
+                                <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug font-khmer">
+                                  {isKh ? prog.nameKhmer : prog.name}
+                                </h3>
                                 {isSelected && (
-                                  <span className="w-5 h-5 rounded-full bg-[#1b4b9b] text-white flex items-center justify-center">
-                                    <Check className="w-3 h-3" />
+                                  <span className="w-4 h-4 rounded-full bg-[#1b4b9b] text-white flex items-center justify-center shrink-0">
+                                    <Check className="w-2.5 h-2.5" />
                                   </span>
                                 )}
                               </div>
-                              <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 mt-0.5 leading-snug">
-                                {isKh ? prog.shortNameKh : prog.name}
-                              </h3>
-                              <p className="text-[11px] text-slate-500 font-khmer mt-0.5 truncate">
-                                {prog.nameKhmer}
+                              <p className="text-[11px] text-slate-500 mt-0.5">
+                                {isKh ? prog.name : prog.nameKhmer}
                               </p>
-                              <span className="inline-block mt-2 text-[10px] text-blue-700 font-bold bg-white px-2 py-0.5 rounded border border-blue-100">
-                                {prog.faculty}
+                              <span className="inline-block mt-1.5 text-[10px] text-blue-700 font-bold bg-white px-2 py-0.5 rounded border border-blue-100">
+                                {isKh ? prog.facultyKh : prog.faculty}
                               </span>
                             </div>
                           </div>
@@ -913,29 +960,30 @@ export default function ApplyPage({
                     </div>
                   </div>
 
-                  {/* Study Shifts */}
+                  {/* Study Shifts with Official Evening and Weekend Options */}
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                      Preferred Study Session & Timing *
+                      {isKh ? "ជ្រើសរើសវេនសិក្សា *" : "Preferred Study Session & Timing *"}
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                       {[
-                        { id: 'morning', name: 'Morning Shift', nameKh: 'វេនព្រឹក', time: '7:30 AM – 11:30 AM', note: 'Monday – Friday' },
-                        { id: 'afternoon', name: 'Afternoon Shift', nameKh: 'វេនរសៀល', time: '1:30 PM – 5:30 PM', note: 'Monday – Friday' },
-                        { id: 'weekend', name: 'Weekend Shift', nameKh: 'វេនចុងសប្តាហ៍', time: '8:00 AM – 5:00 PM', note: 'Saturday & Sunday' },
+                        { id: 'morning', name: 'Morning Shift', nameKh: 'វេនព្រឹក', time: '7:30 AM – 11:30 AM', note: isKh ? 'ចន្ទ – សុក្រ' : 'Mon – Fri' },
+                        { id: 'afternoon', name: 'Afternoon Shift', nameKh: 'វេនរសៀល', time: '1:30 PM – 5:30 PM', note: isKh ? 'ចន្ទ – សុក្រ' : 'Mon – Fri' },
+                        { id: 'evening', name: 'Evening Shift', nameKh: 'វេនយប់', time: '5:30 PM – 8:30 PM', note: isKh ? 'ចន្ទ – សុក្រ (ថ្នាក់បង់ថ្លៃ)' : 'Mon – Fri (Degree)' },
+                        { id: 'weekend', name: 'Weekend Shift', nameKh: 'វេនសៅរ៍-អាទិត្យ', time: '8:00 AM – 5:00 PM', note: isKh ? 'សៅរ៍ និង អាទិត្យ' : 'Sat & Sun' },
                       ].map((sh) => (
                         <div
                           key={sh.id}
                           onClick={() => handleInputChange('shift', sh.id)}
-                          className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${
+                          className={`p-3.5 rounded-xl border-2 transition-all cursor-pointer ${
                             formData.shift === sh.id
-                              ? 'border-blue-600 bg-blue-50/70 shadow-xs'
+                              ? 'border-blue-600 bg-blue-50/70 shadow-xs ring-1 ring-blue-500/20'
                               : 'border-slate-200 bg-white hover:border-slate-300'
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <span className="font-bold text-xs sm:text-sm text-slate-900">{sh.name}</span>
-                            <span className="text-[10px] font-bold text-blue-600 font-khmer">{sh.nameKh}</span>
+                            <span className="font-bold text-xs sm:text-sm text-slate-900">{isKh ? sh.nameKh : sh.name}</span>
+                            <span className="text-[10px] font-bold text-blue-600 font-khmer">{isKh ? sh.name : sh.nameKh}</span>
                           </div>
                           <p className="text-xs font-mono font-bold text-slate-700 mt-1">{sh.time}</p>
                           <span className="text-[11px] text-slate-500 block mt-0.5">{sh.note}</span>
@@ -947,14 +995,30 @@ export default function ApplyPage({
                   {/* Scholarship Request Category */}
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                      Scholarship & Tuition Plan *
+                      {isKh ? "គម្រោងអាហារូបករណ៍ ឬការបង់ថ្លៃសិក្សា *" : "Scholarship & Tuition Plan *"}
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {[
-                        { id: '100_state', title: '100% State Merit Scholarship', desc: 'Reserved for Bac II Grade A & B candidates. Full 4-year tuition covered by MLVT.' },
-                        { id: '50_tvet', title: '50% National TVET Subsidy', desc: 'High-priority engineering development subsidy. 50% tuition reduction.' },
-                        { id: 'women_stem', title: 'Women in STEM Equity Grant', desc: 'Special incentive scholarship encouraging female engineers in Cambodia.' },
-                        { id: 'self_financed', title: 'Standard Self-Financed Tuition', desc: 'Affordable public tuition fee ($500 - $650 per academic year).' },
+                        { 
+                          id: '100_state', 
+                          title: isKh ? 'អាហារូបករណ៍រដ្ឋ ១០០% (ជាប់ ឬធ្លាក់បាក់ឌុប)' : '100% Free State Scholarship (Bac II Pass/Fail)', 
+                          desc: isKh ? 'អាហារូបករណ៍ពេញលេញ ១០០% ឥតគិតថ្លៃសម្រាប់ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (សិក្សា ២ឆ្នាំ)។' : 'Full 100% free tuition for 2-Year Higher Diploma under national TVET program.' 
+                        },
+                        { 
+                          id: 'self_financed', 
+                          title: isKh ? 'ថ្នាក់បង់ថ្លៃ (វេនយប់ ឬ ចុងសប្តាហ៍)' : 'Regular Fee-Paying (Evening / Weekend)', 
+                          desc: isKh ? 'សម្រាប់ថ្នាក់បរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (វេនយប់ ឬថ្ងៃសៅរ៍-អាទិត្យ) តម្លៃសមរម្យ។' : 'For 4-Year Bachelor of Technology degrees with flexible scheduling.' 
+                        },
+                        { 
+                          id: 'women_stem', 
+                          title: isKh ? 'អាទិភាពសិស្សនារីក្នុងវិស័យវិស្វកម្ម' : 'Women in STEM Equity Grant', 
+                          desc: isKh ? 'កូតាពិសេសលើកទឹកចិត្តសិស្សនារីចុះឈ្មោះសិក្សាផ្នែកបច្ចេកវិទ្យា និងវិស្វកម្ម។' : 'Special quota encouraging female engineers with mentoring support.' 
+                        },
+                        { 
+                          id: '50_tvet', 
+                          title: isKh ? 'អាហារូបករណ៍សមធម៌ និងបណ្តាខេត្ត' : 'Provincial & Equity Assistance', 
+                          desc: isKh ? 'ជំនួយឧបត្ថម្ភកន្លែងស្នាក់នៅក្នុងអន្តេវាសិកដ្ឋានសម្រាប់សិស្សមកពីបណ្តាខេត្ត។' : 'Dormitory priority and financial assistance for provincial applicants.' 
+                        },
                       ].map((sch) => (
                         <div
                           key={sch.id}
