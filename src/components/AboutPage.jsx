@@ -317,81 +317,112 @@ export default function AboutPage({ lang, onOpenApply }) {
             <div className="w-16 h-1 bg-blue-700 mt-3 rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            
-            {/* Left Column: Director Quote Box (7 cols) */}
-            <div className="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-xs">
-              {/* Director Photo */}
-              <div className="w-36 h-36 sm:w-44 sm:h-44 shrink-0 rounded-2xl overflow-hidden shadow-md border-2 border-white bg-slate-200">
-                <img 
-                  src="/director-portrait.jpg" 
-                  alt="Director H.E. Tan Kosal" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
+          {/* Prominent Director's Message Showcase Card */}
+          <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50/40 border border-slate-200/90 rounded-3xl p-6 sm:p-10 lg:p-12 shadow-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              
+              {/* Left Column: Big Director Portrait (5 cols) */}
+              <div className="lg:col-span-5 flex justify-center">
+                <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[440px] aspect-square rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-100 ring-1 ring-slate-200/80 relative group">
+                  <img 
+                    src="/director-portrait.jpg" 
+                    alt="Director H.E. Tan Kosal" 
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
 
-              {/* Quote Content */}
-              <div className="flex-1 space-y-3 text-center sm:text-left">
-                <Quote className="w-8 h-8 text-blue-600/40 mx-auto sm:mx-0" />
-                
-                <p className="text-sm md:text-base text-slate-700 italic leading-relaxed">
-                  {isKh 
-                    ? "«សូមស្វាគមន៍មកកាន់វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន។ យើងប្តេជ្ញាបង្កើតបរិយាកាសសិក្សាដែលផ្សារភ្ជាប់ការចង់ចេះចង់ដឹង ជាមួយការអនុវត្តជាក់ស្តែង និងនវានុវត្តន៍ឥតឈប់ឈរ ដើម្បីធានាថាគ្រប់និស្សិតទាំងអស់នឹងក្លាយជាកម្លាំងចលករដ៏មានតម្លៃសម្រាប់សង្គមជាតិ។»"
-                    : "“Welcome to NPIT. We are committed to fostering an environment where curiosity meets practical application and continuous innovation, empowering each graduate to excel in tomorrow's engineering landscape.”"}
-                </p>
-
-                <div className="pt-2 border-t border-slate-200">
-                  <h4 className="text-base font-bold text-slate-900">
-                    H.E. Tan Kosal
-                  </h4>
-                  <p className="text-xs font-semibold text-blue-800">
-                    {isKh ? "ប្រធានវិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន" : "Director of NPIT"}
-                  </p>
+                  {/* Overlaid Name & Role Badge */}
+                  <div className="absolute bottom-3 left-3 right-3 bg-slate-950/85 backdrop-blur-md text-white p-3.5 rounded-2xl border border-white/20 shadow-lg">
+                    <p className="text-[11px] font-semibold text-blue-300 font-khmer">
+                      {isKh ? "ប្រធានវិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន" : "National Polytechnic Institute Techo Sen"}
+                    </p>
+                    <h4 className="text-sm sm:text-base font-bold text-white mt-0.5">
+                      {isKh ? "ឯកឧត្តម តាន់ កុសល" : "H.E. Tan Kosal"}
+                    </h4>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Right Column: Our Core Values (5 cols) */}
-            <div className="lg:col-span-5 bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-xs">
-              <div className="mb-4">
-                <h3 className="text-lg font-extrabold text-slate-900">
-                  Our Core Values, <span className="font-khmer text-blue-800 font-bold">គុណតម្លៃស្នូល</span>
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  The principles guiding our institutional culture and pedagogy.
+              {/* Right Column: Dignified Message & Signatory (7 cols) */}
+              <div className="lg:col-span-7 flex flex-col justify-center space-y-5">
+                <Quote className="w-12 h-12 text-[#002b80]/25" />
+
+                <div className="space-y-1">
+                  <span className="text-xs font-bold tracking-wider uppercase text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 inline-block">
+                    {isKh ? 'សារលិខិតស្វាគមន៍ផ្លូវការ' : 'Official Welcome Statement'}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 font-khmer">
+                    {isKh ? 'សារលិខិតរបស់ឯកឧត្តមប្រធានវិទ្យាស្ថាន' : 'Message from the Director of NPIT'}
+                  </h3>
+                </div>
+
+                {/* Khmer Quote */}
+                <p className="text-base sm:text-lg text-slate-800 font-khmer leading-relaxed font-medium italic">
+                  {isKh 
+                    ? "«សូមស្វាគមន៍មកកាន់វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន។ យើងប្តេជ្ញាបង្កើតបរិយាកាសសិក្សាដែលផ្សារភ្ជាប់ការចង់ចេះចង់ដឹង ជាមួយការអនុវត្តជាក់ស្តែង និងនវានុវត្តន៍ឥតឈប់ឈរ ដើម្បីធានាថាគ្រប់និស្សិតទាំងអស់នឹងក្លាយជាកម្លាំងចលករដ៏មានតម្លៃសម្រាប់សង្គមជាតិ។»"
+                    : "«សូមស្វាគមន៍មកកាន់វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន។ យើងប្តេជ្ញាបង្កើតបរិយាកាសសិក្សាដែលផ្សារភ្ជាប់ការចង់ចេះចង់ដឹង ជាមួយការអនុវត្តជាក់ស្តែង និងនវានុវត្តន៍ឥតឈប់ឈរ ដើម្បីធានាថាគ្រប់និស្សិតទាំងអស់នឹងក្លាយជាកម្លាំងចលករដ៏មានតម្លៃសម្រាប់សង្គមជាតិ។»"}
                 </p>
-              </div>
 
-              {/* 4 Colored Mini-Cards in 2x2 Grid or 4 Columns */}
-              <div className="grid grid-cols-2 gap-3">
-                {coreValues.map((val, idx) => (
-                  <div
-                    key={idx}
-                    className={`${val.bg} rounded-xl p-4 text-white shadow-xs flex flex-col justify-between min-h-[110px] hover:scale-102 transition-transform duration-200`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="p-1.5 rounded-lg bg-black/15">
-                        {val.icon}
-                      </div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-white/80">
-                        {idx + 1}
-                      </span>
-                    </div>
+                {/* English Quote */}
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed italic border-l-3 border-[#002b80] pl-4 py-1">
+                  “Welcome to NPIT. We are committed to fostering an environment where curiosity meets practical application and continuous innovation, empowering each graduate to excel in tomorrow's engineering landscape.”
+                </p>
 
-                    <div>
-                      <h4 className="text-sm font-bold leading-tight">
-                        {val.title}
-                      </h4>
-                      <p className="text-[10px] text-white/85 font-khmer mt-0.5">
-                        {val.titleKh}
-                      </p>
-                    </div>
+                {/* Signatory Footer */}
+                <div className="pt-4 border-t border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h4 className="text-lg font-extrabold text-slate-900">
+                      H.E. Tan Kosal / <span className="font-khmer font-bold">ឯកឧត្តម តាន់ កុសល</span>
+                    </h4>
+                    <p className="text-xs font-semibold text-blue-800 font-khmer">
+                      {isKh ? "ប្រធានវិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន" : "Director of National Polytechnic Institute Techo Sen (NPIT)"}
+                    </p>
                   </div>
-                ))}
+                </div>
               </div>
 
             </div>
+          </div>
 
+          {/* Core Values Section Placed Full-Width Below */}
+          <div className="mt-12">
+            <div className="mb-6">
+              <h3 className="text-xl font-extrabold text-slate-900">
+                Our Core Values • <span className="font-khmer text-blue-800">គុណតម្លៃស្នូល</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                The institutional pillars guiding our academic excellence and polytechnic mastery.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {coreValues.map((val, idx) => (
+                <div
+                  key={idx}
+                  className={`${val.bg} rounded-2xl p-5 text-white shadow-sm flex flex-col justify-between min-h-[140px] hover:shadow-lg hover:-translate-y-1 transition-all duration-300`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="p-2 rounded-xl bg-black/20 backdrop-blur-xs">
+                      {val.icon}
+                    </div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-white/80">
+                      0{idx + 1}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h4 className="text-base font-bold leading-tight">
+                      {val.title}
+                    </h4>
+                    <p className="text-xs text-white/90 font-khmer mt-0.5 font-medium">
+                      {val.titleKh}
+                    </p>
+                    <p className="text-[11px] text-white/80 mt-2 line-clamp-2 leading-relaxed">
+                      {val.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
         </div>
