@@ -233,59 +233,6 @@ export default function ApplyPage({
         </div>
       </div>
 
-      {/* 2. Hero Header Banner */}
-      <div className="bg-[#102a54] text-white py-10 sm:py-14 border-b border-blue-900/60 relative overflow-hidden">
-        {/* Subtle patterned background decoration */}
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            
-            <div className="space-y-3 max-w-3xl">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1 bg-amber-500 text-slate-950 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider shadow-sm">
-                  <Award className="w-3.5 h-3.5 text-slate-950" />
-                  <span>Academic Year 2026 - 2027</span>
-                </span>
-                <span className="inline-flex items-center gap-1 bg-white/10 backdrop-blur-md text-white font-medium px-3 py-1 rounded-full text-xs border border-white/20">
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-                  <span>MLVT & Government Accredited</span>
-                </span>
-                <span className="inline-flex items-center gap-1 bg-blue-500/20 text-blue-300 font-semibold px-3 py-1 rounded-full text-xs border border-blue-400/30">
-                  100% Free Official Application
-                </span>
-              </div>
-
-              <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                {isKh ? "ពាក្យស្នើសុំចុះឈ្មោះចូលរៀនថ្នាក់បរិញ្ញាបត្រ និងសញ្ញាបត្រជាន់ខ្ពស់បច្ចេកវិទ្យា" : "Online Admission & Enrollment Application"}
-              </h1>
-              
-              <p className="text-slate-200 text-xs sm:text-base leading-relaxed">
-                {isKh 
-                  ? "បំពេញទម្រង់ពាក្យស្នើសុំត្រឹមតែ ៣ នាទី ដើម្បីទទួលបានឱកាសអាហារូបករណ៍រដ្ឋ ១០០% និង ៥០% សម្រាប់គ្រប់ជំនាញវិស្វកម្មនៅវិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន (NPIT)។"
-                  : "Complete your official application in approximately 3 minutes. Apply for Bachelor of Engineering (B.Eng) or Higher Diploma programs with merit scholarships and flexible day/weekend shifts."}
-              </p>
-            </div>
-
-            {/* Application Quick Stats Badge */}
-            <div className="bg-white/10 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/15 shrink-0 w-full md:w-auto text-xs sm:text-sm space-y-2">
-              <div className="flex items-center justify-between md:justify-start gap-4">
-                <span className="text-slate-300">Processing Time:</span>
-                <span className="font-bold text-amber-300">24 – 48 Hours</span>
-              </div>
-              <div className="flex items-center justify-between md:justify-start gap-4">
-                <span className="text-slate-300">State Scholarships:</span>
-                <span className="font-bold text-amber-300">100% & 50% Available</span>
-              </div>
-              <div className="flex items-center justify-between md:justify-start gap-4">
-                <span className="text-slate-300">Shift Options:</span>
-                <span className="font-bold text-amber-300">Morning / Afternoon / Weekend</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
       {/* 3. Main Form Area / Success State */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12">
