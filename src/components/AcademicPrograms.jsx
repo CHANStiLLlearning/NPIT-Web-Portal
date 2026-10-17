@@ -85,58 +85,6 @@ export default function AcademicPrograms({ programsData, onSelectProgram, onOpen
     <section id="programs" className="py-16 md:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Official Admission Promotional Banner from Ministry & NPIT Flyer */}
-        <div className="mb-10 rounded-2xl overflow-hidden bg-[#00225c] text-white shadow-lg border border-blue-900/50 p-6 sm:p-8">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-3 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/80 text-blue-100 text-xs font-semibold uppercase tracking-wider border border-blue-700/50">
-                <Award className="w-4 h-4 text-blue-200" />
-                <span>{isKh ? "សេចក្តីជូនដំណឹងជ្រើសរើសនិស្សិតផ្លូវការ" : "Official Enrollment Announcement"}</span>
-              </div>
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-khmer leading-snug">
-                {isKh ? "អាហារូបករណ៍ ១០០% ថ្នាក់សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (សិក្សា ២ឆ្នាំ)" : "100% Free Tuition Scholarship — Higher Diploma of Technology (2 Years)"}
-              </h3>
-              <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-khmer">
-                {isKh 
-                  ? "លក្ខខណ្ឌចូលរៀន៖ ជាប់ ឬធ្លាក់ សញ្ញាបត្រមធ្យមសិក្សាទុតិយភូមិ (បាក់ឌុប) អាចចុះឈ្មោះចូលរៀនបានដោយឥតគិតថ្លៃ ១០០% លើ ៩ មុខជំនាញ និងថ្នាក់បរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ (វេនយប់ និង ថ្ងៃសៅរ៍-អាទិត្យ) លើ ៥ មុខជំនាញ។" 
-                  : "Entry Condition: Both Passed or Failed Bac II / High School Diploma are eligible for 100% tuition scholarships across 9 technician majors, plus 5 Bachelor of Technology programs (Evening & Weekend shifts)."}
-              </p>
-              
-              <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-medium">
-                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
-                  <Calendar className="w-4 h-4 text-slate-300" />
-                  <span>{isKh ? "ចូលរៀនលើកទី១: ១៣ វិច្ឆិកា ២០២៦" : "Batch 1 Starts: Nov 13, 2026"}</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
-                  <Calendar className="w-4 h-4 text-slate-300" />
-                  <span>{isKh ? "ចូលរៀនលើកទី២: ០៤ មករា ២០២៧" : "Batch 2 Starts: Jan 04, 2027"}</span>
-                </div>
-                <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 font-mono">
-                  <Phone className="w-3.5 h-3.5 text-slate-300" />
-                  <span>098 444 495 / 092 735 263</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
-              <button
-                type="button"
-                onClick={() => onOpenApply && onOpenApply()}
-                className="bg-white hover:bg-slate-100 text-[#00225c] font-bold px-6 py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
-              >
-                <span>{isKh ? "ចុះឈ្មោះយកអាហារូបករណ៍ ១០០%" : "Apply for 100% Scholarship"}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedCategory('diploma')}
-                className="bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-2.5 rounded-xl border border-white/15 transition-all text-xs text-center cursor-pointer"
-              >
-                {isKh ? "មើលជំនាញទាំង ៩ ឥតគិតថ្លៃ" : "View 9 Free Diploma Majors"}
-              </button>
-            </div>
-          </div>
-        </div>
 
         {/* Header with Search */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-slate-200">
