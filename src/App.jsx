@@ -323,6 +323,16 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Dedicated Standalone Admin Portal (Full screen application matching reference design)
+  if (currentPage === 'admin') {
+    return (
+      <AdminPage
+        lang={lang}
+        onNavigate={handleNavigate}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 selection:bg-blue-600 selection:text-white">
       
