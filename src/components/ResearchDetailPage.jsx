@@ -23,7 +23,6 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { researchList } from '../data/researchData';
-import { submitResearchInquiry } from '../services/inquiryService';
 
 export default function ResearchDetailPage({ 
   lang = 'en', 
@@ -36,13 +35,6 @@ export default function ResearchDetailPage({
 }) {
   const isKh = lang === 'kh';
   const [copied, setCopied] = useState(false);
-  const [inquirySubmitted, setInquirySubmitted] = useState(false);
-  const [inquirySubmitting, setInquirySubmitting] = useState(false);
-  const [inquiryRefNum, setInquiryRefNum] = useState('');
-  const [inquiryName, setInquiryName] = useState('');
-  const [inquiryOrg, setInquiryOrg] = useState('');
-  const [inquiryEmail, setInquiryEmail] = useState('');
-  const [inquiryMessage, setInquiryMessage] = useState('');
 
   // Safe fallback if research object is somehow null
   const current = research || researchList[0];
@@ -81,35 +73,6 @@ export default function ResearchDetailPage({
         return <FileText className={className} />;
       default:
         return <Award className={className} />;
-    }
-  };
-
-  const handleInquirySubmit = async (e) => {
-    e.preventDefault();
-    if (!inquiryName.trim() || !inquiryEmail.trim() || inquirySubmitting) return;
-
-    setInquirySubmitting(true);
-    try {
-      const res = await submitResearchInquiry({
-        researchDomain: current.title,
-        name: inquiryName,
-        org: inquiryOrg,
-        email: inquiryEmail,
-        message: inquiryMessage
-      });
-      setInquiryRefNum(res.referenceNumber);
-      setInquirySubmitted(true);
-      setTimeout(() => {
-        setInquirySubmitted(false);
-        setInquiryName('');
-        setInquiryOrg('');
-        setInquiryEmail('');
-        setInquiryMessage('');
-      }, 5500);
-    } catch (err) {
-      console.warn('Research inquiry error:', err);
-    } finally {
-      setInquirySubmitting(false);
     }
   };
 
@@ -628,102 +591,6 @@ export default function ResearchDetailPage({
                 </div>
               </div>
             )}
-
-            {/* 3.7 Industry Collaboration & Inquiry Form */}
-            <div className="bg-gradient-to-br from-[#0f2757] to-[#1b4b9b] text-white rounded-2xl p-6 shadow-md">
-              <div className="flex items-center gap-2 mb-2">
-                <Award className="w-4 h-4 text-amber-300" />
-                <h3 className="text-xs font-extrabold uppercase tracking-wider text-amber-300">
-                  {isKh ? "កិច្ចសហការឧស្សាហកម្ម" : "Industry Collaboration"}
-                </h3>
-              </div>
-
-              <h4 className="text-lg font-black text-white leading-snug">
-                {isKh ? "ចាប់ដៃគូស្រាវជ្រាវជាមួយ NPIT" : "Partner with Our Research Labs"}
-              </h4>
-
-              <p className="text-xs text-blue-100 mt-2 leading-relaxed">
-                {isKh 
-                  ? "សហគ្រាស និងរោងចក្រអាចសហការជាមួយយើង ដើម្បីធ្វើតេស្តបច្ចេកវិទ្យា បង្កើតគំរូ និងដោះស្រាយបញ្ហាជាក់ស្តែង។"
-                  : "We offer contract research, prototyping, and technical consultancy for industrial clients across Southeast Asia."}
-              </p>
-
-              {inquirySubmitted ? (
-                <div className="mt-4 p-4 rounded-xl bg-white/10 border border-white/20 text-center animate-in fade-in">
-                  <CheckCircle2 className="w-8 h-8 text-amber-400 mx-auto mb-2" />
-                  <p className="text-xs font-bold text-white">
-                    {isKh ? "សំណើរបស់អ្នកត្រូវបានកត់ត្រាជោគជ័យ!" : "Inquiry Saved to Research Registry!"}
-                  </p>
-                  {inquiryRefNum && (
-                    <p className="text-[11px] font-mono font-bold text-amber-300 mt-1">
-                      Tracking Code: <span className="bg-black/30 px-2 py-0.5 rounded border border-white/20">{inquiryRefNum}</span>
-                    </p>
-                  )}
-                  <p className="text-[11px] text-blue-200 mt-1">
-                    {isKh ? "ក្រុមការងារស្រាវជ្រាវនឹងទាក់ទងមកវិញឆាប់ៗនេះ។" : "Our research coordinator will respond within 2 business days."}
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleInquirySubmit} className="mt-4 space-y-3">
-                  <div>
-                    <input 
-                      type="text" 
-                      placeholder={isKh ? "ឈ្មោះរបស់អ្នក / Your Name" : "Your Name"}
-                      value={inquiryName}
-                      onChange={(e) => setInquiryName(e.target.value)}
-                      required
-                      className="w-full text-xs px-3 py-2 rounded-lg bg-white/10 text-white placeholder-blue-200 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    />
-                  </div>
-                  <div>
-                    <input 
-                      type="text" 
-                      placeholder={isKh ? "ឈ្មោះស្ថាប័ន / ក្រុមហ៊ុន (Company / Org)" : "Company / Institution Name"}
-                      value={inquiryOrg}
-                      onChange={(e) => setInquiryOrg(e.target.value)}
-                      className="w-full text-xs px-3 py-2 rounded-lg bg-white/10 text-white placeholder-blue-200 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    />
-                  </div>
-                  <div>
-                    <input 
-                      type="email" 
-                      placeholder={isKh ? "អ៊ីមែលផ្លូវការ / Official Email" : "Official Work Email"}
-                      value={inquiryEmail}
-                      onChange={(e) => setInquiryEmail(e.target.value)}
-                      required
-                      className="w-full text-xs px-3 py-2 rounded-lg bg-white/10 text-white placeholder-blue-200 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    />
-                  </div>
-                  <div>
-                    <textarea 
-                      placeholder={isKh ? "សង្ខេបអំពីតម្រូវការស្រាវជ្រាវ ឬគម្រោង..." : "Briefly describe your R&D requirement or testbed inquiry..."}
-                      value={inquiryMessage}
-                      onChange={(e) => setInquiryMessage(e.target.value)}
-                      rows={3}
-                      className="w-full text-xs px-3 py-2 rounded-lg bg-white/10 text-white placeholder-blue-200 border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-2.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer transform hover:-translate-y-0.5"
-                  >
-                    <span>{isKh ? "ផ្ញើសំណើកិច្ចសហការ" : "Submit Research Inquiry"}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </form>
-              )}
-
-              <div className="mt-4 pt-3 border-t border-white/15 text-center">
-                <button
-                  type="button"
-                  onClick={() => onOpenApply && onOpenApply()}
-                  className="text-xs text-blue-200 hover:text-white underline underline-offset-2 font-medium"
-                >
-                  {isKh ? "ដាក់ពាក្យចូលរៀន ឬស្រាវជ្រាវថ្នាក់ឧត្តមសិក្សា →" : "Apply for Graduate Research Fellowship →"}
-                </button>
-              </div>
-            </div>
 
             {/* 3.8 Other Research Domains in Sidebar */}
             <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">

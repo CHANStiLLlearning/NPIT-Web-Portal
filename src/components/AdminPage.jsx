@@ -132,6 +132,121 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   // Banner Draft Form
   const [bannerDraft, setBannerDraft] = useState(bannerConfig);
 
+  // Dynamic Programs / Class List Modal
+  const [programModalOpen, setProgramModalOpen] = useState(false);
+  const [programFormData, setProgramFormData] = useState({
+    name: '',
+    nameKhmer: '',
+    level: 'Bachelor of Engineering (4 Years)',
+    duration: '4 Years (8 Semesters)',
+    image: '',
+    overview: '',
+    status: 'open'
+  });
+
+  // Dynamic Shifts List & Modal
+  const [shiftsList, setShiftsList] = useState([
+    {
+      id: 'shift-morning',
+      name: 'Morning Shift (វេនព្រឹក)',
+      hours: '8:00 AM – 11:30 AM (Monday to Friday)',
+      details: 'Full daytime laboratory modules, engineering workshops, and 100% State Scholarship classes.',
+      status: 'Active & Enrolling'
+    },
+    {
+      id: 'shift-afternoon',
+      name: 'Afternoon Shift (វេនរសៀល)',
+      hours: '1:30 PM – 5:00 PM (Monday to Friday)',
+      details: 'Applied technical diploma and Bachelor of Technology practical sessions.',
+      status: 'Active & Enrolling'
+    },
+    {
+      id: 'shift-weekend',
+      name: 'Weekend Shift (វេនសៅរ៍-អាទិត្យ)',
+      hours: 'Saturday & Sunday Intensive',
+      details: 'Tailored for employed technicians and enterprise staff pursuing Bachelor upgrades.',
+      status: 'Active & Enrolling'
+    }
+  ]);
+  const [shiftModalOpen, setShiftModalOpen] = useState(false);
+  const [shiftFormData, setShiftFormData] = useState({ name: '', hours: '', details: '', status: 'Active & Enrolling' });
+
+  // Dynamic Exam Eligibility Rules List & Modal
+  const [examRulesList, setExamRulesList] = useState([
+    {
+      id: 'rule-bacii-pass',
+      title: 'Passed Bac II (និទ្ទេស A, B, C, D, E)',
+      desc: 'Eligible for both Bachelor of Engineering (4 Years) and Higher Diploma (2 Years).',
+      badge: '100% & 50% State Scholarships',
+      badgeColor: 'emerald'
+    },
+    {
+      id: 'rule-bacii-fail',
+      title: 'Failed High School Diploma (ធ្លាក់បាក់ឌុប)',
+      desc: '100% Eligible for Higher Technical Diploma (2 Years) with full state tuition waiver.',
+      badge: '100% Tuition Scholarship',
+      badgeColor: 'blue'
+    },
+    {
+      id: 'rule-tvet',
+      title: 'TVET Level 3 Certificate Holders',
+      desc: 'Direct admission into Year 2 Higher Diploma technical tracks.',
+      badge: 'Credit Transfer Accepted',
+      badgeColor: 'amber'
+    }
+  ]);
+  const [examModalOpen, setExamModalOpen] = useState(false);
+  const [examFormData, setExamFormData] = useState({ title: '', desc: '', badge: 'Direct Enrollment', badgeColor: 'blue' });
+
+  // Dynamic Batches / Calendar List & Modal
+  const [batchesList, setBatchesList] = useState([
+    {
+      id: 'batch-1',
+      code: 'B1',
+      name: 'Cohort Batch 1 (វគ្គទី១)',
+      startDate: 'November 13, 2026 (១៣ វិច្ឆិកា ២០២៦)',
+      deadline: 'November 05, 2026',
+      notes: 'Orientation, laboratory safety protocol training, and technical toolkit distribution.'
+    },
+    {
+      id: 'batch-2',
+      code: 'B2',
+      name: 'Cohort Batch 2 (វគ្គទី២)',
+      startDate: 'January 04, 2027 (០៤ មករា ២០២៧)',
+      deadline: 'December 28, 2026',
+      notes: 'Second intake for high school graduates and scholarship awardees.'
+    }
+  ]);
+  const [batchModalOpen, setBatchModalOpen] = useState(false);
+  const [batchFormData, setBatchFormData] = useState({ code: 'B3', name: '', startDate: '', deadline: '', notes: '' });
+
+  // Dynamic Applied Research Testbeds & Modal
+  const [researchTestbeds, setResearchTestbeds] = useState([
+    {
+      id: 'res-solar',
+      title: 'Solar Microgrids & Energy Storage',
+      desc: '40 kW industrial solar array with battery storage & IoT load monitoring.',
+      lead: 'Dr. Heng Buntheun',
+      status: 'Active Research'
+    },
+    {
+      id: 'res-robotics',
+      title: '6-Axis Industrial Robotics & AMR',
+      desc: 'Automated manufacturing conveyor sorting & computer vision inspection.',
+      lead: 'Dr. Chan Sokheng',
+      status: 'Active Research'
+    },
+    {
+      id: 'res-bim',
+      title: 'Concrete & BIM Digital Twins',
+      desc: 'Seismic structural stress testing and sustainable cementitious material analysis.',
+      lead: 'Eng. Keo Piseth',
+      status: 'Active Research'
+    }
+  ]);
+  const [researchModalOpen, setResearchModalOpen] = useState(false);
+  const [researchFormData, setResearchFormData] = useState({ title: '', desc: '', lead: '', status: 'Active Research' });
+
   // Listen for real Firebase Auth state changes
   useEffect(() => {
     if (!auth) {
@@ -321,6 +436,109 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
     setBannerConfig(updated);
     setAuditLogs(getAuditLogs());
     showToast('Site-wide announcement banner updated!');
+  };
+
+  // Program Operations
+  const handleSaveProgram = (e) => {
+    e.preventDefault();
+    const newProg = {
+      id: `prog-${Date.now()}`,
+      name: programFormData.name,
+      nameKhmer: programFormData.nameKhmer || programFormData.name,
+      level: programFormData.level,
+      duration: programFormData.duration,
+      image: programFormData.image || '/major-cybersecurity.jpg',
+      overview: programFormData.overview,
+      overviewKh: programFormData.overview,
+      status: programFormData.status || 'open'
+    };
+    setProgramsListState(prev => [newProg, ...prev]);
+    setProgramModalOpen(false);
+    setProgramFormData({
+      name: '',
+      nameKhmer: '',
+      level: 'Bachelor of Engineering (4 Years)',
+      duration: '4 Years (8 Semesters)',
+      image: '',
+      overview: '',
+      status: 'open'
+    });
+    logAuditEvent('Created Academic Program', `Added: ${newProg.name}`);
+    setAuditLogs(getAuditLogs());
+    showToast(`Major "${newProg.name}" created successfully!`);
+  };
+
+  // Shift Operations
+  const handleSaveShift = (e) => {
+    e.preventDefault();
+    const newShift = {
+      id: `shift-${Date.now()}`,
+      name: shiftFormData.name,
+      hours: shiftFormData.hours,
+      details: shiftFormData.details,
+      status: shiftFormData.status || 'Active & Enrolling'
+    };
+    setShiftsList(prev => [...prev, newShift]);
+    setShiftModalOpen(false);
+    setShiftFormData({ name: '', hours: '', details: '', status: 'Active & Enrolling' });
+    logAuditEvent('Created Study Shift', `Shift: ${newShift.name}`);
+    setAuditLogs(getAuditLogs());
+    showToast(`Shift "${newShift.name}" registered!`);
+  };
+
+  // Exam Criteria Operations
+  const handleSaveExamRule = (e) => {
+    e.preventDefault();
+    const newRule = {
+      id: `rule-${Date.now()}`,
+      title: examFormData.title,
+      desc: examFormData.desc,
+      badge: examFormData.badge,
+      badgeColor: examFormData.badgeColor || 'blue'
+    };
+    setExamRulesList(prev => [...prev, newRule]);
+    setExamModalOpen(false);
+    setExamFormData({ title: '', desc: '', badge: 'Direct Enrollment', badgeColor: 'blue' });
+    logAuditEvent('Created Exam Rule', `Rule: ${newRule.title}`);
+    setAuditLogs(getAuditLogs());
+    showToast(`Exam admission rule added!`);
+  };
+
+  // Batch Operations
+  const handleSaveBatch = (e) => {
+    e.preventDefault();
+    const newBatch = {
+      id: `batch-${Date.now()}`,
+      code: batchFormData.code || 'B3',
+      name: batchFormData.name,
+      startDate: batchFormData.startDate,
+      deadline: batchFormData.deadline,
+      notes: batchFormData.notes
+    };
+    setBatchesList(prev => [...prev, newBatch]);
+    setBatchModalOpen(false);
+    setBatchFormData({ code: 'B3', name: '', startDate: '', deadline: '', notes: '' });
+    logAuditEvent('Created Academic Batch', `Batch: ${newBatch.name}`);
+    setAuditLogs(getAuditLogs());
+    showToast(`Academic Batch "${newBatch.name}" registered!`);
+  };
+
+  // Research Testbed Operations
+  const handleSaveResearch = (e) => {
+    e.preventDefault();
+    const newTestbed = {
+      id: `res-${Date.now()}`,
+      title: researchFormData.title,
+      desc: researchFormData.desc,
+      lead: researchFormData.lead,
+      status: researchFormData.status || 'Active Research'
+    };
+    setResearchTestbeds(prev => [newTestbed, ...prev]);
+    setResearchModalOpen(false);
+    setResearchFormData({ title: '', desc: '', lead: '', status: 'Active Research' });
+    logAuditEvent('Created Research Testbed', `Testbed: ${newTestbed.title}`);
+    setAuditLogs(getAuditLogs());
+    showToast(`Research Testbed "${newTestbed.title}" registered!`);
   };
 
   // Export to CSV
@@ -1085,38 +1303,59 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                 <div className="flex items-center gap-2 text-xs">
                   <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="text-slate-900 font-bold">Class List & Academic Programs (14)</span>
+                  <span className="text-slate-900 font-bold">Class List & Academic Programs ({programsListState.length})</span>
                 </div>
+                <button
+                  type="button"
+                  id="btn-create-program"
+                  onClick={() => setProgramModalOpen(true)}
+                  className="px-4 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add New Program</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {programsListState.map(prog => (
-                  <div key={prog.id} className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs space-y-3 flex flex-col justify-between">
+                  <div key={prog.id} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-between">
                     <div>
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
-                            {prog.level || 'Higher Diploma'}
-                          </span>
-                          <h4 className="font-bold text-base text-slate-900 mt-1">{prog.name}</h4>
-                          <span className="text-xs font-khmer text-slate-500 block">{prog.nameKhmer}</span>
-                        </div>
-                        
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                          prog.status === 'open' ? 'bg-emerald-100 text-emerald-800' :
-                          prog.status === 'waitlist' ? 'bg-amber-100 text-amber-800' :
-                          'bg-slate-200 text-slate-600'
-                        }`}>
-                          {prog.status === 'open' ? 'Open' : prog.status === 'waitlist' ? 'Waitlist' : 'Closed'}
+                      {/* Program Cover Image */}
+                      <div className="h-40 bg-slate-100 relative overflow-hidden">
+                        <img 
+                          src={prog.image || '/major-cybersecurity.jpg'} 
+                          alt={prog.name} 
+                          className="w-full h-full object-cover transition duration-300 hover:scale-105"
+                          onError={(e) => { e.currentTarget.src = '/hero-lab.jpg'; }}
+                        />
+                        <span className="absolute top-2.5 left-2.5 bg-[#002b80]/90 backdrop-blur-xs text-white text-[10px] font-extrabold uppercase px-2 py-0.5 rounded shadow-xs">
+                          {prog.level?.includes('Diploma') ? 'Higher Diploma' : 'Bachelor of Engineering'}
                         </span>
                       </div>
 
-                      <p className="text-xs text-slate-600 mt-2 line-clamp-2 leading-relaxed">
-                        {prog.overview || prog.overviewKh}
-                      </p>
+                      <div className="p-4 space-y-2">
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <h4 className="font-bold text-base text-slate-900 leading-snug">{prog.name}</h4>
+                            <span className="text-xs font-khmer text-slate-500 block mt-0.5">{prog.nameKhmer}</span>
+                          </div>
+                          
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
+                            prog.status === 'open' ? 'bg-emerald-100 text-emerald-800' :
+                            prog.status === 'waitlist' ? 'bg-amber-100 text-amber-800' :
+                            'bg-slate-200 text-slate-600'
+                          }`}>
+                            {prog.status === 'open' ? 'Open' : prog.status === 'waitlist' ? 'Waitlist' : 'Closed'}
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                          {prog.overview || prog.overviewKh}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <div className="p-4 pt-3 border-t border-slate-100 flex items-center justify-between">
                       <span className="text-xs text-slate-400">Duration: <strong>{prog.duration}</strong></span>
                       <button
                         type="button"
@@ -1137,48 +1376,37 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
              ===================================================================== */}
           {activeView === 'shifts' && (
             <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2 text-xs">
-                <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-slate-900 font-bold">Timetable & Study Shifts</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs">
+                  <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="text-slate-900 font-bold">Timetable & Study Shifts ({shiftsList.length})</span>
+                </div>
+                <button
+                  type="button"
+                  id="btn-create-shift"
+                  onClick={() => setShiftModalOpen(true)}
+                  className="px-4 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Study Shift</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
-                    <Clock className="w-5 h-5" />
+                {shiftsList.map(shift => (
+                  <div key={shift.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                    <h4 className="font-bold text-base text-slate-900">{shift.name}</h4>
+                    <p className="text-xs text-slate-500">{shift.hours}</p>
+                    <div className="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-lg">
+                      {shift.details}
+                    </div>
+                    <div className="text-xs font-bold text-emerald-600">{shift.status}</div>
                   </div>
-                  <h4 className="font-bold text-base text-slate-900">Morning Shift (វេនព្រឹក)</h4>
-                  <p className="text-xs text-slate-500">8:00 AM – 11:30 AM (Monday to Friday)</p>
-                  <div className="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-lg">
-                    Full daytime laboratory modules, engineering workshops, and 100% State Scholarship classes.
-                  </div>
-                  <div className="text-xs font-bold text-emerald-600">Active & Enrolling</div>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <h4 className="font-bold text-base text-slate-900">Afternoon Shift (វេនរសៀល)</h4>
-                  <p className="text-xs text-slate-500">1:30 PM – 5:00 PM (Monday to Friday)</p>
-                  <div className="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-lg">
-                    Applied technical diploma and Bachelor of Technology practical sessions.
-                  </div>
-                  <div className="text-xs font-bold text-emerald-600">Active & Enrolling</div>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center">
-                    <Calendar className="w-5 h-5" />
-                  </div>
-                  <h4 className="font-bold text-base text-slate-900">Weekend Shift (វេនសៅរ៍-អាទិត្យ)</h4>
-                  <p className="text-xs text-slate-500">Saturday & Sunday Intensive</p>
-                  <div className="text-xs text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-lg">
-                    Tailored for employed technicians and enterprise staff pursuing Bachelor upgrades.
-                  </div>
-                  <div className="text-xs font-bold text-emerald-600">Active & Enrolling</div>
-                </div>
+                ))}
               </div>
             </div>
           )}
@@ -1188,44 +1416,41 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
              ===================================================================== */}
           {activeView === 'exams' && (
             <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2 text-xs">
-                <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-slate-900 font-bold">Exam & Bac II Admissions Eligibility</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs">
+                  <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="text-slate-900 font-bold">Exam & Bac II Admissions Eligibility ({examRulesList.length})</span>
+                </div>
+                <button
+                  type="button"
+                  id="btn-create-exam-rule"
+                  onClick={() => setExamModalOpen(true)}
+                  className="px-4 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Admission Rule</span>
+                </button>
               </div>
 
               <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
                 <h4 className="font-bold text-base text-slate-900">Ministry of Labour & Vocational Training Admission Protocols</h4>
                 <div className="divide-y divide-slate-100 text-xs">
-                  <div className="py-3 flex items-center justify-between">
-                    <div>
-                      <strong className="text-slate-900 block">Passed Bac II (និទ្ទេស A, B, C, D, E)</strong>
-                      <span className="text-slate-500">Eligible for both Bachelor of Engineering (4 Years) and Higher Diploma (2 Years).</span>
+                  {examRulesList.map(rule => (
+                    <div key={rule.id} className="py-3 flex items-center justify-between">
+                      <div>
+                        <strong className="text-slate-900 block">{rule.title}</strong>
+                        <span className="text-slate-500">{rule.desc}</span>
+                      </div>
+                      <span className={`px-3 py-1 font-bold rounded-lg border ${
+                        rule.badgeColor === 'emerald' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                        rule.badgeColor === 'amber' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                        'bg-blue-50 text-blue-700 border-blue-200'
+                      }`}>
+                        {rule.badge}
+                      </span>
                     </div>
-                    <span className="px-3 py-1 bg-emerald-50 text-emerald-700 font-bold rounded-lg border border-emerald-200">
-                      100% & 50% State Scholarships
-                    </span>
-                  </div>
-
-                  <div className="py-3 flex items-center justify-between">
-                    <div>
-                      <strong className="text-slate-900 block">Failed High School Diploma (ធ្លាក់បាក់ឌុប)</strong>
-                      <span className="text-slate-500">100% Eligible for Higher Technical Diploma (2 Years) with full state tuition waiver.</span>
-                    </div>
-                    <span className="px-3 py-1 bg-blue-50 text-blue-700 font-bold rounded-lg border border-blue-200">
-                      100% Tuition Scholarship
-                    </span>
-                  </div>
-
-                  <div className="py-3 flex items-center justify-between">
-                    <div>
-                      <strong className="text-slate-900 block">TVET Level 3 Certificate Holders</strong>
-                      <span className="text-slate-500">Direct admission into Year 2 Higher Diploma technical tracks.</span>
-                    </div>
-                    <span className="px-3 py-1 bg-amber-50 text-amber-700 font-bold rounded-lg border border-amber-200">
-                      Credit Transfer Accepted
-                    </span>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1236,40 +1461,39 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
              ===================================================================== */}
           {activeView === 'calendar' && (
             <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2 text-xs">
-                <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-slate-900 font-bold">Academic Calendar & Batch Deadlines</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs">
+                  <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="text-slate-900 font-bold">Academic Calendar & Batch Deadlines ({batchesList.length})</span>
+                </div>
+                <button
+                  type="button"
+                  id="btn-create-batch"
+                  onClick={() => setBatchModalOpen(true)}
+                  className="px-4 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Intake Batch</span>
+                </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
-                    B1
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {batchesList.map(batch => (
+                  <div key={batch.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
+                      {batch.code}
+                    </div>
+                    <h4 className="font-bold text-base text-slate-900">{batch.name}</h4>
+                    <div className="text-xs text-slate-600">
+                      <div>Official Start Date: <strong>{batch.startDate}</strong></div>
+                      <div className="mt-1">Enrollment Deadline: <strong>{batch.deadline}</strong></div>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-lg text-xs text-slate-700">
+                      {batch.notes}
+                    </div>
                   </div>
-                  <h4 className="font-bold text-base text-slate-900">Cohort Batch 1 (វគ្គទី១)</h4>
-                  <div className="text-xs text-slate-600">
-                    <div>Official Start Date: <strong>November 13, 2026 (១៣ វិច្ឆិកា ២០២៦)</strong></div>
-                    <div className="mt-1">Enrollment Deadline: <strong>November 05, 2026</strong></div>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-lg text-xs text-slate-700">
-                    Orientation, laboratory safety protocol training, and technical toolkit distribution.
-                  </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
-                    B2
-                  </div>
-                  <h4 className="font-bold text-base text-slate-900">Cohort Batch 2 (វគ្គទី២)</h4>
-                  <div className="text-xs text-slate-600">
-                    <div>Official Start Date: <strong>January 04, 2027 (០៤ មករា ២០២៧)</strong></div>
-                    <div className="mt-1">Enrollment Deadline: <strong>December 28, 2026</strong></div>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-lg text-xs text-slate-700">
-                    Second intake for high school graduates and scholarship awardees.
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           )}
@@ -1357,27 +1581,36 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
              ===================================================================== */}
           {activeView === 'research' && (
             <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2 text-xs">
-                <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-slate-900 font-bold">Applied Research & Industry Testbeds</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs">
+                  <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="text-slate-900 font-bold">Applied Research & Industry Testbeds ({researchTestbeds.length})</span>
+                </div>
+                <button
+                  type="button"
+                  id="btn-create-research"
+                  onClick={() => setResearchModalOpen(true)}
+                  className="px-4 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Research Testbed</span>
+                </button>
               </div>
 
               <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
                 <h4 className="font-bold text-base text-slate-900">National Innovation & Applied Science Testbeds</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                  <div className="p-4 bg-slate-50 rounded-xl space-y-2">
-                    <h5 className="font-bold text-slate-900 text-sm">Solar Microgrids</h5>
-                    <p className="text-slate-600">40 kW industrial solar array with battery storage & IoT load monitoring.</p>
-                  </div>
-                  <div className="p-4 bg-slate-50 rounded-xl space-y-2">
-                    <h5 className="font-bold text-slate-900 text-sm">6-Axis Industrial Robotics</h5>
-                    <p className="text-slate-600">Automated manufacturing conveyor sorting & computer vision inspection.</p>
-                  </div>
-                  <div className="p-4 bg-slate-50 rounded-xl space-y-2">
-                    <h5 className="font-bold text-slate-900 text-sm">Concrete & BIM Digital Twins</h5>
-                    <p className="text-slate-600">Seismic structural stress testing and sustainable cementitious material analysis.</p>
-                  </div>
+                  {researchTestbeds.map(res => (
+                    <div key={res.id} className="p-4 bg-slate-50 rounded-xl space-y-2 border border-slate-100">
+                      <div className="flex items-center justify-between">
+                        <h5 className="font-bold text-slate-900 text-sm">{res.title}</h5>
+                        <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded">{res.status}</span>
+                      </div>
+                      <p className="text-slate-600">{res.desc}</p>
+                      {res.lead && <p className="text-[11px] text-slate-500 font-medium">Lead: <strong>{res.lead}</strong></p>}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1853,6 +2086,431 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                   className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs"
                 >
                   Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: PROGRAM / MAJOR MODAL */}
+      {programModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-base text-slate-900">Add Academic Program / Major</h3>
+              <button type="button" onClick={() => setProgramModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleSaveProgram} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Program Name (English) *</label>
+                <input
+                  type="text"
+                  required
+                  id="input-program-name"
+                  value={programFormData.name}
+                  onChange={(e) => setProgramFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="e.g. Artificial Intelligence & Robotics Engineering"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Program Name (Khmer)</label>
+                <input
+                  type="text"
+                  id="input-program-name-kh"
+                  value={programFormData.nameKhmer}
+                  onChange={(e) => setProgramFormData(prev => ({ ...prev, nameKhmer: e.target.value }))}
+                  placeholder="វិស្វកម្មបញ្ញាសិប្បនិម្មិត និងរ៉ូបូត"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-khmer"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Degree Level</label>
+                  <select
+                    value={programFormData.level}
+                    onChange={(e) => setProgramFormData(prev => ({ ...prev, level: e.target.value }))}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  >
+                    <option value="Bachelor of Engineering (4 Years)">Bachelor of Engineering</option>
+                    <option value="Higher Technical Diploma (2 Years)">Higher Technical Diploma</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Duration</label>
+                  <input
+                    type="text"
+                    value={programFormData.duration}
+                    onChange={(e) => setProgramFormData(prev => ({ ...prev, duration: e.target.value }))}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+
+              {/* Program Cover Image Field */}
+              <div className="space-y-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <label className="block text-xs font-bold text-slate-700 uppercase">
+                  Program Cover Image
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-500 mb-1">Image URL / Path</label>
+                    <input
+                      type="text"
+                      id="input-program-image"
+                      value={programFormData.image}
+                      onChange={(e) => setProgramFormData(prev => ({ ...prev, image: e.target.value }))}
+                      placeholder="/major-cybersecurity.jpg"
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-500 mb-1">Or Upload Image</label>
+                    <input
+                      type="file"
+                      id="input-program-image-file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            setProgramFormData(prev => ({ ...prev, image: reader.result }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+                    />
+                  </div>
+                </div>
+
+                {/* Image Live Preview */}
+                {programFormData.image && (
+                  <div className="flex items-center gap-3 pt-2 border-t border-slate-200">
+                    <img 
+                      src={programFormData.image} 
+                      alt="Program Preview" 
+                      className="w-16 h-12 object-cover rounded-lg border border-slate-300 shadow-2xs" 
+                    />
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[11px] font-bold text-slate-800 block truncate">Image Selected</span>
+                      <span className="text-[10px] text-emerald-600 font-semibold">Ready to display on class card</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setProgramFormData(prev => ({ ...prev, image: '' }))}
+                      className="text-xs text-red-500 hover:text-red-700 font-bold px-2 py-1"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Program Overview *</label>
+                <textarea
+                  required
+                  rows="2"
+                  id="input-program-overview"
+                  value={programFormData.overview}
+                  onChange={(e) => setProgramFormData(prev => ({ ...prev, overview: e.target.value }))}
+                  placeholder="Key curriculum highlights, laboratory hours, and industry certification paths."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button type="button" onClick={() => setProgramModalOpen(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" id="btn-save-program" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
+                  Save Major
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 4: SHIFT MODAL */}
+      {shiftModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-base text-slate-900">Add Study Shift Schedule</h3>
+              <button type="button" onClick={() => setShiftModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleSaveShift} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Shift Name *</label>
+                <input
+                  type="text"
+                  required
+                  id="input-shift-name"
+                  value={shiftFormData.name}
+                  onChange={(e) => setShiftFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="e.g. Evening Shift (វេនយប់)"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Class Hours *</label>
+                <input
+                  type="text"
+                  required
+                  id="input-shift-hours"
+                  value={shiftFormData.hours}
+                  onChange={(e) => setShiftFormData(prev => ({ ...prev, hours: e.target.value }))}
+                  placeholder="e.g. 5:30 PM – 8:30 PM (Monday to Friday)"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Target Cohort & Scope *</label>
+                <textarea
+                  required
+                  rows="2"
+                  id="input-shift-details"
+                  value={shiftFormData.details}
+                  onChange={(e) => setShiftFormData(prev => ({ ...prev, details: e.target.value }))}
+                  placeholder="Specialized schedule for enterprise technicians and evening degree candidates."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button type="button" onClick={() => setShiftModalOpen(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" id="btn-save-shift" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
+                  Save Shift
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 5: EXAM RULE MODAL */}
+      {examModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-base text-slate-900">Add Admission Eligibility Rule</h3>
+              <button type="button" onClick={() => setExamModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleSaveExamRule} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Criteria Title *</label>
+                <input
+                  type="text"
+                  required
+                  id="input-exam-title"
+                  value={examFormData.title}
+                  onChange={(e) => setExamFormData(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="e.g. National Technical Olympiad Medalists"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Description & Requirements *</label>
+                <textarea
+                  required
+                  rows="2"
+                  id="input-exam-desc"
+                  value={examFormData.desc}
+                  onChange={(e) => setExamFormData(prev => ({ ...prev, desc: e.target.value }))}
+                  placeholder="Direct admission into honors engineering research cohort with full lab stipend."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Scholarship / Badge</label>
+                  <input
+                    type="text"
+                    required
+                    id="input-exam-badge"
+                    value={examFormData.badge}
+                    onChange={(e) => setExamFormData(prev => ({ ...prev, badge: e.target.value }))}
+                    placeholder="100% Presidential Fellowship"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Badge Theme</label>
+                  <select
+                    value={examFormData.badgeColor}
+                    onChange={(e) => setExamFormData(prev => ({ ...prev, badgeColor: e.target.value }))}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  >
+                    <option value="emerald">Emerald (Honor/Pass)</option>
+                    <option value="blue">Blue (Tuition Waiver)</option>
+                    <option value="amber">Amber (Credit Transfer)</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button type="button" onClick={() => setExamModalOpen(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" id="btn-save-exam-rule" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
+                  Save Rule
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 6: BATCH MODAL */}
+      {batchModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-base text-slate-900">Add Academic Intake Batch</h3>
+              <button type="button" onClick={() => setBatchModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleSaveBatch} className="space-y-3">
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Code *</label>
+                  <input
+                    type="text"
+                    required
+                    id="input-batch-code"
+                    value={batchFormData.code}
+                    onChange={(e) => setBatchFormData(prev => ({ ...prev, code: e.target.value }))}
+                    placeholder="B3"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Batch Name *</label>
+                  <input
+                    type="text"
+                    required
+                    id="input-batch-name"
+                    value={batchFormData.name}
+                    onChange={(e) => setBatchFormData(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="Cohort Batch 3 (វគ្គទី៣)"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Official Start Date *</label>
+                  <input
+                    type="text"
+                    required
+                    id="input-batch-start"
+                    value={batchFormData.startDate}
+                    onChange={(e) => setBatchFormData(prev => ({ ...prev, startDate: e.target.value }))}
+                    placeholder="March 15, 2027"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Enrollment Deadline *</label>
+                  <input
+                    type="text"
+                    required
+                    id="input-batch-deadline"
+                    value={batchFormData.deadline}
+                    onChange={(e) => setBatchFormData(prev => ({ ...prev, deadline: e.target.value }))}
+                    placeholder="March 05, 2027"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Intake Description *</label>
+                <textarea
+                  required
+                  rows="2"
+                  id="input-batch-notes"
+                  value={batchFormData.notes}
+                  onChange={(e) => setBatchFormData(prev => ({ ...prev, notes: e.target.value }))}
+                  placeholder="Spring specialized intake for industrial mechatronics & green energy technicians."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button type="button" onClick={() => setBatchModalOpen(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" id="btn-save-batch" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
+                  Save Batch
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 7: RESEARCH TESTBED MODAL */}
+      {researchModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-base text-slate-900">Add Applied Research Testbed</h3>
+              <button type="button" onClick={() => setResearchModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleSaveResearch} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Project / Facility Title *</label>
+                <input
+                  type="text"
+                  required
+                  id="input-research-title"
+                  value={researchFormData.title}
+                  onChange={(e) => setResearchFormData(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="e.g. AI Smart Grid & IoT Energy Monitoring"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Lead Researcher / Lab Head *</label>
+                <input
+                  type="text"
+                  required
+                  id="input-research-lead"
+                  value={researchFormData.lead}
+                  onChange={(e) => setResearchFormData(prev => ({ ...prev, lead: e.target.value }))}
+                  placeholder="Dr. Sok Rathana, Laboratory Director"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Testbed Scope & Industrial Equipment *</label>
+                <textarea
+                  required
+                  rows="2"
+                  id="input-research-desc"
+                  value={researchFormData.desc}
+                  onChange={(e) => setResearchFormData(prev => ({ ...prev, desc: e.target.value }))}
+                  placeholder="Real-time SCADA power telemetry, automated frequency stabilization testbed."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button type="button" onClick={() => setResearchModalOpen(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 cursor-pointer">
+                  Cancel
+                </button>
+                <button type="submit" id="btn-save-research" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
+                  Save Testbed
                 </button>
               </div>
             </form>
