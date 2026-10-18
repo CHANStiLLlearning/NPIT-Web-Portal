@@ -8,15 +8,15 @@ const STORAGE_KEYS = {
   AUDIT_LOGS: 'npit_admin_audit_logs'
 };
 
-// Default initial announcement banner
+// Default initial announcement banner (disabled by default)
 const DEFAULT_BANNER = {
-  enabled: true,
+  enabled: false,
   type: 'announcement', // 'announcement' | 'urgent' | 'info' | 'success'
-  textEn: 'Official Enrollment 2026–2027: Batch 1 Starts Nov 13, 2026 | Batch 2 Starts Jan 04, 2027',
-  textKh: 'សេចក្តីជូនដំណឹងអំពីការចុះឈ្មោះចូលរៀន ២០២៦–២០២៧៖ វគ្គទី១ ចាប់ផ្តើម ថ្ងៃទី១៣ វិច្ឆិកា ២០២៦ | វគ្គទី២ ថ្ងៃទី០៤ មករា ២០២៧',
-  ctaTextEn: 'Apply Now',
-  ctaTextKh: 'ដាក់ពាក្យឥឡូវនេះ',
-  ctaLink: '#apply'
+  textEn: '',
+  textKh: '',
+  ctaTextEn: '',
+  ctaTextKh: '',
+  ctaLink: ''
 };
 
 // ============================================================================
@@ -78,7 +78,13 @@ export function getAuditLogs() {
 export function getSiteBanner() {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.BANNER);
-    return raw ? JSON.parse(raw) : DEFAULT_BANNER;
+    if (!raw) return DEFAULT_BANNER;
+    const parsed = JSON.parse(raw);
+    if (parsed?.textEn && parsed.textEn.includes('Batch 1 Starts Nov 13, 2026')) {
+      localStorage.removeItem(STORAGE_KEYS.BANNER);
+      return DEFAULT_BANNER;
+    }
+    return parsed;
   } catch {
     return DEFAULT_BANNER;
   }
@@ -107,7 +113,20 @@ export function getSiteNews() {
       localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(defaultNews));
       return defaultNews;
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    let modified = false;
+    const sanitized = parsed.map(item => {
+      if (item?.quote?.text && item.quote.text.includes('stepping into a community of makers')) {
+        modified = true;
+        const { quote, ...rest } = item;
+        return rest;
+      }
+      return item;
+    });
+    if (modified) {
+      localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(sanitized));
+    }
+    return sanitized;
   } catch {
     return defaultNews;
   }

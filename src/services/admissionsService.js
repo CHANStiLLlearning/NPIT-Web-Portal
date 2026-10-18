@@ -1,13 +1,80 @@
-import { db, isFirebaseConfigured } from './firebase';
+import { db, storage, isFirebaseConfigured } from './firebase';
 import { 
   collection, 
-  addDoc, 
   getDocs, 
   query, 
   where, 
   orderBy, 
   serverTimestamp 
 } from 'firebase/firestore';
+
+/**
+ * Upload a student document to Firebase Cloud Storage with resilient local fallback
+ * @param {File} file 
+ * @param {string} referenceNumber 
+ * @param {'photo' | 'bac_certificate' | 'national_id'} docType 
+ * @returns {Promise<{url: string, name: string, size: number, storagePath?: string, isLocal?: boolean}>}
+ */
+export async function uploadApplicationDocument(file, referenceNumber, docType) {
+  if (!file) return { url: '', name: '' };
+
+  // 1. Try Firebase Cloud Storage if online & configured
+  if (isFirebaseConfigured && storage) {
+    try {
+      const { ref, uploadBytes, getDownloadURL } = await import('firebase/storage');
+      const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const storagePath = `applications/${referenceNumber}/${docType}_${Date.now()}_${cleanFileName}`;
+      const storageRef = ref(storage, storagePath);
+
+      const snapshot = await uploadBytes(storageRef, file, {
+        contentType: file.type || 'application/octet-stream',
+        customMetadata: {
+          referenceNumber,
+          docType,
+          originalName: file.name
+        }
+      });
+
+      const downloadUrl = await getDownloadURL(snapshot.ref);
+      console.log(`[AdmissionsService] Uploaded ${docType} to Firebase Storage:`, downloadUrl);
+      return {
+        url: downloadUrl,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        storagePath
+      };
+    } catch (storageErr) {
+      console.warn(`[AdmissionsService] Cloud Storage upload error for ${docType}, falling back to data URL:`, storageErr);
+    }
+  }
+
+  // 2. Resilient local fallback (base64 Data URL) so offline users never get blocked
+  return new Promise((resolve) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = () => {
+        resolve({
+          url: reader.result,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          isLocal: true
+        });
+      };
+      reader.onerror = () => {
+        resolve({
+          url: '',
+          name: file.name,
+          error: true
+        });
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      resolve({ url: '', name: file.name });
+    }
+  });
+}
 
 const LOCAL_STORAGE_KEY = 'npit_admissions_applications';
 
@@ -79,9 +146,15 @@ export async function submitApplication(formData) {
       quotaPercent: formData.scholarshipQuotaPercent || '100% State Quota'
     },
     documents: {
-      bacIICertificateUploaded: Boolean(formData.bacIICertificate),
-      nationalIdUploaded: Boolean(formData.nationalIdCard),
-      idPhotoUploaded: Boolean(formData.photo4x6)
+      photoUrl: formData.documents?.photoUrl || formData.photoUrl || '',
+      photoName: formData.documents?.photoName || formData.photoName || '',
+      bacCertificateUrl: formData.documents?.bacCertificateUrl || formData.bacCertificateUrl || '',
+      bacCertificateName: formData.documents?.bacCertificateName || formData.bacCertificateName || '',
+      nationalIdUrl: formData.documents?.nationalIdUrl || formData.nationalIdUrl || '',
+      nationalIdName: formData.documents?.nationalIdName || formData.nationalIdName || '',
+      bacIICertificateUploaded: Boolean(formData.documents?.bacCertificateUrl || formData.bacCertificateUrl || formData.bacIICertificate),
+      nationalIdUploaded: Boolean(formData.documents?.nationalIdUrl || formData.nationalIdUrl || formData.nationalIdCard),
+      idPhotoUploaded: Boolean(formData.documents?.photoUrl || formData.photoUrl || formData.photo4x6)
     }
   };
 

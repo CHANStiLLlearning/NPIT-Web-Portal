@@ -373,6 +373,49 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
                 </div>
               </div>
 
+              {/* Cloud Uploaded Documents */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#002b80] mb-3 flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-[#d4af37]" />
+                  {lang === 'kh' ? 'ឯកសារភ្ជាប់ដែលបានបញ្ចូលក្នុងប្រព័ន្ធ' : 'Verified Cloud Documents & Credentials'}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm">
+                  <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-3">
+                    {result.documents?.photoUrl ? (
+                      <img src={result.documents.photoUrl} alt="Photo" className="w-10 h-12 object-cover rounded border border-slate-200 shadow-2xs" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs">ID</div>
+                    )}
+                    <div>
+                      <span className="text-xs font-bold text-slate-800 block">Student Photo</span>
+                      <span className={`text-[10px] font-bold ${result.documents?.photoUrl ? 'text-emerald-700' : 'text-slate-500'}`}>
+                        {result.documents?.photoUrl ? '✓ Stored in Cloud' : 'To submit on campus'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs">BAC</div>
+                    <div className="truncate">
+                      <span className="text-xs font-bold text-slate-800 block">Bac II Slip</span>
+                      <span className={`text-[10px] font-bold ${result.documents?.bacCertificateUrl ? 'text-emerald-700' : 'text-slate-500'}`}>
+                        {result.documents?.bacCertificateUrl ? '✓ Stored in Cloud' : 'To submit on campus'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs">DOC</div>
+                    <div className="truncate">
+                      <span className="text-xs font-bold text-slate-800 block">National ID</span>
+                      <span className={`text-[10px] font-bold ${result.documents?.nationalIdUrl ? 'text-emerald-700' : 'text-slate-500'}`}>
+                        {result.documents?.nationalIdUrl ? '✓ Stored in Cloud' : 'To submit on campus'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Admin Committee Notes (if any) */}
               {result.adminNotes && (
                 <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-sm">

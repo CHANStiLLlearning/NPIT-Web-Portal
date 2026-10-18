@@ -24,8 +24,7 @@ import { admissionsDetails } from './data/admissionsData';
 import TrackerPage from './components/TrackerPage';
 import AdminPage from './components/AdminPage';
 import { contentData } from './data/content';
-import { ArrowUp, Megaphone } from 'lucide-react';
-import { getSiteBanner } from './services/siteContentService';
+import { ArrowUp } from 'lucide-react';
 
 export default function App() {
   const [lang, setLang] = useState('en');
@@ -40,18 +39,8 @@ export default function App() {
   const [selectedResearch, setSelectedResearch] = useState(null);
   const [trackerCode, setTrackerCode] = useState('');
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [siteBanner, setSiteBanner] = useState(getSiteBanner());
 
   const t = contentData[lang] || contentData.en;
-
-  // Listen for real-time site banner changes from Admin Dashboard
-  useEffect(() => {
-    const handleBannerUpdate = (e) => {
-      setSiteBanner(e.detail || getSiteBanner());
-    };
-    window.addEventListener('npit-site-banner-updated', handleBannerUpdate);
-    return () => window.removeEventListener('npit-site-banner-updated', handleBannerUpdate);
-  }, []);
 
   // Handle URL hash changes & browser navigation
   useEffect(() => {
@@ -339,35 +328,6 @@ export default function App() {
       {/* Combined Sticky Navigation System (Header + Royal Blue Navbar) */}
       <div className="sticky top-0 z-40 shadow-sm transition-all">
         
-        {/* Site-Wide Announcement Ticker Banner (Controlled via Admin CMS) */}
-        {siteBanner?.enabled && currentPage !== 'admin' && (
-          <div className={`px-4 py-2 text-white text-xs shadow-xs transition-all ${
-            siteBanner.type === 'urgent' ? 'bg-gradient-to-r from-red-700 via-rose-700 to-red-800' :
-            siteBanner.type === 'info' ? 'bg-gradient-to-r from-sky-700 via-blue-700 to-sky-800' :
-            siteBanner.type === 'success' ? 'bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800' :
-            'bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-950'
-          }`}>
-            <div className="max-w-7xl mx-auto w-full flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5 overflow-hidden">
-                <span className="p-1 rounded bg-white/20 shrink-0">
-                  <Megaphone className="w-3.5 h-3.5 text-amber-300" />
-                </span>
-                <span className="font-medium text-[11px] sm:text-xs">
-                  {lang === 'kh' ? (siteBanner.textKh || siteBanner.textEn) : siteBanner.textEn}
-                </span>
-              </div>
-              {siteBanner.ctaTextEn && (
-                <a
-                  href={siteBanner.ctaLink || '#apply'}
-                  className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-3 py-1 rounded-full text-[11px] shrink-0 shadow-xs transition"
-                >
-                  {lang === 'kh' ? (siteBanner.ctaTextKh || siteBanner.ctaTextEn) : siteBanner.ctaTextEn}
-                </a>
-              )}
-            </div>
-          </div>
-        )}
-
         {/* 1. Header (Logo, Language Switcher) */}
         <Header
           lang={lang}

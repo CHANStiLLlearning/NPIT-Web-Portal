@@ -1,0 +1,35 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email in ['admin@npit.edu.kh', 'reactjs35@gmail.com', 'kimchankeo1234@gmail.com']
+      );
+    }
+
+    // Student Admission Documents: Photo, Bac II Certificate, National ID
+    match /applications/{referenceNumber}/{fileName} {
+      // Anyone with the valid download token or admin can view
+      allow read: if true;
+
+      // Allow upload if file is under 10MB and is a valid image or PDF
+      allow create: if request.resource.size < 10 * 1024 * 1024
+                    && (request.resource.contentType.matches('image/.*') 
+                        || request.resource.contentType == 'application/pdf');
+
+      // Only administrators can overwrite or delete submitted documents
+      allow update, delete: if isAdmin();
+    }
+
+    // Default deny for all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

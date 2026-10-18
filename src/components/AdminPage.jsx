@@ -1595,13 +1595,22 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-6 my-8 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div>
-                <span className="text-xs font-mono font-bold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-md">
-                  {selectedApp.referenceNumber}
-                </span>
-                <h3 className="text-xl font-bold text-slate-900 mt-1">
-                  {selectedApp.applicant?.fullName} ({selectedApp.applicant?.fullNameKhmer || 'N/A'})
-                </h3>
+              <div className="flex items-center gap-3">
+                {selectedApp.documents?.photoUrl ? (
+                  <img
+                    src={selectedApp.documents.photoUrl}
+                    alt="Applicant"
+                    className="w-12 h-14 rounded-lg object-cover border border-blue-200 shadow-xs"
+                  />
+                ) : null}
+                <div>
+                  <span className="text-xs font-mono font-bold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-md">
+                    {selectedApp.referenceNumber}
+                  </span>
+                  <h3 className="text-xl font-bold text-slate-900 mt-1">
+                    {selectedApp.applicant?.fullName} ({selectedApp.applicant?.fullNameKhmer || 'N/A'})
+                  </h3>
+                </div>
               </div>
               <button
                 type="button"
@@ -1625,6 +1634,110 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                 <div className="text-slate-900 font-bold">{selectedApp.academic?.highSchoolName || 'N/A'}</div>
                 <div className="text-slate-600">Bac II Grade: <strong className="text-blue-900">{selectedApp.academic?.bacIIGrade || 'N/A'}</strong></div>
                 <div className="text-slate-500">Track: {selectedApp.academic?.bacIITrack || 'Science'}</div>
+              </div>
+            </div>
+
+            {/* Firebase Cloud Storage Uploaded Documents */}
+            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-700 block font-bold uppercase text-[10px] tracking-wider flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5 text-blue-600" />
+                  Cloud Storage Documents
+                </span>
+                <span className="text-[10px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+                  Firebase Storage
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* 1. Student Portrait Photo */}
+                <div className="p-3 bg-white rounded-lg border border-slate-200 flex flex-col justify-between space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-slate-700">Photo (4x6)</span>
+                    {selectedApp.documents?.photoUrl ? (
+                      <span className="text-[10px] text-emerald-700 font-bold">Uploaded</span>
+                    ) : (
+                      <span className="text-[10px] text-slate-400">In-Person</span>
+                    )}
+                  </div>
+                  {selectedApp.documents?.photoUrl ? (
+                    <div className="flex items-center gap-2">
+                      <img 
+                        src={selectedApp.documents.photoUrl} 
+                        alt="Student" 
+                        className="w-12 h-14 object-cover rounded-md border border-slate-200 shadow-2xs" 
+                      />
+                      <a
+                        href={selectedApp.documents.photoUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[11px] text-blue-600 hover:underline flex items-center gap-1 font-semibold"
+                      >
+                        <ExternalLink className="w-3 h-3" /> View
+                      </a>
+                    </div>
+                  ) : (
+                    <p className="text-[11px] text-slate-400 italic">No photo attached</p>
+                  )}
+                </div>
+
+                {/* 2. Bac II Certificate */}
+                <div className="p-3 bg-white rounded-lg border border-slate-200 flex flex-col justify-between space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-slate-700">Bac II Slip</span>
+                    {selectedApp.documents?.bacCertificateUrl ? (
+                      <span className="text-[10px] text-emerald-700 font-bold">Uploaded</span>
+                    ) : (
+                      <span className="text-[10px] text-slate-400">In-Person</span>
+                    )}
+                  </div>
+                  {selectedApp.documents?.bacCertificateUrl ? (
+                    <div>
+                      <p className="text-[11px] font-medium text-slate-800 truncate mb-1">
+                        {selectedApp.documents?.bacCertificateName || 'Certificate Document'}
+                      </p>
+                      <a
+                        href={selectedApp.documents.bacCertificateUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 text-[11px] font-bold transition"
+                      >
+                        <ExternalLink className="w-3 h-3" /> Open File
+                      </a>
+                    </div>
+                  ) : (
+                    <p className="text-[11px] text-slate-400 italic">To present on campus</p>
+                  )}
+                </div>
+
+                {/* 3. National ID Card */}
+                <div className="p-3 bg-white rounded-lg border border-slate-200 flex flex-col justify-between space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-slate-700">National ID</span>
+                    {selectedApp.documents?.nationalIdUrl ? (
+                      <span className="text-[10px] text-emerald-700 font-bold">Uploaded</span>
+                    ) : (
+                      <span className="text-[10px] text-slate-400">In-Person</span>
+                    )}
+                  </div>
+                  {selectedApp.documents?.nationalIdUrl ? (
+                    <div>
+                      <p className="text-[11px] font-medium text-slate-800 truncate mb-1">
+                        {selectedApp.documents?.nationalIdName || 'ID Card Document'}
+                      </p>
+                      <a
+                        href={selectedApp.documents.nationalIdUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 text-[11px] font-bold transition"
+                      >
+                        <ExternalLink className="w-3 h-3" /> Open File
+                      </a>
+                    </div>
+                  ) : (
+                    <p className="text-[11px] text-slate-400 italic">To present on campus</p>
+                  )}
+                </div>
               </div>
             </div>
 

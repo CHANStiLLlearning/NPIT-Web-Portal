@@ -25,10 +25,14 @@ import {
   MapPin,
   HelpCircle,
   AlertCircle,
-  Loader2
+  Loader2,
+  Upload,
+  Camera,
+  FileCheck,
+  Trash2
 } from 'lucide-react';
 import { programsList, higherDiplomaMajors, bachelorMajors, officialAdmissionInfo } from '../data/programsData';
-import { submitApplication } from '../services/admissionsService';
+import { submitApplication, uploadApplicationDocument } from '../services/admissionsService';
 
 export default function ApplyPage({ 
   lang, 
@@ -62,6 +66,18 @@ export default function ApplyPage({
     scholarship: '100_state', // '100_state' | '50_tvet' | 'women_stem' | 'self_financed'
     agreed: false,
     honeypot: ''
+  });
+
+  // Document Uploads State for Firebase Cloud Storage
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [bacFile, setBacFile] = useState(null);
+  const [nationalIdFile, setNationalIdFile] = useState(null);
+  const [uploadStatusText, setUploadStatusText] = useState('');
+  const [uploadedDocsInfo, setUploadedDocsInfo] = useState({
+    photoName: '',
+    bacName: '',
+    idName: ''
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -119,7 +135,7 @@ export default function ApplyPage({
 
   const handleNext = (e) => {
     if (e) e.preventDefault();
-    if (step < 4) {
+    if (step < 5) {
       setStep(step + 1);
       window.scrollTo({ top: 200, behavior: 'smooth' });
     }
@@ -152,8 +168,39 @@ export default function ApplyPage({
 
     setSubmitting(true);
     setSubmitError(null);
+    setUploadStatusText(isKh ? 'កំពុងរៀបចំការតភ្ជាប់...' : 'Preparing connection...');
 
     try {
+      const tempRef = `NPIT-2026-APP-${Math.floor(100000 + Math.random() * 900000)}`;
+
+      // 1. Upload files to Firebase Cloud Storage if selected
+      let photoData = { url: '', name: '' };
+      let bacData = { url: '', name: '' };
+      let idData = { url: '', name: '' };
+
+      if (photoFile) {
+        setUploadStatusText(isKh ? 'កំពុងបញ្ចូលរូបថត ៤x៦ ទៅ Cloud Storage...' : 'Uploading portrait photo to Cloud Storage...');
+        photoData = await uploadApplicationDocument(photoFile, tempRef, 'photo');
+      }
+
+      if (bacFile) {
+        setUploadStatusText(isKh ? 'កំពុងបញ្ចូលសញ្ញាបត្របាក់ឌុប...' : 'Uploading Bac II Certificate...');
+        bacData = await uploadApplicationDocument(bacFile, tempRef, 'bac_certificate');
+      }
+
+      if (nationalIdFile) {
+        setUploadStatusText(isKh ? 'កំពុងបញ្ចូលអត្តសញ្ញាណប័ណ្ណ...' : 'Uploading National ID / Birth Certificate...');
+        idData = await uploadApplicationDocument(nationalIdFile, tempRef, 'national_id');
+      }
+
+      setUploadedDocsInfo({
+        photoName: photoData.name || (photoFile ? photoFile.name : ''),
+        bacName: bacData.name || (bacFile ? bacFile.name : ''),
+        idName: idData.name || (nationalIdFile ? nationalIdFile.name : '')
+      });
+
+      setUploadStatusText(isKh ? 'កំពុងរក្សាទុកព័ត៌មានពាក្យសុំ...' : 'Saving application dossier...');
+
       const result = await submitApplication({
         fullName: formData.fullNameEn,
         fullNameKhmer: formData.fullNameKh,
@@ -171,7 +218,15 @@ export default function ApplyPage({
         degreeType: formData.degreeLevel === 'beng' ? 'Bachelor of Engineering (4 Years)' : 'Higher Technical Diploma (2 Years)',
         shift: formData.shift,
         scholarshipCategory: formData.scholarship,
-        scholarshipQuotaPercent: formData.scholarship === '100_state' ? '100% State Quota' : formData.scholarship === '50_tvet' ? '50% TVET Grant' : formData.scholarship === 'women_stem' ? '100% Women in STEM' : 'Self-Financed'
+        scholarshipQuotaPercent: formData.scholarship === '100_state' ? '100% State Quota' : formData.scholarship === '50_tvet' ? '50% TVET Grant' : formData.scholarship === 'women_stem' ? '100% Women in STEM' : 'Self-Financed',
+        documents: {
+          photoUrl: photoData.url,
+          photoName: photoData.name,
+          bacCertificateUrl: bacData.url,
+          bacCertificateName: bacData.name,
+          nationalIdUrl: idData.url,
+          nationalIdName: idData.name
+        }
       });
 
       setRefNumber(result.referenceNumber);
@@ -187,6 +242,7 @@ export default function ApplyPage({
       setSubmitError(isKh ? 'មានបញ្ហាបច្ចេកទេសក្នុងការរក្សាទុកទិន្នន័យ។ សូមព្យាយាមម្តងទៀត។' : 'An unexpected error occurred while saving your application. Please try again.');
     } finally {
       setSubmitting(false);
+      setUploadStatusText('');
     }
   };
 
@@ -198,7 +254,8 @@ export default function ApplyPage({
     { num: 1, title: isKh ? "ព័ត៌មានផ្ទាល់ខ្លួន" : "Personal Information", desc: isKh ? "ឈ្មោះ និងទំនាក់ទំនង" : "Identity & Contacts" },
     { num: 2, title: isKh ? "ប្រវត្តិការសិក្សា" : "Academic Background", desc: isKh ? "វិទ្យាល័យ និងនិទ្ទេសបាក់ឌុប" : "High School & Bac II" },
     { num: 3, title: isKh ? "ជម្រើសជំនាញ និងវេន" : "Program & Session", desc: isKh ? "មហាវិទ្យាល័យ និងម៉ោងសិក្សា" : "Major & Study Shift" },
-    { num: 4, title: isKh ? "ពិនិត្យ និងដាក់ពាក្យ" : "Review & Submit", desc: isKh ? "បញ្ជាក់ និងទទួលលេខកូដ" : "Verification & Code" },
+    { num: 4, title: isKh ? "ឯកសារភ្ជាប់ និងរូបថត" : "Documents & Photo", desc: isKh ? "រូបថត ៤x៦ និងសញ្ញាបត្រ" : "Photo & Bac II Slip" },
+    { num: 5, title: isKh ? "ពិនិត្យ និងដាក់ពាក្យ" : "Review & Submit", desc: isKh ? "បញ្ជាក់ និងទទួលលេខកូដ" : "Verification & Code" },
   ];
 
   return (
@@ -357,6 +414,32 @@ export default function ApplyPage({
                     <span>Under Review by Admissions</span>
                   </span>
                 </div>
+
+                <div className="p-3 bg-white rounded-xl border border-slate-200 sm:col-span-2 md:col-span-3">
+                  <span className="text-slate-400 text-xs block mb-1.5 font-bold uppercase tracking-wider text-[10px]">
+                    Firebase Cloud Storage Documents
+                  </span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold ${
+                      uploadedDocsInfo.photoName ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      <Camera className="w-3.5 h-3.5" />
+                      {uploadedDocsInfo.photoName ? `Photo: ${uploadedDocsInfo.photoName}` : 'Photo: Submit in Person'}
+                    </span>
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold ${
+                      uploadedDocsInfo.bacName ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      <GraduationCap className="w-3.5 h-3.5" />
+                      {uploadedDocsInfo.bacName ? `Bac II: ${uploadedDocsInfo.bacName}` : 'Bac II: Submit in Person'}
+                    </span>
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold ${
+                      uploadedDocsInfo.idName ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      {uploadedDocsInfo.idName ? `National ID: ${uploadedDocsInfo.idName}` : 'National ID: Submit in Person'}
+                    </span>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -452,7 +535,7 @@ export default function ApplyPage({
             
             {/* Step Progress Tracker Bar */}
             <div className="bg-slate-50/80 border-b border-slate-200 p-4 sm:p-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
                 {stepTitles.map((s) => {
                   const isCurrent = step === s.num;
                   const isDone = step > s.num;
@@ -494,7 +577,7 @@ export default function ApplyPage({
             </div>
 
             {/* Form Content */}
-            <form onSubmit={step === 4 ? handleSubmit : handleNext} className="p-6 sm:p-10 space-y-8">
+            <form onSubmit={step === 5 ? handleSubmit : handleNext} className="p-6 sm:p-10 space-y-8">
               
               {/* Security Honeypot Anti-Bot Field (Hidden from real users) */}
               <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
@@ -1024,12 +1107,223 @@ export default function ApplyPage({
                 </div>
               )}
 
-              {/* STEP 4: Review & Final Submission */}
+              {/* STEP 4: Upload Required Documents & Photo to Firebase Storage */}
               {step === 4 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="border-b border-slate-100 pb-4">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-900 text-xs font-bold mb-2">
+                      <Upload className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Google Firebase Cloud Storage</span>
+                    </div>
                     <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                      {isKh ? "ជំហានទី ៤៖ ផ្ទៀងផ្ទាត់ព័ត៌មាន និងការបញ្ជាក់ពាក្យ" : "Step 4: Review Information & Final Submission"}
+                      {isKh ? "ជំហានទី ៤៖ ឯកសារភ្ជាប់ និងរូបថតបេក្ខជន" : "Step 4: Required Documents & Photo Upload"}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                      {isKh 
+                        ? "សូមភ្ជាប់រូបថត ៤x៦ សញ្ញាបត្រ ឬលិខិតបញ្ជាក់បាក់ឌុប និងអត្តសញ្ញាណប័ណ្ណ (JPG, PNG, PDF ទំហំអតិបរមា 10MB)។"
+                        : "Upload your ID photo, Bac II Examination Certificate, and National ID/Birth Certificate to secure cloud storage."}
+                    </p>
+                  </div>
+
+                  {/* 3 Upload Dropzones */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    
+                    {/* 1. Student Photo (4x6) */}
+                    <div className="p-5 rounded-2xl border-2 border-dashed border-slate-200 hover:border-blue-500 bg-slate-50/50 hover:bg-white transition-all flex flex-col justify-between space-y-4">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                            <Camera className="w-4 h-4 text-blue-600" />
+                            {isKh ? "រូបថត ៤x៦ (Photo)" : "Portrait Photo (4x6)"}
+                          </span>
+                          <span className="text-[10px] font-semibold text-slate-400">JPG, PNG</span>
+                        </div>
+                        <p className="text-[11px] text-slate-500">
+                          {isKh ? "រូបថតសម្លៀកបំពាក់សមរម្យ ផ្ទៃខៀវ/ស សម្រាប់ធ្វើកាតនិស្សិត" : "Official formal portrait for student ID card"}
+                        </p>
+                      </div>
+
+                      {photoPreview ? (
+                        <div className="relative group mx-auto w-32 h-40 rounded-xl overflow-hidden border-2 border-blue-600 shadow-md bg-slate-100">
+                          <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => { setPhotoFile(null); setPhotoPreview(null); }}
+                            className="absolute top-1.5 right-1.5 p-1 rounded-lg bg-red-600 text-white shadow-sm hover:bg-red-700 transition cursor-pointer"
+                            title="Remove photo"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="border-2 border-dashed border-slate-300 hover:border-blue-500 bg-white rounded-xl p-5 text-center cursor-pointer hover:bg-blue-50/30 transition block">
+                          <Upload className="w-6 h-6 text-blue-600 mx-auto mb-1.5" />
+                          <span className="text-xs font-bold text-blue-700 block">
+                            {isKh ? "ជ្រើសរើសរូបថត ៤x៦" : "Browse Portrait Photo"}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block mt-0.5">Click or drag & drop</span>
+                          <input
+                            type="file"
+                            accept="image/png, image/jpeg, image/webp"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                setPhotoFile(file);
+                                setPhotoPreview(URL.createObjectURL(file));
+                              }
+                            }}
+                          />
+                        </label>
+                      )}
+
+                      {photoFile && (
+                        <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{photoFile.name}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 2. Bac II Examination Certificate */}
+                    <div className="p-5 rounded-2xl border-2 border-dashed border-slate-200 hover:border-blue-500 bg-slate-50/50 hover:bg-white transition-all flex flex-col justify-between space-y-4">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                            <GraduationCap className="w-4 h-4 text-blue-600" />
+                            {isKh ? "សញ្ញាបត្របាក់ឌុប" : "Bac II Certificate"}
+                          </span>
+                          <span className="text-[10px] font-semibold text-slate-400">PDF, JPG</span>
+                        </div>
+                        <p className="text-[11px] text-slate-500">
+                          {isKh ? "សញ្ញាបត្របណ្តោះអាសន្ន ឬលិខិតបញ្ជាក់និទ្ទេសបាក់ឌុប" : "High school diploma, provisional slip, or TVET level 3 certificate"}
+                        </p>
+                      </div>
+
+                      {bacFile ? (
+                        <div className="p-3.5 bg-blue-50/80 border border-blue-200 rounded-xl flex items-center justify-between">
+                          <div className="flex items-center gap-2.5 overflow-hidden">
+                            <FileCheck className="w-6 h-6 text-blue-700 shrink-0" />
+                            <div className="truncate">
+                              <span className="text-xs font-bold text-slate-900 truncate block">{bacFile.name}</span>
+                              <span className="text-[10px] text-slate-500">{(bacFile.size / 1024).toFixed(0)} KB</span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setBacFile(null)}
+                            className="p-1.5 text-slate-400 hover:text-red-600 transition cursor-pointer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="border-2 border-dashed border-slate-300 hover:border-blue-500 bg-white rounded-xl p-5 text-center cursor-pointer hover:bg-blue-50/30 transition block">
+                          <FileText className="w-6 h-6 text-blue-600 mx-auto mb-1.5" />
+                          <span className="text-xs font-bold text-blue-700 block">
+                            {isKh ? "ជ្រើសរើសឯកសារបាក់ឌុប" : "Browse Bac II Document"}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block mt-0.5">PDF or image file</span>
+                          <input
+                            type="file"
+                            accept=".pdf, image/png, image/jpeg, image/webp"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) setBacFile(file);
+                            }}
+                          />
+                        </label>
+                      )}
+
+                      {bacFile && (
+                        <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{bacFile.name}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 3. National ID Card or Birth Certificate */}
+                    <div className="p-5 rounded-2xl border-2 border-dashed border-slate-200 hover:border-blue-500 bg-slate-50/50 hover:bg-white transition-all flex flex-col justify-between space-y-4">
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                            <ShieldCheck className="w-4 h-4 text-blue-600" />
+                            {isKh ? "អត្តសញ្ញាណប័ណ្ណ" : "National ID / Birth Cert"}
+                          </span>
+                          <span className="text-[10px] font-semibold text-slate-400">PDF, JPG</span>
+                        </div>
+                        <p className="text-[11px] text-slate-500">
+                          {isKh ? "ច្បាប់ចម្លងអត្តសញ្ញាណប័ណ្ណសញ្ជាតិខ្មែរ ឬសំបុត្រកំណើត" : "Front scan of Cambodian National ID card or Birth Certificate"}
+                        </p>
+                      </div>
+
+                      {nationalIdFile ? (
+                        <div className="p-3.5 bg-blue-50/80 border border-blue-200 rounded-xl flex items-center justify-between">
+                          <div className="flex items-center gap-2.5 overflow-hidden">
+                            <FileCheck className="w-6 h-6 text-blue-700 shrink-0" />
+                            <div className="truncate">
+                              <span className="text-xs font-bold text-slate-900 truncate block">{nationalIdFile.name}</span>
+                              <span className="text-[10px] text-slate-500">{(nationalIdFile.size / 1024).toFixed(0)} KB</span>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setNationalIdFile(null)}
+                            className="p-1.5 text-slate-400 hover:text-red-600 transition cursor-pointer"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="border-2 border-dashed border-slate-300 hover:border-blue-500 bg-white rounded-xl p-5 text-center cursor-pointer hover:bg-blue-50/30 transition block">
+                          <FileText className="w-6 h-6 text-blue-600 mx-auto mb-1.5" />
+                          <span className="text-xs font-bold text-blue-700 block">
+                            {isKh ? "ជ្រើសរើសអត្តសញ្ញាណប័ណ្ណ" : "Browse National ID / PDF"}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block mt-0.5">PDF or image file</span>
+                          <input
+                            type="file"
+                            accept=".pdf, image/png, image/jpeg, image/webp"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) setNationalIdFile(file);
+                            }}
+                          />
+                        </label>
+                      )}
+
+                      {nationalIdFile && (
+                        <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{nationalIdFile.name}</span>
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+
+                  {/* Optional Note */}
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3 text-xs text-slate-600">
+                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-slate-800">{isKh ? "ឯកសារអាចភ្ជាប់នៅពេលក្រោយបាន៖ " : "Optional during initial registration: "}</strong>
+                      {isKh 
+                        ? "ប្រសិនបើមិនទាន់មានឯកសារស្កេននៅពេលនេះ លោកអ្នកអាចចុចបន្ត ហើយយកឯកសារច្បាប់ដើមមកបង្ហាញនៅថ្ងៃចុះឈ្មោះផ្ទាល់នៅវិទ្យាស្ថាន។" 
+                        : "If you don't have scanned files right now, you may continue and submit original documents in person during on-campus enrollment."}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 5: Review & Final Submission */}
+              {step === 5 && (
+                <div className="space-y-6 animate-in fade-in duration-200">
+                  <div className="border-b border-slate-100 pb-4">
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                      {isKh ? "ជំហានទី ៥៖ ផ្ទៀងផ្ទាត់ព័ត៌មាន និងការបញ្ជាក់ពាក្យ" : "Step 5: Review Information & Final Submission"}
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-500 mt-1">
                       Please review all entered applicant details prior to submitting your official enrollment application.
@@ -1087,6 +1381,21 @@ export default function ApplyPage({
                           {formData.highSchool || "N/A"} (Grade {formData.bacGrade})
                         </span>
                       </div>
+
+                      <div className="sm:col-span-2 md:col-span-3 pt-2 border-t border-slate-200">
+                        <span className="text-slate-400 text-xs block mb-1">Attached Documents for Cloud Upload:</span>
+                        <div className="flex flex-wrap gap-2 text-xs font-semibold">
+                          <span className={`px-2.5 py-1 rounded-md ${photoFile ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500'}`}>
+                            📷 {photoFile ? `Photo: ${photoFile.name}` : 'Photo: None (In-Person)'}
+                          </span>
+                          <span className={`px-2.5 py-1 rounded-md ${bacFile ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500'}`}>
+                            🎓 {bacFile ? `Bac II: ${bacFile.name}` : 'Bac II: None (In-Person)'}
+                          </span>
+                          <span className={`px-2.5 py-1 rounded-md ${nationalIdFile ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500'}`}>
+                            🪪 {nationalIdFile ? `National ID: ${nationalIdFile.name}` : 'National ID: None (In-Person)'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -1131,7 +1440,7 @@ export default function ApplyPage({
                   </button>
                 )}
 
-                {step < 4 ? (
+                {step < 5 ? (
                   <button
                     type="button"
                     onClick={handleNext}
@@ -1153,7 +1462,7 @@ export default function ApplyPage({
                     {submitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
-                        <span>{isKh ? "កំពុងកត់ត្រាចូលប្រព័ន្ធ..." : "Recording in Admissions Registry..."}</span>
+                        <span>{uploadStatusText || (isKh ? "កំពុងកត់ត្រាចូលប្រព័ន្ធ..." : "Recording in Admissions Registry...")}</span>
                       </>
                     ) : (
                       <>

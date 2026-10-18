@@ -154,12 +154,6 @@ export const newsArticles = [
       "Distribution of student toolkits, lab safety goggles, and cloud portal credentials",
       "Peer mentorship network paired every freshman with senior engineering scholars"
     ],
-    quote: {
-      text: "You are not just entering a university; you are stepping into a community of makers, innovators, and problem-solvers who will build the modern infrastructure of Cambodia.",
-      textKh: "អ្នកមិនត្រឹមតែចូលរៀននៅសាកលវិទ្យាល័យប៉ុណ្ណោះទេ ប៉ុន្តែអ្នកកំពុងឈានជើងចូលទៅក្នុងសហគមន៍អ្នកបង្កើត នវានុវត្តន៍ និងអ្នកដោះស្រាយបញ្ហាដែលនឹងកសាងហេដ្ឋារចនាសម្ព័ន្ធទំនើបរបស់កម្ពុជា។",
-      author: "Dean of Academic Affairs",
-      role: "National Polytechnic Institute Techo Sen"
-    },
     gallery: [
       { src: "/news-orientation.jpg", caption: "Freshman Cohort 2023 Waving Cheerful Greetings" },
       { src: "/campus-round.jpg", caption: "Central Plaza and Academic Faculty Buildings" },
