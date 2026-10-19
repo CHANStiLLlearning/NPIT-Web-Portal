@@ -445,26 +445,53 @@ export const bachelorMajors = [
   }
 ];
 
+// Helper to ensure every program has complete stats and degrees metadata
+export const enrichProgram = (prog) => {
+  if (!prog) return prog;
+  const isDip = prog.degreeType === 'diploma';
+  return {
+    ...prog,
+    stats: prog.stats || {
+      degree: prog.level || (isDip ? 'Higher Technical Diploma (2 Years)' : 'Bachelor of Engineering (4 Years)'),
+      degreeKh: prog.levelKh || (isDip ? 'សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (២ ឆ្នាំ)' : 'បរិញ្ញាបត្របច្ចេកទេស (៤ ឆ្នាំ)'),
+      duration: prog.duration || (isDip ? '2 Years (4 Semesters)' : '4 Years (8 Semesters)'),
+      durationKh: prog.durationKh || (isDip ? '២ ឆ្នាំ (៤ ឆមាស)' : '៤ ឆ្នាំ (៨ ឆមាស)'),
+      credits: prog.totalCredits ? `${prog.totalCredits} Credits` : (isDip ? '72 Credits' : '136 Credits')
+    },
+    degrees: (prog.degrees && Array.isArray(prog.degrees) && prog.degrees.length > 0)
+      ? prog.degrees
+      : [
+          {
+            level: isDip ? 'Higher Technical Diploma (2 Years)' : 'Bachelor of Technology (4 Years)',
+            levelKh: isDip ? 'សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (២ ឆ្នាំ)' : 'បរិញ្ញាបត្របច្ចេកទេស (៤ ឆ្នាំ)',
+            duration: prog.duration || (isDip ? '2 Years (4 Semesters)' : '4 Years (8 Semesters)'),
+            durationKh: prog.durationKh || (isDip ? '២ ឆ្នាំ (៤ ឆមាស)' : '៤ ឆ្នាំ (៨ ឆមាស)'),
+            credits: prog.totalCredits || (isDip ? 72 : 136)
+          }
+        ]
+  };
+};
+
 // Unified list of all academic programs for backwards compatibility and single-source querying
 export const programsList = [
   ...higherDiplomaMajors,
   ...bachelorMajors
-];
+].map(enrichProgram);
 
 export const getProgramById = (id) => {
-  if (!id) return programsList[0];
+  if (!id) return enrichProgram(programsList[0]);
   const normalized = id.toLowerCase().replace(/[^a-z0-9]/g, '');
   
   // 1. Exact match on program id
   const exactId = programsList.find(p => p.id.toLowerCase() === normalized);
-  if (exactId) return exactId;
+  if (exactId) return enrichProgram(exactId);
 
   // 2. Match on code
   const exactCode = programsList.find(p => 
     p.code.toLowerCase().replace(/[^a-z0-9]/g, '') === normalized ||
     p.code.toLowerCase().split('-').pop() === normalized
   );
-  if (exactCode) return exactCode;
+  if (exactCode) return enrichProgram(exactCode);
 
   // 3. Match by shortName or fullName
   const matchName = programsList.find(p => 
@@ -472,7 +499,7 @@ export const getProgramById = (id) => {
     p.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalized) ||
     p.id.toLowerCase().includes(normalized)
   );
-  if (matchName) return matchName;
+  if (matchName) return enrichProgram(matchName);
 
-  return programsList[0];
+  return enrichProgram(programsList[0]);
 };

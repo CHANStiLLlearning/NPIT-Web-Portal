@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>National Polytechnic Institute Techo Sen (NPIT) | វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន</title>
     <meta name="description" content="National Polytechnic Institute Techo Sen (NPIT) - Building your future in technology & engineering in Cambodia." />
+    <!-- Prevent stale caching of HTML entrypoint -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!-- Auto-recovery for client chunk/asset desynchronization -->
+    <script>
+      window.addEventListener('vite:preloadError', function () {
+        window.location.reload();
+      });
+    </script>
     <!-- Google Fonts: Inter and Kantumruy Pro for Khmer typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
