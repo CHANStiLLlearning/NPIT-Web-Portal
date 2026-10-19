@@ -49,9 +49,9 @@ export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpe
                   window.location.hash = '#portal';
                 }
               }}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] rounded-md text-xs font-bold uppercase tracking-wider shadow-xs transition-colors cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] rounded-md text-xs font-bold uppercase tracking-wider shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all duration-200 cursor-pointer"
             >
-              <Lock className="w-3.5 h-3.5" />
+              <Lock className="w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110" />
               <span>{lang === 'kh' ? 'ផតថលនិស្សិត' : 'Student Portal'}</span>
             </a>
 

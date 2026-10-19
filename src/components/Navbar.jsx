@@ -143,7 +143,7 @@ export default function Navbar({
               return (
                 <li 
                   key={item.id} 
-                  className="relative h-full flex items-center"
+                  className="relative h-full flex items-center group/nav"
                   onMouseEnter={() => hasDropdown && handleMouseEnter(item.id)}
                   onMouseLeave={hasDropdown ? handleMouseLeave : undefined}
                 >
@@ -151,7 +151,7 @@ export default function Navbar({
                     type="button"
                     onClick={(e) => handleNavClick(e, item)}
                     aria-expanded={isOpen}
-                    className={`inline-flex items-center gap-1.5 px-3 lg:px-3.5 py-2 text-xs lg:text-[13px] font-bold tracking-wider uppercase transition-colors duration-150 cursor-pointer ${
+                    className={`relative h-full inline-flex items-center gap-1.5 px-3 lg:px-3.5 text-xs lg:text-[13px] font-bold tracking-wider uppercase transition-colors duration-200 cursor-pointer ${
                       isActive || isOpen
                         ? 'text-[#C29A39]'
                         : 'text-white hover:text-[#C29A39]'
@@ -160,11 +160,19 @@ export default function Navbar({
                     <span>{item.label}</span>
                     {hasDropdown && (
                       <ChevronDown 
-                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                          isOpen ? 'rotate-180 text-[#C29A39]' : 'text-slate-300'
+                        className={`w-3.5 h-3.5 transition-transform duration-300 ease-out ${
+                          isOpen ? 'rotate-180 text-[#C29A39]' : 'text-slate-300 group-hover/nav:text-[#C29A39]'
                         }`} 
                       />
                     )}
+                    {/* Animated ACLEDA Gold Underline Indicator */}
+                    <span 
+                      className={`absolute bottom-0 left-0 right-0 h-[3px] bg-[#C29A39] transition-all duration-300 ease-out origin-center pointer-events-none ${
+                        isActive || isOpen 
+                          ? 'scale-x-100 opacity-100' 
+                          : 'scale-x-0 opacity-0 group-hover/nav:scale-x-100 group-hover/nav:opacity-100'
+                      }`}
+                    />
                   </button>
 
                   {/* Mega Menu Dropdown for Academic Programs - ACLEDA Bank Solid Style */}
@@ -172,9 +180,9 @@ export default function Navbar({
                     <div 
                       onMouseEnter={handleDropdownPanelEnter}
                       onMouseLeave={handleMouseLeave}
-                      className="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/3 pt-1 z-50 animate-in fade-in-0 duration-150"
+                      className="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/3 pt-1.5 z-50 pointer-events-auto"
                     >
-                      <div className="w-[640px] lg:w-[720px] bg-[#122133] border border-[#284263] shadow-2xl rounded-lg overflow-hidden text-white">
+                      <div className="w-[640px] lg:w-[720px] bg-[#122133] border border-[#284263] shadow-2xl rounded-lg overflow-hidden text-white acleda-dropdown-animate">
                         
                         {/* 2 Solid Clean Columns */}
                         <div className="grid grid-cols-2 divide-x divide-[#1c304a]">
@@ -196,23 +204,24 @@ export default function Navbar({
                                   key={idx}
                                   href={sub.href}
                                   onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                  className="group flex items-center justify-between px-4 py-2 text-xs text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-150"
+                                  className="group flex items-center justify-between px-4 py-2 text-xs text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-200 cursor-pointer"
                                 >
                                   <div className="flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#3b5980] group-hover:bg-[#C29A39] transition-colors"></span>
-                                    <span className="font-medium group-hover:pl-0.5 transition-all">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#3b5980] group-hover:bg-[#C29A39] group-hover:scale-125 transition-all duration-200"></span>
+                                    <span className="font-medium group-hover:translate-x-1.5 transition-transform duration-200 ease-out">
                                       {sub.label}
                                     </span>
                                   </div>
                                   <div className="flex items-center gap-1.5">
-                                    <span className="text-[10px] font-mono text-slate-400 group-hover:text-amber-200">
+                                    <span className="text-[10px] font-mono text-slate-400 group-hover:text-amber-200 transition-colors duration-200">
                                       {sub.code}
                                     </span>
                                     {sub.tag && (
-                                      <span className="text-[9px] bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 px-1 py-0.2 rounded font-bold">
+                                      <span className="text-[9px] bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 px-1 py-0.2 rounded font-bold transition-transform duration-200 group-hover:scale-105">
                                         {sub.tag}
                                       </span>
                                     )}
+                                    <ChevronRight className="w-3 h-3 text-[#C29A39] opacity-0 -translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out shrink-0" />
                                   </div>
                                 </a>
                               ))}
@@ -237,17 +246,20 @@ export default function Navbar({
                                     key={idx}
                                     href={sub.href}
                                     onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                    className="group flex items-center justify-between px-4 py-2 text-xs text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-150"
+                                    className="group flex items-center justify-between px-4 py-2 text-xs text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-200 cursor-pointer"
                                   >
                                     <div className="flex items-center gap-2">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-[#3b5980] group-hover:bg-[#C29A39] transition-colors"></span>
-                                      <span className="font-medium group-hover:pl-0.5 transition-all">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#3b5980] group-hover:bg-[#C29A39] group-hover:scale-125 transition-all duration-200"></span>
+                                      <span className="font-medium group-hover:translate-x-1.5 transition-transform duration-200 ease-out">
                                         {sub.label}
                                       </span>
                                     </div>
-                                    <span className="text-[9px] bg-amber-900/60 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-bold">
-                                      {sub.tag}
-                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="text-[9px] bg-amber-900/60 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-bold transition-transform duration-200 group-hover:scale-105">
+                                        {sub.tag}
+                                      </span>
+                                      <ChevronRight className="w-3 h-3 text-[#C29A39] opacity-0 -translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out shrink-0" />
+                                    </div>
                                   </a>
                                 ))}
                               </div>
@@ -275,10 +287,10 @@ export default function Navbar({
                               setActiveDropdown(null);
                               onNavigate ? onNavigate('programs', '#programs') : (window.location.hash = '#programs');
                             }}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C29A39] hover:underline"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C29A39] hover:underline transition-transform duration-150 hover:translate-x-0.5"
                           >
                             <span>{item.footerLink?.label || (isKh ? 'មើលកម្មវិធីសិក្សាទាំងអស់' : 'Explore All 14 Programs')}</span>
-                            <ArrowRight className="w-3.5 h-3.5" />
+                            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-1" />
                           </a>
 
                           <a
@@ -288,9 +300,9 @@ export default function Navbar({
                               setActiveDropdown(null);
                               onNavigate ? onNavigate('admissions', '#admissions/scholarships') : (window.location.hash = '#admissions/scholarships');
                             }}
-                            className="text-[11px] text-slate-300 hover:text-white flex items-center gap-1"
+                            className="text-[11px] text-slate-300 hover:text-white flex items-center gap-1 transition-colors duration-150"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                             <span>{isKh ? 'អាហារូបករណ៍ ១០០% របស់រដ្ឋ' : '100% State Scholarship Details'}</span>
                           </a>
                         </div>
@@ -304,9 +316,9 @@ export default function Navbar({
                     <div 
                       onMouseEnter={handleDropdownPanelEnter}
                       onMouseLeave={handleMouseLeave}
-                      className="absolute top-full left-0 pt-1 z-50 animate-in fade-in-0 duration-150"
+                      className="absolute top-full left-0 pt-1.5 z-50 pointer-events-auto"
                     >
-                      <div className="w-72 lg:w-80 bg-[#122133] border border-[#284263] shadow-2xl rounded-lg overflow-hidden py-1 text-white">
+                      <div className="w-72 lg:w-80 bg-[#122133] border border-[#284263] shadow-2xl rounded-lg overflow-hidden py-1 text-white acleda-dropdown-animate">
                         <div className="divide-y divide-[#1c304a]">
                           {item.dropdown?.map((sub, idx) => {
                             if (sub.isCta) {
@@ -315,10 +327,10 @@ export default function Navbar({
                                   key={idx}
                                   href={sub.href}
                                   onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                  className="block px-4 py-3 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] font-bold text-xs text-center uppercase tracking-wider transition-colors cursor-pointer"
+                                  className="block px-4 py-3 bg-[#C29A39] hover:bg-[#d4af37] active:scale-98 text-[#122133] font-bold text-xs text-center uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-inner"
                                 >
                                   <div className="flex items-center justify-center gap-1.5">
-                                    <Sparkles className="w-4 h-4 text-[#122133]" />
+                                    <Sparkles className="w-4 h-4 text-[#122133] transition-transform duration-200 group-hover:rotate-12" />
                                     <span>{sub.label}</span>
                                   </div>
                                 </a>
@@ -331,10 +343,10 @@ export default function Navbar({
                                   <a
                                     href={sub.href}
                                     onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                    className="flex items-center justify-between px-4 py-2.5 text-xs font-bold text-[#C29A39] hover:bg-[#1a2f47] transition-colors cursor-pointer"
+                                    className="group flex items-center justify-between px-4 py-2.5 text-xs font-bold text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-200 cursor-pointer"
                                   >
-                                    <span>{sub.label}</span>
-                                    <ArrowRight className="w-3.5 h-3.5" />
+                                    <span className="group-hover:translate-x-1 transition-transform duration-200">{sub.label}</span>
+                                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                                   </a>
                                 </div>
                               );
@@ -345,25 +357,25 @@ export default function Navbar({
                                 key={idx}
                                 href={sub.href}
                                 onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                className="group flex items-center justify-between px-4 py-2.5 text-xs lg:text-[13px] text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-150 cursor-pointer"
+                                className="group flex items-center justify-between px-4 py-2.5 text-xs lg:text-[13px] text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-200 cursor-pointer"
                               >
                                 <div>
-                                  <div className="font-medium group-hover:pl-1 transition-all duration-150">
+                                  <div className="font-medium group-hover:translate-x-1.5 transition-transform duration-200 ease-out">
                                     {sub.label}
                                   </div>
                                   {sub.desc && (
-                                    <p className="text-[10px] text-slate-400 group-hover:text-amber-200/90 mt-0.5 line-clamp-1">
+                                    <p className="text-[10px] text-slate-400 group-hover:text-amber-200/90 mt-0.5 line-clamp-1 transition-colors duration-200">
                                       {sub.desc}
                                     </p>
                                   )}
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                   {sub.badge && (
-                                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-900/60 text-blue-200 border border-blue-500/40 shrink-0">
+                                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-900/60 text-blue-200 border border-blue-500/40 shrink-0 transition-transform duration-200 group-hover:scale-105">
                                       {sub.badge}
                                     </span>
                                   )}
-                                  <ChevronRight className="w-3.5 h-3.5 text-[#C29A39] opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-150 shrink-0" />
+                                  <ChevronRight className="w-3.5 h-3.5 text-[#C29A39] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out shrink-0" />
                                 </div>
                               </a>
                             );
@@ -387,7 +399,7 @@ export default function Navbar({
                 setActiveDropdown(null);
                 onNavigate ? onNavigate('track', '#track') : (window.location.hash = '#track');
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] font-bold rounded text-xs transition uppercase tracking-wider shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] active:scale-95 text-[#122133] font-bold rounded text-xs transition-all duration-200 uppercase tracking-wider shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
             >
               <Search className="w-3.5 h-3.5" />
               <span>{isKh ? 'ពិនិត្យពាក្យ' : 'Track Status'}</span>
@@ -397,7 +409,7 @@ export default function Navbar({
 
         {/* Mobile Dropdown Menu Drawer (Accordion Style) - ACLEDA Bank Solid Style */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-3 bg-[#122133] border-t border-[#1c304a] animate-in fade-in duration-150 max-h-[82vh] overflow-y-auto">
+          <div className="md:hidden py-3 bg-[#122133] border-t border-[#1c304a] acleda-dropdown-animate max-h-[82vh] overflow-y-auto">
             <ul className="space-y-1">
               {navItems.map((item) => {
                 const isActive = activeTab === item.id;
@@ -417,7 +429,7 @@ export default function Navbar({
                             setMobileMenuOpen(false);
                           }
                         }}
-                        className={`flex-1 px-4 py-3 text-xs uppercase font-bold tracking-wider transition-colors cursor-pointer flex items-center justify-between ${
+                        className={`flex-1 px-4 py-3 text-xs uppercase font-bold tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-between ${
                           isActive
                             ? 'text-[#C29A39] bg-[#1a2f47]'
                             : 'text-white hover:text-[#C29A39]'
@@ -434,7 +446,7 @@ export default function Navbar({
                           aria-label={`Toggle ${item.label} submenu`}
                         >
                           <ChevronDown 
-                            className={`w-4 h-4 transition-transform duration-200 ${
+                            className={`w-4 h-4 transition-transform duration-300 ease-out ${
                               isExpanded ? 'rotate-180 text-[#C29A39]' : ''
                             }`} 
                           />
@@ -444,7 +456,7 @@ export default function Navbar({
 
                     {/* Accordion Content for Mega-Menu (Programs) */}
                     {hasDropdown && item.isMega && isExpanded && (
-                      <div className="bg-[#0e1b2b] border-l-2 border-[#C29A39] ml-4 my-1 space-y-3 p-3 rounded-r">
+                      <div className="bg-[#0e1b2b] border-l-2 border-[#C29A39] ml-4 my-1 space-y-3 p-3 rounded-r acleda-accordion-animate">
                         {item.dropdownGroups?.map((grp, gIdx) => (
                           <div key={gIdx} className="space-y-1">
                             <div className="flex items-center justify-between py-1 text-[11px] font-bold text-[#C29A39] uppercase tracking-wider border-b border-[#1c304a]">
@@ -460,10 +472,10 @@ export default function Navbar({
                                   key={sIdx}
                                   href={sub.href}
                                   onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                  className="block py-2 px-1 text-xs text-slate-200 hover:text-[#C29A39] transition-colors"
+                                  className="group block py-2 px-1 text-xs text-slate-200 hover:text-[#C29A39] transition-all duration-150"
                                 >
                                   <div className="flex items-center justify-between">
-                                    <span>{sub.label}</span>
+                                    <span className="group-hover:translate-x-1 transition-transform duration-150">{sub.label}</span>
                                     <span className="text-[10px] text-slate-400 font-mono">{sub.code}</span>
                                   </div>
                                 </a>
@@ -491,7 +503,7 @@ export default function Navbar({
 
                     {/* Accordion Content for Standard Dropdown */}
                     {hasDropdown && !item.isMega && isExpanded && (
-                      <div className="bg-[#0e1b2b] border-l-2 border-[#C29A39] ml-4 my-1 space-y-1 p-3 rounded-r">
+                      <div className="bg-[#0e1b2b] border-l-2 border-[#C29A39] ml-4 my-1 space-y-1 p-3 rounded-r acleda-accordion-animate">
                         {item.dropdown?.map((sub, sIdx) => {
                           if (sub.isCta) {
                             return (
@@ -499,7 +511,7 @@ export default function Navbar({
                                 key={sIdx}
                                 href={sub.href}
                                 onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                className="block mt-2 p-2.5 bg-[#C29A39] text-[#122133] font-bold rounded text-xs text-center uppercase tracking-wider"
+                                className="block mt-2 p-2.5 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] font-bold rounded text-xs text-center uppercase tracking-wider transition-colors"
                               >
                                 {sub.label}
                               </a>
@@ -511,10 +523,10 @@ export default function Navbar({
                               key={sIdx}
                               href={sub.href}
                               onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                              className="block py-2 px-1 text-xs text-slate-200 hover:text-[#C29A39] border-b border-[#1c304a] last:border-b-0 transition-colors"
+                              className="group block py-2 px-1 text-xs text-slate-200 hover:text-[#C29A39] border-b border-[#1c304a] last:border-b-0 transition-colors"
                             >
                               <div className="flex items-center justify-between">
-                                <span>{sub.label}</span>
+                                <span className="group-hover:translate-x-1 transition-transform duration-150">{sub.label}</span>
                                 {sub.badge && (
                                   <span className="text-[9px] px-1 bg-blue-900/60 text-blue-200 rounded">
                                     {sub.badge}
@@ -541,7 +553,7 @@ export default function Navbar({
                     if (onOpenApply) onOpenApply();
                     else window.location.hash = '#apply';
                   }}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-wider bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] rounded shadow-xs transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-wider bg-[#C29A39] hover:bg-[#d4af37] active:scale-95 text-[#122133] rounded shadow-xs hover:shadow-md transition-all duration-200"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>{isKh ? 'ចុះឈ្មោះសិក្សាអនឡាញ' : 'Apply Online for 2026-2027'}</span>
@@ -554,7 +566,7 @@ export default function Navbar({
                     setMobileMenuOpen(false);
                     onNavigate ? onNavigate('track', '#track') : (window.location.hash = '#track');
                   }}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white hover:text-[#C29A39] bg-[#1a2f47] border border-[#284263] rounded transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white hover:text-[#C29A39] bg-[#1a2f47] hover:bg-[#203a57] border border-[#284263] rounded shadow-xs hover:shadow-md transition-all duration-200"
                 >
                   <Search className="w-3.5 h-3.5" />
                   <span>{isKh ? 'ពិនិត្យស្ថានភាពពាក្យស្នើសុំ' : 'Track Application Status'}</span>
