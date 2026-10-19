@@ -1321,16 +1321,22 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                   <div key={prog.id} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-between">
                     <div>
                       {/* Program Cover Image */}
-                      <div className="h-40 bg-slate-100 relative overflow-hidden">
+                      <div className="h-44 bg-slate-900 relative overflow-hidden group">
                         <img 
                           src={prog.image || '/major-cybersecurity.jpg'} 
                           alt={prog.name} 
-                          className="w-full h-full object-cover transition duration-300 hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           onError={(e) => { e.currentTarget.src = '/hero-lab.jpg'; }}
                         />
-                        <span className="absolute top-2.5 left-2.5 bg-[#002b80]/90 backdrop-blur-xs text-white text-[10px] font-extrabold uppercase px-2 py-0.5 rounded shadow-xs">
-                          {prog.level?.includes('Diploma') ? 'Higher Diploma' : 'Bachelor of Engineering'}
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/10" />
+                        <span className="absolute top-2.5 left-2.5 bg-[#002b80]/90 backdrop-blur-xs text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded shadow-sm border border-white/20">
+                          {prog.level?.includes('Diploma') ? 'Higher Diploma (2 Years)' : 'Bachelor of Engineering (4 Years)'}
                         </span>
+                        {prog.code && (
+                          <span className="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-mono px-2 py-0.5 rounded border border-white/10">
+                            {prog.code}
+                          </span>
+                        )}
                       </div>
 
                       <div className="p-4 space-y-2">

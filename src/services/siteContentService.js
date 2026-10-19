@@ -199,7 +199,14 @@ export function getSitePrograms() {
       localStorage.setItem(STORAGE_KEYS.PROGRAMS, JSON.stringify(initial));
       return initial;
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    return parsed.map(p => {
+      const def = defaultPrograms.find(d => d.id === p.id);
+      return {
+        ...p,
+        image: p.image || def?.image || '/hero-lab.jpg'
+      };
+    });
   } catch {
     return defaultPrograms;
   }
