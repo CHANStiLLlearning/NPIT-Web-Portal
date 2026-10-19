@@ -54,9 +54,18 @@ export default function App() {
       if (hash !== '#portal') {
         setPortalModalOpen(false);
       }
-      if (hash === '#about') {
+      if (hash === '#about' || hash.startsWith('#about/')) {
+        const sub = hash.replace('#about/', '');
         setCurrentPage('about');
         setActiveTab('about');
+        if (sub && sub !== '#about') {
+          setTimeout(() => {
+            const el = document.getElementById(sub);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }, 150);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       } else if (hash.startsWith('#programs/')) {
         const sub = hash.replace('#programs/', '');
         const prog = getProgramById(sub);
@@ -186,6 +195,14 @@ export default function App() {
     if (itemId !== 'portal') {
       setPortalModalOpen(false);
     }
+    
+    // If a specific sub-route hash is provided (e.g. #programs/industrial, #admissions/scholarships)
+    if (href && href.includes('/') && href.startsWith('#')) {
+      window.location.hash = href;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     if (itemId === 'about') {
       setCurrentPage('about');
       setActiveTab('about');
@@ -366,6 +383,7 @@ export default function App() {
         {/* 2. Main Royal Blue Navigation Bar */}
         <Navbar
           navItems={t.nav}
+          lang={lang}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           mobileMenuOpen={mobileMenuOpen}

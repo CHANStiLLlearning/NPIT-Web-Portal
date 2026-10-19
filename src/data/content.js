@@ -10,40 +10,86 @@ export const contentData = {
         label: "About", 
         href: "#about",
         dropdown: [
-          { label: "Vision & Mission", href: "#about" },
-          { label: "Leadership & Council", href: "#about" },
-          { label: "Institute History", href: "#about" },
-          { label: "Quality Assurance", href: "#about" }
+          { label: "Who We Are", href: "#about/who-we-are", desc: "Identity, polytechnic mission & values" },
+          { label: "Vision & Mission", href: "#about/vision-mission", desc: "Strategic roadmap & quality goals" },
+          { label: "Institute History & Milestones", href: "#about/history", desc: "Milestones from 2015 to present" },
+          { label: "Leadership & Council", href: "#about/leadership", desc: "Director & executive faculty deans" },
+          { label: "Explore Full Institute Overview", href: "#about", desc: "Comprehensive background of NPIT", isFullLink: true }
         ]
       },
       { 
         id: "programs", 
         label: "Academic Programs", 
         href: "#programs",
-        dropdown: [
-          { label: "Industrial Engineering (វិស្វកម្មឧស្សាហកម្ម)", href: "#programs" },
-          { label: "Electrical Engineering (វិស្វកម្មអគ្គិសនី)", href: "#programs" },
-          { label: "Refrigeration & HVAC (បរិក្ខារត្រជាក់)", href: "#programs" },
-          { label: "IT & Software Engineering (ព័ត៌មានវិទ្យា)", href: "#programs" },
-          { label: "Automotive Technology (យន្តសាស្ត្ររថយន្ត)", href: "#programs" },
-          { label: "Civil Engineering (សំណង់ស៊ីវិល)", href: "#programs" },
-          { label: "Smart Digital & Cybersecurity (សន្តិសុខសាយប័រ)", href: "#programs" },
-          { label: "English, Veterinary & Business Management", href: "#programs" }
-        ]
+        isMega: true,
+        dropdownGroups: [
+          {
+            title: "Higher Diploma (2 Years)",
+            badge: "100% Scholarship",
+            badgeColor: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+            items: [
+              { label: "Industrial Engineering", href: "#programs/industrial", code: "DIP-IE", tag: "Popular" },
+              { label: "Electrical Engineering", href: "#programs/electrical", code: "ENG-EE" },
+              { label: "Refrigeration & HVAC", href: "#programs/hvac", code: "DIP-HVAC" },
+              { label: "IT & Software Engineering", href: "#programs/it", code: "TECH-IT", tag: "Popular" },
+              { label: "Automotive Technology", href: "#programs/automotive", code: "DIP-AUTO" },
+              { label: "Civil Engineering", href: "#programs/civil", code: "ENG-CE" },
+              { label: "English Literature", href: "#programs/english", code: "DIP-ENG" },
+              { label: "Veterinary Medicine", href: "#programs/veterinary", code: "DIP-VET" },
+              { label: "Business Administration", href: "#programs/business", code: "DIP-BA" }
+            ]
+          },
+          {
+            title: "Bachelor of Technology (4 Years)",
+            badge: "Night & Weekend",
+            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            items: [
+              { label: "Smart Digital & Cybersecurity", href: "#programs/cybersecurity", code: "BACH-CYBER", tag: "B.Tech" },
+              { label: "Electrical Engineering", href: "#programs/electrical-beng", code: "BACH-EE", tag: "B.Tech" },
+              { label: "HVAC & Thermal Systems", href: "#programs/hvac-beng", code: "BACH-HVAC", tag: "B.Tech" },
+              { label: "Civil Engineering", href: "#programs/civil-beng", code: "BACH-CE", tag: "B.Tech" },
+              { label: "Automotive Engineering", href: "#programs/automotive-beng", code: "BACH-AUTO", tag: "B.Tech" }
+            ]
+          }
+        ],
+        footerLink: { label: "Explore All 14 Degree & Diploma Programs", href: "#programs" }
       },
       { 
         id: "admissions", 
         label: "Admissions", 
         href: "#admissions",
         dropdown: [
-          { label: "Admission Requirements", href: "#admissions" },
-          { label: "Scholarship Schemes", href: "#admissions" },
-          { label: "Tuition & Fees", href: "#admissions" },
-          { label: "How to Apply", href: "#admissions" }
+          { label: "Eligibility & Requirements", href: "#admissions/requirements", desc: "Passed or failed Bac II directly accepted", badge: "Criteria" },
+          { label: "100% Government Scholarships", href: "#admissions/scholarships", desc: "All 9 Higher Diploma majors 100% free", badge: "100% Free" },
+          { label: "Tuition, Fees & Payment Plans", href: "#admissions/tuition", desc: "Subsidized fees & zero-interest installments", badge: "Subsidized" },
+          { label: "Associate & Bachelor Pathways", href: "#admissions/degrees", desc: "Structured 2-year and 4-year technical degrees", badge: "Pathways" },
+          { label: "TVET Short Vocational Courses", href: "#admissions/vocational", desc: "3-6 months practical technician courses", badge: "TVET" },
+          { label: "Transfer & International Students", href: "#admissions/transfer", desc: "Accredited credit transfer framework", badge: "Transfer" },
+          { label: "Apply Online for 2026-2027", href: "#apply", desc: "Fast-track your application today", isCta: true }
         ]
       },
-      { id: "research", label: "Research", href: "#research" },
-      { id: "news", label: "News & Events", href: "#news" },
+      { 
+        id: "research", 
+        label: "Research", 
+        href: "#research",
+        dropdown: [
+          { label: "Engineering & Robotics", href: "#research/robotics", desc: "AMRs, mechatronics & Industry 4.0 automation" },
+          { label: "ICT & Digital Innovation", href: "#research/ict", desc: "Khmer NLP, AI models & cyber threat defense" },
+          { label: "Applied Sciences & Materials", href: "#research/applied-sciences", desc: "Green geopolymer concrete & eco-filtration" },
+          { label: "Renewable Energy & Smart Grids", href: "#research/energy", desc: "Solar microgrids & power distribution testing" },
+          { label: "Explore All Research Facilities & Labs", href: "#research", isFullLink: true }
+        ]
+      },
+      { 
+        id: "news", 
+        label: "News & Events", 
+        href: "#news",
+        dropdown: [
+          { label: "Latest Announcements", href: "#news", desc: "Campus updates and admissions notifications" },
+          { label: "Academic Calendar & Cohorts", href: "#news", desc: "Batch 1 (Nov 13, 2026) & Batch 2 (Jan 04, 2027)" },
+          { label: "Competitions & Exhibitions", href: "#news", desc: "Student engineering projects and showcase events" }
+        ]
+      },
       { id: "contact", label: "Contact Us", href: "#contact" },
     ],
     hero: {
@@ -212,39 +258,86 @@ export const contentData = {
         label: "អំពីវិទ្យាស្ថាន", 
         href: "#about",
         dropdown: [
-          { label: "ចក្ខុវិស័យ និងបេសកកម្ម", href: "#about" },
-          { label: "គណៈគ្រប់គ្រង", href: "#about" },
-          { label: "ប្រវត្តិវិទ្យាស្ថាន", href: "#about" },
-          { label: "ការធានាគុណភាពអប់រំ", href: "#about" }
+          { label: "យើងជានរណា", href: "#about/who-we-are", desc: "អត្តសញ្ញាណ និងគុណតម្លៃរួម" },
+          { label: "ចក្ខុវិស័យ និងបេសកកម្ម", href: "#about/vision-mission", desc: "ទិសដៅ និងគោលដៅអប់រំបច្ចេកទេស" },
+          { label: "ប្រវត្តិវិទ្យាស្ថាន និងសមិទ្ធផល", href: "#about/history", desc: "ព្រឹត្តិការណ៍សំខាន់ៗតាំងពីឆ្នាំ២០១៥" },
+          { label: "គណៈគ្រប់គ្រងវិទ្យាស្ថាន", href: "#about/leadership", desc: "ថ្នាក់ដឹកនាំ និងព្រឹទ្ធបុរស" },
+          { label: "ស្វែងយល់អំពី NPIT ទាំងអស់", href: "#about", desc: "ព័ត៌មានលម្អិតអំពីវិទ្យាស្ថាន", isFullLink: true }
         ]
       },
       { 
         id: "programs", 
         label: "កម្មវិធីសិក្សា", 
         href: "#programs",
-        dropdown: [
-          { label: "១. វិស្វកម្មឧស្សាហកម្ម", href: "#programs" },
-          { label: "២. វិស្វកម្មអគ្គិសនី", href: "#programs" },
-          { label: "៣. បរិក្ខារត្រជាក់", href: "#programs" },
-          { label: "៤. វិស្វកម្មព័ត៌មានវិទ្យា", href: "#programs" },
-          { label: "៥. យន្តសាស្ត្ររថយន្ត", href: "#programs" },
-          { label: "៦. វិស្វកម្មសំណង់ស៊ីវិល", href: "#programs" },
-          { label: "៧. សន្តិសុខសាយប័រ & ឌីជីថល", href: "#programs" },
-          { label: "៨. អក្សរសាស្ត្រ, បសុព្យាបាល, គ្រប់គ្រង", href: "#programs" }
-        ]
+        isMega: true,
+        dropdownGroups: [
+          {
+            title: "កម្រិតសញ្ញាបត្រជាន់ខ្ពស់ (សិក្សា ២ឆ្នាំ)",
+            badge: "អាហារូបករណ៍ ១០០%",
+            badgeColor: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+            items: [
+              { label: "វិស្វកម្មឧស្សាហកម្ម", code: "DIP-IE", href: "#programs/industrial", tag: "ពេញនិយម" },
+              { label: "វិស្វកម្មអគ្គិសនី", code: "ENG-EE", href: "#programs/electrical" },
+              { label: "បរិក្ខារត្រជាក់", code: "DIP-HVAC", href: "#programs/hvac" },
+              { label: "វិស្វកម្មព័ត៌មានវិទ្យា", code: "TECH-IT", href: "#programs/it", tag: "ពេញនិយម" },
+              { label: "យន្តសាស្ត្ររថយន្ត", code: "DIP-AUTO", href: "#programs/automotive" },
+              { label: "វិស្វកម្មសំណង់ស៊ីវិល", code: "ENG-CE", href: "#programs/civil" },
+              { label: "អក្សរសាស្ត្រអង់គ្លេស", code: "DIP-ENG", href: "#programs/english" },
+              { label: "បសុព្យាបាល", code: "DIP-VET", href: "#programs/veterinary" },
+              { label: "គ្រប់គ្រងពាណិជ្ជកម្ម", code: "DIP-BA", href: "#programs/business" }
+            ]
+          },
+          {
+            title: "កម្រិតបរិញ្ញាបត្របច្ចេកទេស (សិក្សា ៤ឆ្នាំ)",
+            badge: "វេនយប់ & ថ្ងៃសៅរ៍-អាទិត្យ",
+            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            items: [
+              { label: "ប្រព័ន្ធឌីជីថល & សន្តិសុខសាយប័រ", code: "BACH-CYBER", href: "#programs/cybersecurity", tag: "បរិញ្ញាបត្រ" },
+              { label: "វិស្វកម្មអគ្គិសនី", code: "BACH-EE", href: "#programs/electrical-beng", tag: "បរិញ្ញាបត្រ" },
+              { label: "វិស្វកម្មប្រព័ន្ធត្រជាក់ & កម្តៅ", code: "BACH-HVAC", href: "#programs/hvac-beng", tag: "បរិញ្ញាបត្រ" },
+              { label: "វិស្វកម្មសំណង់ស៊ីវិល", code: "BACH-CE", href: "#programs/civil-beng", tag: "បរិញ្ញាបត្រ" },
+              { label: "វិស្វកម្មរថយន្ត", code: "BACH-AUTO", href: "#programs/automotive-beng", tag: "បរិញ្ញាបត្រ" }
+            ]
+          }
+        ],
+        footerLink: { label: "ស្វែងយល់មុខវិជ្ជាទាំង ១៤ ជំនាញ", href: "#programs" }
       },
       { 
         id: "admissions", 
         label: "ការចុះឈ្មោះចូលរៀន", 
         href: "#admissions",
         dropdown: [
-          { label: "លក្ខខណ្ឌនៃការជ្រើសរើស", href: "#admissions" },
-          { label: "អាហារូបករណ៍", href: "#admissions" },
-          { label: "តម្លៃសិក្សា", href: "#admissions" }
+          { label: "លក្ខខណ្ឌនៃការជ្រើសរើស", href: "#admissions/requirements", desc: "ជាប់ ឬធ្លាក់បាក់ឌុប មានសិទ្ធិចុះឈ្មោះ", badge: "លក្ខខណ្ឌ" },
+          { label: "អាហារូបករណ៍រដ្ឋ ១០០%", href: "#admissions/scholarships", desc: "អាហារូបករណ៍ ១០០% លើ ៩ មុខជំនាញ", badge: "ឥតគិតថ្លៃ" },
+          { label: "តម្លៃសិក្សា & ការបង់ប្រាក់", href: "#admissions/tuition", desc: "តម្លៃសិក្សាសមរម្យឧបត្ថម្ភដោយរដ្ឋ", badge: "តម្លៃសិក្សា" },
+          { label: "ថ្នាក់បរិញ្ញាបត្ររង & បរិញ្ញាបត្រ", href: "#admissions/degrees", desc: "រចនាសម្ព័ន្ធកម្មវិធីសិក្សា ២ឆ្នាំ និង ៤ឆ្នាំ", badge: "កម្រិតសិក្សា" },
+          { label: "វគ្គបណ្តុះបណ្តាលវិជ្ជាជីវៈខ្លីៗ (TVET)", href: "#admissions/vocational", desc: "វគ្គខ្លី ៣-៦ ខែ បណ្តុះបណ្តាលអនុវត្តផ្ទាល់", badge: "TVET" },
+          { label: "និស្សិតផ្ទេរការសិក្សា", href: "#admissions/transfer", desc: "ការផ្ទេរក្រេឌីតសិក្សា និងនិស្សិតអន្តរជាតិ", badge: "ផ្ទេរការសិក្សា" },
+          { label: "ចុះឈ្មោះសិក្សាអនឡាញ ២០២៦-២០២៧", href: "#apply", desc: "ដាក់ពាក្យស្នើសុំចូលរៀនឥឡូវនេះ", isCta: true }
         ]
       },
-      { id: "research", label: "ការស្រាវជ្រាវ", href: "#research" },
-      { id: "news", label: "ព័ត៌មាន និងព្រឹត្តិការណ៍", href: "#news" },
+      { 
+        id: "research", 
+        label: "ការស្រាវជ្រាវ", 
+        href: "#research",
+        dropdown: [
+          { label: "វិស្វកម្ម និងរ៉ូបូត", href: "#research/robotics", desc: "ស្វ័យប្រវត្តិកម្ម & ឧស្សាហកម្ម ៤.០" },
+          { label: "ព័ត៌មានវិទ្យា & នវានុវត្តន៍ឌីជីថល", href: "#research/ict", desc: "Khmer NLP, AI & សន្តិសុខសាយប័រ" },
+          { label: "វិទ្យាសាស្ត្រអនុវត្ត & សម្ភារៈ", href: "#research/applied-sciences", desc: "បេតុងបៃតង និងចម្រោះទឹកសំណល់" },
+          { label: "ថាមពលកកើតឡើងវិញ & Smart Grids", href: "#research/energy", desc: "ប្រព័ន្ធសូឡា និងបណ្តាញអគ្គិសនីឆ្លាតវៃ" },
+          { label: "ស្វែងយល់ការស្រាវជ្រាវទាំងអស់", href: "#research", desc: "មជ្ឈមណ្ឌលពិសោធន៍ និងការស្រាវជ្រាវ", isFullLink: true }
+        ]
+      },
+      { 
+        id: "news", 
+        label: "ព័ត៌មាន និងព្រឹត្តិការណ៍", 
+        href: "#news",
+        dropdown: [
+          { label: "សេចក្តីជូនដំណឹងថ្មីៗ", href: "#news", desc: "ដំណឹងប្រចាំថ្ងៃ និងការចូលរៀន" },
+          { label: "ប្រតិទិនសិក្សាផ្លូវការ", href: "#news", desc: "លើកទី១ (១៣ វិច្ឆិកា) & លើកទី២ (០៤ មករា)" },
+          { label: "ការប្រកួតប្រជែង & ស្នាដៃនិស្សិត", href: "#news", desc: "គម្រោងមនុស្សយន្ត និងការតាំងពិព័រណ៍" }
+        ]
+      },
       { id: "contact", label: "ទំនាក់ទំនង", href: "#contact" },
     ],
     hero: {

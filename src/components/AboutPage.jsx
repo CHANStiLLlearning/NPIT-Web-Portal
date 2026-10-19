@@ -173,7 +173,7 @@ export default function AboutPage({ lang, onOpenApply }) {
       </section>
 
       {/* 2. "Who We Are" / "យើងជានរណា" Section */}
-      <section className="py-16 md:py-20 bg-white border-b border-slate-200">
+      <section id="who-we-are" className="py-16 md:py-20 bg-white border-b border-slate-200 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
@@ -222,7 +222,7 @@ export default function AboutPage({ lang, onOpenApply }) {
       </section>
 
       {/* 3. "Our Vision & Mission" / "គុណតម្លៃរួម" Section */}
-      <section className="py-16 md:py-20 bg-slate-50 border-b border-slate-200">
+      <section id="vision-mission" className="py-16 md:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="mb-10">
@@ -509,7 +509,7 @@ export default function AboutPage({ lang, onOpenApply }) {
       </section>
 
       {/* 6. "Our Leadership" / "គណៈគ្រប់គ្រង" Section */}
-      <section className="py-16 md:py-20 bg-white">
+      <section id="leadership" className="py-16 md:py-20 bg-white scroll-mt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="mb-10">
