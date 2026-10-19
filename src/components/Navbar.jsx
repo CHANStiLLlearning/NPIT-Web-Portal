@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Search, 
   ChevronDown, 
   ChevronRight, 
   GraduationCap, 
@@ -389,22 +388,6 @@ export default function Navbar({
               );
             })}
           </ul>
-
-          {/* Quick Track Status Action - Gold Accent */}
-          <div className="flex items-center gap-2">
-            <a
-              href="#track"
-              onClick={(e) => {
-                e.preventDefault();
-                setActiveDropdown(null);
-                onNavigate ? onNavigate('track', '#track') : (window.location.hash = '#track');
-              }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] active:scale-95 text-white font-bold rounded text-xs transition-all duration-200 uppercase tracking-wider shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
-            >
-              <Search className="w-3.5 h-3.5" />
-              <span>{isKh ? 'ពិនិត្យពាក្យ' : 'Track Status'}</span>
-            </a>
-          </div>
         </div>
 
         {/* Mobile Dropdown Menu Drawer (Accordion Style) - Solid White Style */}
@@ -557,19 +540,6 @@ export default function Navbar({
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>{isKh ? 'ចុះឈ្មោះសិក្សាអនឡាញ' : 'Apply Online for 2026-2027'}</span>
-                </a>
-
-                <a
-                  href="#track"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMobileMenuOpen(false);
-                    onNavigate ? onNavigate('track', '#track') : (window.location.hash = '#track');
-                  }}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-slate-800 hover:text-[#C29A39] bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded shadow-xs hover:shadow-md transition-all duration-200"
-                >
-                  <Search className="w-3.5 h-3.5" />
-                  <span>{isKh ? 'ពិនិត្យស្ថានភាពពាក្យស្នើសុំ' : 'Track Application Status'}</span>
                 </a>
               </li>
             </ul>
