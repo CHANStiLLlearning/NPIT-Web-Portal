@@ -228,16 +228,6 @@ export default function NewsAndEvents({ newsData, onSelectNews, lang = 'en', onN
                     <span className="inline-block text-[11px] font-medium text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded-sm">
                       {isKh ? (item.categoryKh || item.category) : item.category}
                     </span>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setFeaturedArticleId(item.id);
-                      }}
-                      className="text-[10px] text-slate-400 hover:text-blue-700 underline hidden sm:inline"
-                    >
-                      {isKh ? 'កំណត់ជាព័ត៌មានធំ' : 'Set Featured'}
-                    </button>
                   </div>
                 </div>
               </div>

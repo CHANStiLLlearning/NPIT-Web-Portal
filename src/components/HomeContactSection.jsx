@@ -7,6 +7,7 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [refNum, setRefNum] = useState('');
+  const [toastMessage, setToastMessage] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -30,6 +31,8 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
       });
       setRefNum(res.referenceNumber);
       setFormSubmitted(true);
+      setToastMessage(isKh ? `✓ សារត្រូវបានផ្ញើជោគជ័យ! លេខយោង៖ ${res.referenceNumber}` : `✓ Inquiry Dispatched Successfully! Reference: ${res.referenceNumber}`);
+      setTimeout(() => setToastMessage(null), 8000);
       setTimeout(() => {
         setFormSubmitted(false);
         setFormData({ name: '', email: '', phone: '', program: 'civil', message: '' });
@@ -261,6 +264,18 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
         </div>
 
       </div>
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div 
+          role="alert"
+          className="fixed bottom-6 right-6 z-50 bg-emerald-800 text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-4 duration-300 border border-emerald-500"
+        >
+          <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
     </section>
   );
 }

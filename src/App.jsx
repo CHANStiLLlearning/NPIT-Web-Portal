@@ -23,6 +23,9 @@ import AdmissionDetailPage from './components/AdmissionDetailPage';
 import { admissionsDetails } from './data/admissionsData';
 import TrackerPage from './components/TrackerPage';
 import AdminPage from './components/AdminPage';
+import StudentPortalModal from './components/StudentPortalModal';
+import LegalPage from './components/LegalPage';
+import ErrorBoundary from './components/ErrorBoundary';
 import { contentData } from './data/content';
 import { ArrowUp } from 'lucide-react';
 
@@ -38,6 +41,8 @@ export default function App() {
   const [selectedAdmissionDetail, setSelectedAdmissionDetail] = useState(null);
   const [selectedResearch, setSelectedResearch] = useState(null);
   const [trackerCode, setTrackerCode] = useState('');
+  const [portalModalOpen, setPortalModalOpen] = useState(false);
+  const [legalTab, setLegalTab] = useState('privacy');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const t = contentData[lang] || contentData.en;
@@ -46,6 +51,9 @@ export default function App() {
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash;
+      if (hash !== '#portal') {
+        setPortalModalOpen(false);
+      }
       if (hash === '#about') {
         setCurrentPage('about');
         setActiveTab('about');
@@ -121,6 +129,20 @@ export default function App() {
         setCurrentPage('admin');
         setActiveTab('admin');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#portal') {
+        setPortalModalOpen(true);
+        setCurrentPage('home');
+        setActiveTab('home');
+      } else if (hash === '#privacy') {
+        setLegalTab('privacy');
+        setCurrentPage('legal');
+        setActiveTab('privacy');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#terms') {
+        setLegalTab('terms');
+        setCurrentPage('legal');
+        setActiveTab('terms');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         setCurrentPage('home');
         if (hash && hash !== '#home') {
@@ -161,6 +183,9 @@ export default function App() {
   }, [currentPage]);
 
   const handleNavigate = (itemId, href) => {
+    if (itemId !== 'portal') {
+      setPortalModalOpen(false);
+    }
     if (itemId === 'about') {
       setCurrentPage('about');
       setActiveTab('about');
@@ -352,6 +377,7 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1">
+        <ErrorBoundary>
         
         {currentPage === 'about' ? (
           /* About Page */
@@ -465,6 +491,13 @@ export default function App() {
             lang={lang}
             onNavigate={handleNavigate}
           />
+        ) : currentPage === 'legal' ? (
+          /* Official Legal & Compliance (Privacy Policy & Terms of Service) */
+          <LegalPage
+            lang={lang}
+            initialTab={legalTab}
+            onBackHome={() => handleNavigate('home', '#home')}
+          />
         ) : (
           /* Home Page */
           <>
@@ -504,6 +537,7 @@ export default function App() {
           </>
         )}
 
+        </ErrorBoundary>
       </main>
 
       {/* 10. Institutional Footer */}
@@ -511,6 +545,18 @@ export default function App() {
         footerData={t.footer}
         instituteName={t.instituteName}
         instituteNameKhmer={t.instituteNameKhmer}
+      />
+
+      {/* Integrated Student & Faculty Portal Modal */}
+      <StudentPortalModal
+        isOpen={portalModalOpen}
+        onClose={() => {
+          setPortalModalOpen(false);
+          if (window.location.hash === '#portal') {
+            window.location.hash = '#home';
+          }
+        }}
+        t={t}
       />
 
       {/* Floating Back to Top Button */}

@@ -138,7 +138,7 @@ export default function Footer({ footerData, instituteName, instituteNameKhmer }
             {/* Social Icons */}
             <div className="mt-5 flex items-center gap-3">
               <a 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/npit.edu.kh" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="w-8 h-8 rounded-full bg-blue-900/60 hover:bg-blue-600 flex items-center justify-center transition-colors text-white"
@@ -149,7 +149,7 @@ export default function Footer({ footerData, instituteName, instituteNameKhmer }
                 </svg>
               </a>
               <a 
-                href="https://t.me" 
+                href="https://t.me/npit_official" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="w-8 h-8 rounded-full bg-blue-900/60 hover:bg-blue-600 flex items-center justify-center transition-colors text-white"
@@ -158,7 +158,7 @@ export default function Footer({ footerData, instituteName, instituteNameKhmer }
                 <Send className="w-4 h-4" />
               </a>
               <a 
-                href="https://youtube.com" 
+                href="https://www.youtube.com/@npitcambodia" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="w-8 h-8 rounded-full bg-blue-900/60 hover:bg-red-600 flex items-center justify-center transition-colors text-white"
@@ -169,7 +169,7 @@ export default function Footer({ footerData, instituteName, instituteNameKhmer }
                 </svg>
               </a>
               <a 
-                href="https://linkedin.com" 
+                href="https://www.linkedin.com/school/npit-cambodia/" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="w-8 h-8 rounded-full bg-blue-900/60 hover:bg-blue-500 flex items-center justify-center transition-colors text-white"

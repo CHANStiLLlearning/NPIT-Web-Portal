@@ -224,8 +224,18 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
       return;
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      setIsAuthenticated(Boolean(user));
+      if (user && isAuthorizedAdmin(user)) {
+        setCurrentUser(user);
+        setIsAuthenticated(true);
+      } else {
+        if (user && !isAuthorizedAdmin(user)) {
+          console.warn('[AdminPage] Access blocked for non-admin user:', user.email);
+          signOut(auth).catch(() => {});
+          setLoginError(`Access denied: ${user.email} is not authorized for staff administration.`);
+        }
+        setCurrentUser(null);
+        setIsAuthenticated(false);
+      }
       setAuthLoading(false);
     });
     return () => unsubscribe();
@@ -277,13 +287,21 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
     try {
       if (auth) {
         const userCred = await signInWithEmailAndPassword(auth, emailInput.trim(), passwordInput);
-        setCurrentUser(userCred.user);
-        setIsAuthenticated(true);
-      } else {
-        if (passwordInput === 'NPIT@Academic2026!' || passwordInput === 'npit2026') {
+        if (userCred.user && isAuthorizedAdmin(userCred.user)) {
+          setCurrentUser(userCred.user);
           setIsAuthenticated(true);
         } else {
-          setLoginError('Invalid credentials. Hint: NPIT@Academic2026!');
+          if (auth) await signOut(auth);
+          setCurrentUser(null);
+          setIsAuthenticated(false);
+          setLoginError(`Access denied: Account ${userCred.user?.email || ''} is not authorized as an NPIT administrator.`);
+        }
+      } else {
+        if (isAuthorizedAdmin(emailInput.trim()) && (passwordInput === 'NPIT@Academic2026!' || passwordInput === 'npit2026')) {
+          setCurrentUser({ email: emailInput.trim(), displayName: 'NPIT Staff Administrator' });
+          setIsAuthenticated(true);
+        } else {
+          setLoginError('Invalid staff administrator credentials. Please check your email and password.');
         }
       }
     } catch (err) {
@@ -595,6 +613,20 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
     item.title.toLowerCase().includes(launcherSearch.toLowerCase()) ||
     item.subtitle.toLowerCase().includes(launcherSearch.toLowerCase())
   );
+
+  // Loading Security Gate
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#1e2129] flex items-center justify-center p-4">
+        <div className="flex flex-col items-center gap-3 text-white">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+          <span className="text-xs uppercase tracking-widest font-semibold text-slate-300">
+            Verifying Security Session...
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   // 1. Authentication Gate Screen
   if (!isAuthenticated) {
@@ -1222,11 +1254,11 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                     <div className="flex items-center gap-2.5">
                       <Mail className="w-4 h-4 text-blue-700 shrink-0" />
                       <span>
-                        <strong>Auto-Forwarding Active:</strong> All visitor messages sent via "Send Us a Message" are automatically dispatched to <strong>reactjs35@gmail.com</strong> and archived in Cloud Firestore.
+                        <strong>Auto-Forwarding Active:</strong> All visitor messages sent via "Send Us a Message" are automatically dispatched to the <strong>Official Admissions Inbox</strong> and archived securely in Cloud Firestore.
                       </span>
                     </div>
                     <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200 shrink-0">
-                      Forwarded to reactjs35@gmail.com
+                      Official Forwarding Gateway Active
                     </span>
                   </div>
 
@@ -2522,8 +2554,8 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                   <strong className="text-slate-900 font-bold">{selectedInquiry.fullName}</strong>
                 </div>
                 <div>
-                  <span className="text-slate-400 font-medium block">Forwarded To</span>
-                  <strong className="text-emerald-700 font-mono">reactjs35@gmail.com</strong>
+                  <span className="text-slate-400 font-medium block">Forwarded Gateway</span>
+                  <strong className="text-emerald-700 font-mono">Official Admissions Dispatcher (Active)</strong>
                 </div>
                 <div>
                   <span className="text-slate-400 font-medium block">Email Address</span>

@@ -129,16 +129,78 @@ export default function ApplyPage({
     "Other Provinces (ខេត្តផ្សេងៗ)"
   ];
 
+  const [formErrors, setFormErrors] = useState({});
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (formErrors[field]) {
+      setFormErrors(prev => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const validateStep = (currentStep) => {
+    const errs = {};
+    if (currentStep === 1) {
+      if (!formData.fullNameEn?.trim() && !formData.fullNameKh?.trim()) {
+        errs.fullName = isKh ? 'សូមបញ្ចូលឈ្មោះបេក្ខជន' : 'Please enter full name in English or Khmer';
+      }
+      if (!formData.phone?.trim() || formData.phone.trim().length < 8) {
+        errs.phone = isKh ? 'សូមបញ្ចូលលេខទូរស័ព្ទត្រឹមត្រូវ (យ៉ាងហោច ៨ ខ្ទង់)' : 'Please enter a valid phone number (at least 8 digits)';
+      }
+      if (!formData.email?.trim() || !formData.email.includes('@')) {
+        errs.email = isKh ? 'សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលត្រឹមត្រូវ' : 'Please enter a valid email address';
+      }
+      if (!formData.dob) {
+        errs.dob = isKh ? 'សូមជ្រើសរើសថ្ងៃខែឆ្នាំកំណើត' : 'Please provide your date of birth';
+      }
+    } else if (currentStep === 2) {
+      if (!formData.highSchool?.trim()) {
+        errs.highSchool = isKh ? 'សូមបញ្ចូលឈ្មោះវិទ្យាល័យដែលបានបញ្ចប់' : 'Please provide your high school name';
+      }
+      if (!formData.bacGrade) {
+        errs.bacGrade = isKh ? 'សូមជ្រើសរើសនិទ្ទេសបាក់ឌុប' : 'Please select your Bac II examination grade';
+      }
+    } else if (currentStep === 3) {
+      if (!formData.programId) {
+        errs.programId = isKh ? 'សូមជ្រើសរើសជំនាញសិក្សា' : 'Please choose an academic major';
+      }
+    }
+
+    setFormErrors(errs);
+    return Object.keys(errs).length === 0;
   };
 
   const handleNext = (e) => {
     if (e) e.preventDefault();
+    if (!validateStep(step)) {
+      setSubmitError(isKh ? 'សូមបំពេញព័ត៌មានដែលចាំបាច់ (*) ក្នុងជំហាននេះជាមុនសិន។' : 'Please complete all required fields (*) before continuing.');
+      return;
+    }
+    setSubmitError(null);
     if (step < 5) {
       setStep(step + 1);
       window.scrollTo({ top: 200, behavior: 'smooth' });
     }
+  };
+
+  const handleStepSelect = (targetStep) => {
+    if (targetStep <= step) {
+      setStep(targetStep);
+      return;
+    }
+    for (let s = 1; s < targetStep; s++) {
+      if (!validateStep(s)) {
+        setStep(s);
+        setSubmitError(isKh ? `សូមបំពេញព័ត៌មានដែលចាំបាច់ក្នុងជំហានទី ${s} ជាមុនសិន។` : `Please complete required fields in Step ${s} before continuing.`);
+        return;
+      }
+    }
+    setSubmitError(null);
+    setStep(targetStep);
   };
 
   const handlePrev = () => {
@@ -150,7 +212,20 @@ export default function ApplyPage({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.agreed || submitting) return;
+    if (submitting) return;
+
+    for (let s = 1; s <= 3; s++) {
+      if (!validateStep(s)) {
+        setStep(s);
+        setSubmitError(isKh ? `សូមបំពេញព័ត៌មានចាំបាច់ក្នុងជំហានទី ${s} ជាមុនសិន។` : `Please complete required fields in Step ${s} before submitting.`);
+        return;
+      }
+    }
+
+    if (!formData.agreed) {
+      setSubmitError(isKh ? 'សូមធីកយល់ព្រមលើសេចក្តីប្រកាសផ្លូវការរបស់បេក្ខជន' : 'Please check the applicant declaration agreement to proceed.');
+      return;
+    }
 
     // Security: Anti-bot honeypot check
     if (formData.honeypot) {
@@ -544,7 +619,7 @@ export default function ApplyPage({
                     <button
                       key={s.num}
                       type="button"
-                      onClick={() => setStep(s.num)}
+                      onClick={() => handleStepSelect(s.num)}
                       className={`text-left p-3 rounded-xl border transition-all cursor-pointer ${
                         isCurrent 
                           ? 'bg-white border-blue-500 shadow-sm ring-2 ring-blue-500/10' 
@@ -620,9 +695,14 @@ export default function ApplyPage({
                           placeholder="e.g. SOK CHENDA"
                           value={formData.fullNameEn}
                           onChange={(e) => handleInputChange('fullNameEn', e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all uppercase"
+                          className={`w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all uppercase ${
+                            formErrors.fullName ? 'border-red-500 bg-red-50/30' : 'border-slate-200'
+                          }`}
                         />
                       </div>
+                      {formErrors.fullName && (
+                        <p className="text-[11px] text-red-600 font-bold mt-1">{formErrors.fullName}</p>
+                      )}
                     </div>
 
                     {/* Full Name in Khmer */}
@@ -681,9 +761,14 @@ export default function ApplyPage({
                           required
                           value={formData.dob}
                           onChange={(e) => handleInputChange('dob', e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
+                          className={`w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all ${
+                            formErrors.dob ? 'border-red-500 bg-red-50/30' : 'border-slate-200'
+                          }`}
                         />
                       </div>
+                      {formErrors.dob && (
+                        <p className="text-[11px] text-red-600 font-bold mt-1">{formErrors.dob}</p>
+                      )}
                     </div>
 
                     {/* Phone & Telegram */}
@@ -699,9 +784,14 @@ export default function ApplyPage({
                           placeholder="012 345 678 / 098 765 432"
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
+                          className={`w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all ${
+                            formErrors.phone ? 'border-red-500 bg-red-50/30' : 'border-slate-200'
+                          }`}
                         />
                       </div>
+                      {formErrors.phone && (
+                        <p className="text-[11px] text-red-600 font-bold mt-1">{formErrors.phone}</p>
+                      )}
                       <p className="text-[11px] text-slate-400 mt-1">We will send admission decisions and exam notices via Telegram.</p>
                     </div>
 
@@ -718,9 +808,14 @@ export default function ApplyPage({
                           placeholder="applicant@student.npit.edu.kh"
                           value={formData.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
+                          className={`w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all ${
+                            formErrors.email ? 'border-red-500 bg-red-50/30' : 'border-slate-200'
+                          }`}
                         />
                       </div>
+                      {formErrors.email && (
+                        <p className="text-[11px] text-red-600 font-bold mt-1">{formErrors.email}</p>
+                      )}
                     </div>
 
                     {/* Province / City */}
@@ -787,9 +882,14 @@ export default function ApplyPage({
                           placeholder="e.g. Sisowath High School / វិទ្យាល័យព្រះស៊ីសុវត្ថិ"
                           value={formData.highSchool}
                           onChange={(e) => handleInputChange('highSchool', e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all"
+                          className={`w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none transition-all ${
+                            formErrors.highSchool ? 'border-red-500 bg-red-50/30' : 'border-slate-200'
+                          }`}
                         />
                       </div>
+                      {formErrors.highSchool && (
+                        <p className="text-[11px] text-red-600 font-bold mt-1">{formErrors.highSchool}</p>
+                      )}
                     </div>
 
                     {/* Examination Year */}

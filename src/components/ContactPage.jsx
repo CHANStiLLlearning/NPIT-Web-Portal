@@ -26,6 +26,7 @@ export default function ContactPage({ lang, onNavigate }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [refNum, setRefNum] = useState('');
+  const [toastMessage, setToastMessage] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,13 +44,14 @@ export default function ContactPage({ lang, onNavigate }) {
       });
       setRefNum(res.referenceNumber);
       setSubmitted(true);
+      setToastMessage(isKh ? `✓ សារត្រូវបានផ្ញើជោគជ័យ! លេខយោង៖ ${res.referenceNumber}` : `✓ Message Dispatched Successfully! Reference: ${res.referenceNumber}`);
+      setTimeout(() => setToastMessage(null), 8000);
       setFormData({
         fullName: '',
         email: '',
         subject: '',
         message: ''
       });
-      setTimeout(() => setSubmitted(false), 6000);
     } catch (err) {
       console.warn('Contact page submission error:', err);
     } finally {
@@ -210,11 +212,12 @@ export default function ContactPage({ lang, onNavigate }) {
                 <div className="flex items-center gap-3">
                   {/* Facebook */}
                   <a 
-                    href="https://facebook.com" 
+                    href="https://www.facebook.com/npit.edu.kh" 
                     target="_blank" 
                     rel="noreferrer"
                     className="w-8 h-8 rounded-full bg-[#1877f2] text-white flex items-center justify-center shadow-xs hover:opacity-90 transition-opacity"
-                    aria-label="Facebook"
+                    aria-label="Official Facebook"
+                    title="NPIT Official Facebook"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -223,11 +226,12 @@ export default function ContactPage({ lang, onNavigate }) {
 
                   {/* LinkedIn */}
                   <a 
-                    href="https://linkedin.com" 
+                    href="https://www.linkedin.com/school/npit-cambodia/" 
                     target="_blank" 
                     rel="noreferrer"
                     className="w-8 h-8 rounded-full bg-[#0077b5] text-white flex items-center justify-center shadow-xs hover:opacity-90 transition-opacity"
-                    aria-label="LinkedIn"
+                    aria-label="Official LinkedIn"
+                    title="NPIT LinkedIn"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.761-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
@@ -236,11 +240,12 @@ export default function ContactPage({ lang, onNavigate }) {
 
                   {/* Telegram */}
                   <a 
-                    href="https://telegram.org" 
+                    href="https://t.me/npit_official" 
                     target="_blank" 
                     rel="noreferrer"
                     className="w-8 h-8 rounded-full bg-[#229ed9] text-white flex items-center justify-center shadow-xs hover:opacity-90 transition-opacity"
-                    aria-label="Telegram"
+                    aria-label="Official Telegram"
+                    title="NPIT Official Telegram"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                       <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.46c.536-.196 1.006.128.832.941z"/>
@@ -249,11 +254,12 @@ export default function ContactPage({ lang, onNavigate }) {
 
                   {/* YouTube */}
                   <a 
-                    href="https://youtube.com" 
+                    href="https://www.youtube.com/@npitcambodia" 
                     target="_blank" 
                     rel="noreferrer"
                     className="w-8 h-8 rounded-full bg-[#ff0000] text-white flex items-center justify-center shadow-xs hover:opacity-90 transition-opacity"
-                    aria-label="YouTube"
+                    aria-label="Official YouTube"
+                    title="NPIT Official YouTube Channel"
                   >
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                       <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
@@ -279,26 +285,26 @@ export default function ContactPage({ lang, onNavigate }) {
 
               {/* Form Container */}
               <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
-                {submitted ? (
-                  <div className="py-12 text-center space-y-4 animate-in fade-in duration-300">
-                    <div className="w-16 h-16 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto">
-                      <CheckCircle2 className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900">
-                      {isKh ? "សាររបស់អ្នកត្រូវបានកត់ត្រាជោគជ័យ!" : "Inquiry Saved in Registry!"}
-                    </h3>
-                    {refNum && (
-                      <p className="text-xs font-mono font-bold text-blue-900">
-                        Tracking Reference: <span className="bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">{refNum}</span>
+                {submitted && (
+                  <div role="alert" className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-start gap-3 shadow-xs animate-in fade-in duration-300">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-bold text-sm">
+                        {isKh ? "សារត្រូវបានផ្ញើ និងកត់ត្រាជោគជ័យ!" : "Inquiry Dispatched Successfully!"}
+                      </h4>
+                      {refNum && (
+                        <p className="text-xs font-mono font-bold text-emerald-950 mt-1">
+                          Tracking Reference: <span className="bg-white px-2.5 py-0.5 rounded-md border border-emerald-300">{refNum}</span>
+                        </p>
+                      )}
+                      <p className="text-xs text-emerald-800 mt-1">
+                        {isKh 
+                          ? "សូមអរគុណសម្រាប់ការទាក់ទងមកកាន់ NPIT។ ក្រុមការងារយើងខ្ញុំនឹងឆ្លើយតបមកកាន់លោកអ្នកវិញក្នុងពេលឆាប់ៗ។"
+                          : "Thank you for contacting NPIT. Your message has been forwarded to our admissions desk."}
                       </p>
-                    )}
-                    <p className="text-sm text-slate-600 max-w-md mx-auto">
-                      {isKh 
-                        ? "សូមអរគុណសម្រាប់ការទាក់ទងមកកាន់វិទ្យាស្ថានជាតិពហុបច្ចេកទេសតេជោសែន។ ក្រុមការងារយើងខ្ញុំនឹងឆ្លើយតបទៅកាន់លោកអ្នកវិញក្នុងពេលឆាប់ៗ។"
-                        : "Thank you for contacting National Polytechnic Institute Techo Sen. Our administration team will review your inquiry and get back to you shortly."}
-                    </p>
+                    </div>
                   </div>
-                ) : (
+                )}
                   <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Full Name */}
                     <div>
@@ -362,7 +368,6 @@ export default function ContactPage({ lang, onNavigate }) {
                       </button>
                     </div>
                   </form>
-                )}
               </div>
 
             </div>
@@ -444,6 +449,17 @@ export default function ContactPage({ lang, onNavigate }) {
 
         </div>
       </section>
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div 
+          role="alert"
+          className="fixed bottom-6 right-6 z-50 bg-emerald-800 text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-4 duration-300 border border-emerald-500"
+        >
+          <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
     </div>
   );
