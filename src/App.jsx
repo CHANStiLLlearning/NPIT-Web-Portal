@@ -24,7 +24,6 @@ import AdmissionDetailPage from './components/AdmissionDetailPage';
 import { admissionsDetails } from './data/admissionsData';
 import TrackerPage from './components/TrackerPage';
 import AdminPage from './components/AdminPage';
-import StudentPortalModal from './components/StudentPortalModal';
 import LegalPage from './components/LegalPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { contentData } from './data/content';
@@ -42,7 +41,6 @@ export default function App() {
   const [selectedAdmissionDetail, setSelectedAdmissionDetail] = useState(null);
   const [selectedResearch, setSelectedResearch] = useState(null);
   const [trackerCode, setTrackerCode] = useState('');
-  const [portalModalOpen, setPortalModalOpen] = useState(false);
   const [legalTab, setLegalTab] = useState('privacy');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -52,9 +50,6 @@ export default function App() {
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash;
-      if (hash !== '#portal') {
-        setPortalModalOpen(false);
-      }
       const aboutAnchors = ['#about', '#history', '#milestones', '#who-we-are', '#vision-mission', '#leadership'];
       if (hash.startsWith('#about/') || aboutAnchors.includes(hash)) {
         const sub = hash.startsWith('#about/')
@@ -143,7 +138,7 @@ export default function App() {
         setActiveTab('admin');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash === '#portal') {
-        setPortalModalOpen(true);
+        window.location.hash = '#home';
       } else if (hash === '#privacy') {
         setLegalTab('privacy');
         setCurrentPage('legal');
@@ -194,13 +189,6 @@ export default function App() {
   }, [currentPage]);
 
   const handleNavigate = (itemId, href) => {
-    if (itemId === 'portal') {
-      setPortalModalOpen(true);
-      window.location.hash = '#portal';
-      return;
-    }
-    setPortalModalOpen(false);
-    
     // If a specific sub-route hash is provided (e.g. #programs/industrial, #admissions/scholarships)
     if (href && href.includes('/') && href.startsWith('#')) {
       window.location.hash = href;
@@ -579,22 +567,6 @@ export default function App() {
         footerData={t.footer}
         instituteName={t.instituteName}
         instituteNameKhmer={t.instituteNameKhmer}
-        onOpenPortal={() => {
-          setPortalModalOpen(true);
-          window.location.hash = '#portal';
-        }}
-      />
-
-      {/* Integrated Student & Faculty Portal Modal */}
-      <StudentPortalModal
-        isOpen={portalModalOpen}
-        onClose={() => {
-          setPortalModalOpen(false);
-          if (window.location.hash === '#portal') {
-            window.location.hash = '#home';
-          }
-        }}
-        t={t}
       />
 
       {/* Floating Back to Top Button */}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock, ArrowUp, Globe, Send } from 'lucide-react';
 
-export default function Footer({ footerData, instituteName, instituteNameKhmer, onOpenPortal }) {
+export default function Footer({ footerData, instituteName, instituteNameKhmer }) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -104,22 +104,6 @@ export default function Footer({ footerData, instituteName, instituteNameKhmer, 
               </li>
               <li>
                 <a href="#research" className="hover:text-amber-400 transition-colors">Applied Research & Innovation</a>
-              </li>
-              <li>
-                <a 
-                  href="#portal" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (onOpenPortal) {
-                      onOpenPortal();
-                    } else {
-                      window.location.hash = '#portal';
-                    }
-                  }}
-                  className="hover:text-amber-400 transition-colors"
-                >
-                  Student & Faculty Portal
-                </a>
               </li>
             </ul>
           </div>
