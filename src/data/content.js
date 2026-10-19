@@ -26,7 +26,7 @@ export const contentData = {
           {
             title: "Higher Diploma (2 Years)",
             badge: "100% Scholarship",
-            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
             items: [
               { label: "Industrial Engineering", href: "#programs/industrial", code: "DIP-IE", tag: "Popular" },
               { label: "Electrical Engineering", href: "#programs/electrical", code: "ENG-EE" },
@@ -42,7 +42,7 @@ export const contentData = {
           {
             title: "Bachelor of Technology (4 Years)",
             badge: "Night & Weekend",
-            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
             items: [
               { label: "Smart Digital & Cybersecurity", href: "#programs/cybersecurity", code: "BACH-CYBER", tag: "B.Tech" },
               { label: "Electrical Engineering", href: "#programs/electrical-beng", code: "BACH-EE", tag: "B.Tech" },
@@ -75,7 +75,7 @@ export const contentData = {
         dropdown: [
           { label: "Engineering & Robotics", href: "#research/robotics", desc: "AMRs, mechatronics & Industry 4.0 automation" },
           { label: "ICT & Digital Innovation", href: "#research/ict", desc: "Khmer NLP, AI models & cyber threat defense" },
-          { label: "Applied Sciences & Materials", href: "#research/applied-sciences", desc: "Green geopolymer concrete & eco-filtration" },
+          { label: "Applied Sciences & Materials", href: "#research/applied-sciences", desc: "Advanced geopolymer concrete & eco-filtration" },
           { label: "Renewable Energy & Smart Grids", href: "#research/energy", desc: "Solar microgrids & power distribution testing" },
           { label: "Explore All Research Facilities & Labs", href: "#research", isFullLink: true }
         ]
@@ -274,7 +274,7 @@ export const contentData = {
           {
             title: "កម្រិតសញ្ញាបត្រជាន់ខ្ពស់ (សិក្សា ២ឆ្នាំ)",
             badge: "អាហារូបករណ៍ ១០០%",
-            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
             items: [
               { label: "វិស្វកម្មឧស្សាហកម្ម", code: "DIP-IE", href: "#programs/industrial", tag: "ពេញនិយម" },
               { label: "វិស្វកម្មអគ្គិសនី", code: "ENG-EE", href: "#programs/electrical" },
@@ -290,7 +290,7 @@ export const contentData = {
           {
             title: "កម្រិតបរិញ្ញាបត្របច្ចេកទេស (សិក្សា ៤ឆ្នាំ)",
             badge: "វេនយប់ & ថ្ងៃសៅរ៍-អាទិត្យ",
-            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            badgeColor: "bg-slate-100 text-slate-700 border border-slate-200",
             items: [
               { label: "ប្រព័ន្ធឌីជីថល & សន្តិសុខសាយប័រ", code: "BACH-CYBER", href: "#programs/cybersecurity", tag: "បរិញ្ញាបត្រ" },
               { label: "វិស្វកម្មអគ្គិសនី", code: "BACH-EE", href: "#programs/electrical-beng", tag: "បរិញ្ញាបត្រ" },
@@ -323,7 +323,7 @@ export const contentData = {
         dropdown: [
           { label: "វិស្វកម្ម និងរ៉ូបូត", href: "#research/robotics", desc: "ស្វ័យប្រវត្តិកម្ម & ឧស្សាហកម្ម ៤.០" },
           { label: "ព័ត៌មានវិទ្យា & នវានុវត្តន៍ឌីជីថល", href: "#research/ict", desc: "Khmer NLP, AI & សន្តិសុខសាយប័រ" },
-          { label: "វិទ្យាសាស្ត្រអនុវត្ត & សម្ភារៈ", href: "#research/applied-sciences", desc: "បេតុងបៃតង និងចម្រោះទឹកសំណល់" },
+          { label: "វិទ្យាសាស្ត្រអនុវត្ត & សម្ភារៈ", href: "#research/applied-sciences", desc: "បេតុងកម្រិតខ្ពស់ និងចម្រោះទឹកសំណល់" },
           { label: "ថាមពលកកើតឡើងវិញ & Smart Grids", href: "#research/energy", desc: "ប្រព័ន្ធសូឡា និងបណ្តាញអគ្គិសនីឆ្លាតវៃ" },
           { label: "ស្វែងយល់ការស្រាវជ្រាវទាំងអស់", href: "#research", desc: "មជ្ឈមណ្ឌលពិសោធន៍ និងការស្រាវជ្រាវ", isFullLink: true }
         ]

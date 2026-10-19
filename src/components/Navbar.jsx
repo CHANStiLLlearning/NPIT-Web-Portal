@@ -192,7 +192,7 @@ export default function Navbar({
                               <span className="text-xs font-bold text-[#C29A39] uppercase tracking-wider">
                                 {item.dropdownGroups[0]?.title}
                               </span>
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#C29A39]/10 text-[#C29A39] border border-[#C29A39]/30">
                                 {item.dropdownGroups[0]?.badge}
                               </span>
                             </div>
@@ -212,7 +212,7 @@ export default function Navbar({
                                     </span>
                                   </div>
                                   <div className="flex items-center gap-1.5">
-                                    <span className="text-[10px] font-mono text-slate-400 group-hover:text-amber-700 transition-colors duration-200">
+                                    <span className="text-[10px] font-mono text-slate-400 group-hover:text-[#C29A39] transition-colors duration-200">
                                       {sub.code}
                                     </span>
                                     {sub.tag && (
@@ -234,7 +234,7 @@ export default function Navbar({
                                 <span className="text-xs font-bold text-[#C29A39] uppercase tracking-wider">
                                   {item.dropdownGroups[1]?.title}
                                 </span>
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
                                   {item.dropdownGroups[1]?.badge}
                                 </span>
                               </div>
@@ -254,7 +254,7 @@ export default function Navbar({
                                       </span>
                                     </div>
                                     <div className="flex items-center gap-1.5">
-                                      <span className="text-[9px] bg-amber-50 text-amber-700 border border-amber-200 px-1.5 py-0.2 rounded font-bold transition-transform duration-200 group-hover:scale-105">
+                                      <span className="text-[9px] bg-slate-100 text-slate-700 border border-slate-200 px-1.5 py-0.2 rounded font-bold transition-transform duration-200 group-hover:scale-105">
                                         {sub.tag}
                                       </span>
                                       <ChevronRight className="w-3 h-3 text-[#C29A39] opacity-0 -translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out shrink-0" />
@@ -301,7 +301,7 @@ export default function Navbar({
                             }}
                             className="text-[11px] text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition-colors duration-150"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#C29A39] animate-pulse"></span>
+                            <Sparkles className="w-3.5 h-3.5 text-[#C29A39] shrink-0" />
                             <span>{isKh ? 'អាហារូបករណ៍ ១០០% របស់រដ្ឋ' : '100% State Scholarship Details'}</span>
                           </a>
                         </div>
@@ -414,7 +414,7 @@ export default function Navbar({
                         }}
                         className={`flex-1 px-4 py-3 text-xs uppercase font-bold tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-between ${
                           isActive
-                            ? 'text-[#C29A39] bg-amber-50/60'
+                            ? 'text-[#C29A39] bg-slate-100 font-bold'
                             : 'text-slate-800 hover:text-[#C29A39]'
                         }`}
                       >
@@ -444,7 +444,7 @@ export default function Navbar({
                           <div key={gIdx} className="space-y-1">
                             <div className="flex items-center justify-between py-1 text-[11px] font-bold text-[#C29A39] uppercase tracking-wider border-b border-slate-200">
                               <span>{grp.title}</span>
-                              <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                              <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-slate-100 text-slate-700 border border-slate-200">
                                 {grp.badge}
                               </span>
                             </div>
