@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SiteBanner from './components/SiteBanner';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -379,9 +380,12 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800 selection:bg-blue-600 selection:text-white">
       
-      {/* Combined Sticky Navigation System (Header + Royal Blue Navbar) */}
+      {/* Combined Sticky Navigation System (Emergency Banner + Header + Navbar) */}
       <div className="sticky top-0 z-40 shadow-sm transition-all">
         
+        {/* Emergency Announcement Banner (Configured via Admin Portal) */}
+        <SiteBanner lang={lang} onNavigate={handleNavigate} />
+
         {/* 1. Header (Logo, Language Switcher) */}
         <Header
           lang={lang}

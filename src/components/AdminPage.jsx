@@ -1617,7 +1617,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                     <div className={`p-3 rounded-xl text-white flex flex-wrap items-center justify-between gap-3 shadow-sm ${
                       bannerDraft.type === 'urgent' ? 'bg-gradient-to-r from-red-700 to-rose-800' :
                       bannerDraft.type === 'info' ? 'bg-gradient-to-r from-sky-700 to-blue-800' :
-                      bannerDraft.type === 'success' ? 'bg-gradient-to-r from-emerald-700 to-teal-800' :
+                      bannerDraft.type === 'success' ? 'bg-gradient-to-r from-amber-700 to-amber-900' :
                       'bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-950'
                     }`}>
                       <div className="flex items-center gap-2.5">
@@ -1667,7 +1667,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                         <option value="announcement">Royal Blue (Standard Announcement)</option>
                         <option value="urgent">Crimson Red (Urgent Notice)</option>
                         <option value="info">Sky Blue (Information)</option>
-                        <option value="success">Emerald Green (Scholarship Awards)</option>
+                        <option value="success">Warm Amber Gold (Scholarship Awards)</option>
                       </select>
                     </div>
 
