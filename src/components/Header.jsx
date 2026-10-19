@@ -26,10 +26,10 @@ export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpe
               />
             </div>
             <div className="hidden md:flex flex-col justify-center">
-              <span className="text-xs md:text-sm font-semibold tracking-wider text-blue-900 uppercase font-sans">
+              <span className="text-xs md:text-sm font-semibold tracking-wider text-slate-800 uppercase font-sans">
                 {t.instituteName}
               </span>
-              <span className="text-sm md:text-lg font-bold text-blue-800 font-khmer mt-0.5 tracking-normal">
+              <span className="text-sm md:text-lg font-bold text-slate-900 font-khmer mt-0.5 tracking-normal">
                 {t.instituteNameKhmer}
               </span>
             </div>
@@ -49,7 +49,7 @@ export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpe
                   window.location.hash = '#portal';
                 }
               }}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] rounded-md text-xs font-bold uppercase tracking-wider shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all duration-200 cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] text-white rounded-md text-xs font-bold uppercase tracking-wider shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all duration-200 cursor-pointer"
             >
               <Lock className="w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110" />
               <span>{lang === 'kh' ? 'ផតថលនិស្សិត' : 'Student Portal'}</span>
@@ -62,8 +62,8 @@ export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpe
                 onClick={() => setLang('kh')}
                 className={`px-2.5 py-1 rounded-full transition-all duration-200 font-khmer ${
                   lang === 'kh'
-                    ? 'bg-blue-800 text-white shadow-xs font-bold'
-                    : 'text-slate-600 hover:text-blue-900'
+                    ? 'bg-slate-900 text-white shadow-xs font-bold'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="Khmer Language"
               >
@@ -75,8 +75,8 @@ export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpe
                 onClick={() => setLang('en')}
                 className={`px-2.5 py-1 rounded-full transition-all duration-200 ${
                   lang === 'en'
-                    ? 'bg-blue-800 text-white shadow-xs font-bold'
-                    : 'text-slate-600 hover:text-blue-900'
+                    ? 'bg-slate-900 text-white shadow-xs font-bold'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="English Language"
               >
@@ -88,7 +88,7 @@ export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpe
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-700 hover:text-blue-900 hover:bg-slate-100 rounded-lg focus:outline-none"
+              className="md:hidden p-2 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg focus:outline-none"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
