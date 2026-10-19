@@ -13,7 +13,6 @@ import {
   Lock, 
   Unlock, 
   Eye, 
-  Award, 
   GraduationCap, 
   Building2, 
   Phone, 
@@ -83,7 +82,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Active Main Dashboard View
-  // 'home' | 'applications' | 'programs' | 'shifts' | 'exams' | 'calendar' | 'news' | 'research' | 'tracker' | 'banner' | 'security' | 'config'
+  // 'home' | 'applications' | 'programs' | 'shifts' | 'exams' | 'calendar' | 'news' | 'research' | 'banner' | 'security' | 'config'
   const [activeView, setActiveView] = useState('home');
 
   // Search in Home launchpad
@@ -645,13 +644,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
       icon: <BookOpen className="w-7 h-7 text-white" />
     },
     {
-      id: 'tracker',
-      title: 'Exam Result / Tracker',
-      subtitle: 'Student Status Registry',
-      gradient: 'from-[#2172f3] to-[#1546a0]',
-      icon: <Award className="w-7 h-7 text-white" />
-    },
-    {
       id: 'banner',
       title: 'Alerts / Site Banner',
       subtitle: bannerConfig.enabled ? 'Live on Website' : 'Disabled',
@@ -948,24 +940,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
             {sidebarOpen && <span className="truncate">Homework</span>}
           </button>
 
-          {/* 9. Exam Result / Tracker */}
-          <button
-            type="button"
-            onClick={() => setActiveView('tracker')}
-            className={`w-full flex items-center gap-3.5 px-4 py-2.5 transition relative cursor-pointer ${
-              activeView === 'tracker'
-                ? 'bg-white/5 text-white font-semibold'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-            }`}
-          >
-            {activeView === 'tracker' && (
-              <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#0070f3] rounded-r" />
-            )}
-            <Award className="w-4 h-4 text-[#2172f3] shrink-0" />
-            {sidebarOpen && <span className="truncate">Exam Result</span>}
-          </button>
-
-          {/* 10. Settings / Banner */}
+          {/* 9. Settings / Banner */}
           <button
             type="button"
             onClick={() => setActiveView('banner')}
@@ -1624,38 +1599,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
           )}
 
           {/* =====================================================================
-              VIEW 9: APPLICATION TRACKER LOOKUP
-             ===================================================================== */}
-          {activeView === 'tracker' && (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2 text-xs">
-                <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                <span className="text-slate-900 font-bold">Exam Result & Student Application Tracker</span>
-              </div>
-
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
-                <h4 className="font-bold text-base text-slate-900">Registered Students Real-Time Status</h4>
-                <div className="divide-y divide-slate-100 text-xs">
-                  {applications.map(app => (
-                    <div key={app.referenceNumber} className="py-3 flex items-center justify-between">
-                      <div>
-                        <strong className="text-blue-900 font-mono block">{app.referenceNumber}</strong>
-                        <span className="text-slate-800 font-bold">{app.applicant?.fullName}</span>
-                        <span className="text-slate-500 block">Selected: {app.programSelection?.programId}</span>
-                      </div>
-                      <span className="px-3 py-1 bg-blue-50 text-blue-800 font-bold rounded-lg border border-blue-200">
-                        {app.statusLabel || app.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* =====================================================================
-              VIEW 10: SETTINGS & SITE-WIDE BANNER
+              VIEW 9: SETTINGS & SITE-WIDE BANNER
              ===================================================================== */}
           {activeView === 'banner' && (
             <div className="space-y-6 animate-in fade-in duration-200">
