@@ -3,6 +3,41 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const LOCAL_INQUIRIES_KEY = 'npit_inquiries';
 const LOCAL_RESEARCH_INQUIRIES_KEY = 'npit_research_inquiries';
+export const ADMIN_NOTIFICATION_EMAIL = 'reactjs35@gmail.com';
+
+/**
+ * Dispatch automated email notification directly to administrator
+ * @param {Object} record
+ */
+export async function sendEmailNotification(record) {
+  try {
+    const res = await fetch(`https://formsubmit.co/ajax/${ADMIN_NOTIFICATION_EMAIL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        'Inquirer Name': record.fullName || 'Anonymous',
+        'Inquirer Email': record.email || 'Not provided',
+        'Inquirer Phone': record.phone || 'Not provided',
+        'Tracking Code': record.referenceNumber,
+        'Subject': record.subject || 'NPIT Campus Message',
+        'Message': record.message || '',
+        'Submitted At': new Date().toLocaleString('en-US', { timeZone: 'Asia/Phnom_Penh' }),
+        _subject: `[NPIT Message] ${record.fullName || 'Visitor'} - ${record.subject || record.referenceNumber}`,
+        _replyto: record.email || ADMIN_NOTIFICATION_EMAIL,
+        _captcha: 'false',
+        _template: 'table'
+      })
+    });
+    const result = await res.json().catch(() => ({}));
+    return { success: true, result };
+  } catch (err) {
+    console.warn('[InquiryService] Automated email dispatch failed:', err);
+    return { success: false, error: err?.message };
+  }
+}
 
 /**
  * Submit general campus contact inquiry
@@ -17,9 +52,16 @@ export async function submitGeneralInquiry(data) {
     phone: data.phone || '',
     subject: data.subject || 'General Inquiry',
     message: data.message || '',
+    forwardedTo: ADMIN_NOTIFICATION_EMAIL,
     submittedAt: new Date().toISOString()
   };
 
+  // 1. Automatically dispatch email to reactjs35@gmail.com in background
+  sendEmailNotification(record).catch(err => {
+    console.warn('[InquiryService] Background email dispatch error:', err);
+  });
+
+  // 2. Persist to Cloud Firestore
   if (isFirebaseConfigured && db) {
     try {
       const { doc, setDoc } = await import('firebase/firestore');
@@ -33,7 +75,7 @@ export async function submitGeneralInquiry(data) {
     }
   }
 
-  // Backup locally
+  // 3. Backup locally
   try {
     const existing = JSON.parse(localStorage.getItem(LOCAL_INQUIRIES_KEY) || '[]');
     localStorage.setItem(LOCAL_INQUIRIES_KEY, JSON.stringify([record, ...existing]));
