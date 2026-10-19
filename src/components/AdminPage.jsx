@@ -81,7 +81,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Active Main Dashboard View
-  // 'home' | 'applications' | 'programs' | 'shifts' | 'exams' | 'calendar' | 'news' | 'banner' | 'security' | 'config'
+  // 'home' | 'applications' | 'programs' | 'shifts' | 'calendar' | 'news' | 'banner' | 'security' | 'config'
   const [activeView, setActiveView] = useState('home');
 
   // Search in Home launchpad
@@ -168,33 +168,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   ]);
   const [shiftModalOpen, setShiftModalOpen] = useState(false);
   const [shiftFormData, setShiftFormData] = useState({ name: '', hours: '', details: '', status: 'Active & Enrolling' });
-
-  // Dynamic Exam Eligibility Rules List & Modal
-  const [examRulesList, setExamRulesList] = useState([
-    {
-      id: 'rule-bacii-pass',
-      title: 'Passed Bac II (និទ្ទេស A, B, C, D, E)',
-      desc: 'Eligible for both Bachelor of Engineering (4 Years) and Higher Diploma (2 Years).',
-      badge: '100% & 50% State Scholarships',
-      badgeColor: 'emerald'
-    },
-    {
-      id: 'rule-bacii-fail',
-      title: 'Failed High School Diploma (ធ្លាក់បាក់ឌុប)',
-      desc: '100% Eligible for Higher Technical Diploma (2 Years) with full state tuition waiver.',
-      badge: '100% Tuition Scholarship',
-      badgeColor: 'blue'
-    },
-    {
-      id: 'rule-tvet',
-      title: 'TVET Level 3 Certificate Holders',
-      desc: 'Direct admission into Year 2 Higher Diploma technical tracks.',
-      badge: 'Credit Transfer Accepted',
-      badgeColor: 'amber'
-    }
-  ]);
-  const [examModalOpen, setExamModalOpen] = useState(false);
-  const [examFormData, setExamFormData] = useState({ title: '', desc: '', badge: 'Direct Enrollment', badgeColor: 'blue' });
 
   // Dynamic Batches / Calendar List & Modal
   const [batchesList, setBatchesList] = useState([
@@ -455,24 +428,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
     showToast(`Shift "${newShift.name}" registered!`);
   };
 
-  // Exam Criteria Operations
-  const handleSaveExamRule = (e) => {
-    e.preventDefault();
-    const newRule = {
-      id: `rule-${Date.now()}`,
-      title: examFormData.title,
-      desc: examFormData.desc,
-      badge: examFormData.badge,
-      badgeColor: examFormData.badgeColor || 'blue'
-    };
-    setExamRulesList(prev => [...prev, newRule]);
-    setExamModalOpen(false);
-    setExamFormData({ title: '', desc: '', badge: 'Direct Enrollment', badgeColor: 'blue' });
-    logAuditEvent('Created Exam Rule', `Rule: ${newRule.title}`);
-    setAuditLogs(getAuditLogs());
-    showToast(`Exam admission rule added!`);
-  };
-
   // Batch Operations
   const handleSaveBatch = (e) => {
     e.preventDefault();
@@ -565,13 +520,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
       subtitle: 'Morning • Afternoon • Weekend',
       gradient: 'from-[#ff388b] to-[#d61a6c]',
       icon: <Clock className="w-7 h-7 text-white" />
-    },
-    {
-      id: 'exams',
-      title: 'Exam / Bac II',
-      subtitle: 'Eligibility & Grades',
-      gradient: 'from-[#29b6f6] to-[#0288d1]',
-      icon: <FileText className="w-7 h-7 text-white" />
     },
     {
       id: 'calendar',
@@ -816,24 +764,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
             {sidebarOpen && <span className="truncate">Timetable</span>}
           </button>
 
-          {/* 5. Exam */}
-          <button
-            type="button"
-            onClick={() => setActiveView('exams')}
-            className={`w-full flex items-center gap-3.5 px-4 py-2.5 transition relative cursor-pointer ${
-              activeView === 'exams'
-                ? 'bg-white/5 text-white font-semibold'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-            }`}
-          >
-            {activeView === 'exams' && (
-              <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#0070f3] rounded-r" />
-            )}
-            <FileText className="w-4 h-4 text-[#29b6f6] shrink-0" />
-            {sidebarOpen && <span className="truncate">Exam</span>}
-          </button>
-
-          {/* 6. Calendar */}
+          {/* 5. Calendar */}
           <button
             type="button"
             onClick={() => setActiveView('calendar')}
@@ -1321,52 +1252,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
           )}
 
           {/* =====================================================================
-              VIEW 5: EXAM & BAC II ELIGIBILITY
-             ===================================================================== */}
-          {activeView === 'exams' && (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs">
-                  <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="text-slate-900 font-bold">Exam & Bac II Admissions Eligibility ({examRulesList.length})</span>
-                </div>
-                <button
-                  type="button"
-                  id="btn-create-exam-rule"
-                  onClick={() => setExamModalOpen(true)}
-                  className="px-4 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Add Admission Rule</span>
-                </button>
-              </div>
-
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
-                <h4 className="font-bold text-base text-slate-900">Ministry of Labour & Vocational Training Admission Protocols</h4>
-                <div className="divide-y divide-slate-100 text-xs">
-                  {examRulesList.map(rule => (
-                    <div key={rule.id} className="py-3 flex items-center justify-between">
-                      <div>
-                        <strong className="text-slate-900 block">{rule.title}</strong>
-                        <span className="text-slate-500">{rule.desc}</span>
-                      </div>
-                      <span className={`px-3 py-1 font-bold rounded-lg border ${
-                        rule.badgeColor === 'emerald' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                        rule.badgeColor === 'amber' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                        'bg-blue-50 text-blue-700 border-blue-200'
-                      }`}>
-                        {rule.badge}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* =====================================================================
-              VIEW 6: CALENDAR & BATCH START DATES
+              VIEW 5: CALENDAR & BATCH START DATES
              ===================================================================== */}
           {activeView === 'calendar' && (
             <div className="space-y-6 animate-in fade-in duration-200">
@@ -2312,81 +2198,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
         </div>
       )}
 
-      {/* MODAL 5: EXAM RULE MODAL */}
-      {examModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="font-bold text-base text-slate-900">Add Admission Eligibility Rule</h3>
-              <button type="button" onClick={() => setExamModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <form onSubmit={handleSaveExamRule} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Criteria Title *</label>
-                <input
-                  type="text"
-                  required
-                  id="input-exam-title"
-                  value={examFormData.title}
-                  onChange={(e) => setExamFormData(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="e.g. National Technical Olympiad Medalists"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Description & Requirements *</label>
-                <textarea
-                  required
-                  rows="2"
-                  id="input-exam-desc"
-                  value={examFormData.desc}
-                  onChange={(e) => setExamFormData(prev => ({ ...prev, desc: e.target.value }))}
-                  placeholder="Direct admission into honors engineering research cohort with full lab stipend."
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Scholarship / Badge</label>
-                  <input
-                    type="text"
-                    required
-                    id="input-exam-badge"
-                    value={examFormData.badge}
-                    onChange={(e) => setExamFormData(prev => ({ ...prev, badge: e.target.value }))}
-                    placeholder="100% Presidential Fellowship"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Badge Theme</label>
-                  <select
-                    value={examFormData.badgeColor}
-                    onChange={(e) => setExamFormData(prev => ({ ...prev, badgeColor: e.target.value }))}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                  >
-                    <option value="emerald">Emerald (Honor/Pass)</option>
-                    <option value="blue">Blue (Tuition Waiver)</option>
-                    <option value="amber">Amber (Credit Transfer)</option>
-                  </select>
-                </div>
-              </div>
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                <button type="button" onClick={() => setExamModalOpen(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 cursor-pointer">
-                  Cancel
-                </button>
-                <button type="submit" id="btn-save-exam-rule" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
-                  Save Rule
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 6: BATCH MODAL */}
+      {/* MODAL 5: BATCH MODAL */}
       {batchModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
