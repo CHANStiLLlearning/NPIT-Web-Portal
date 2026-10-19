@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Lock } from 'lucide-react';
 
 export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpen, onNavigate, t }) {
   return (
@@ -36,8 +36,25 @@ export default function Header({ lang, setLang, mobileMenuOpen, setMobileMenuOpe
           </a>
 
           {/* Right Action Area */}
-          <div className="flex items-center gap-3 md:gap-5">
+          <div className="flex items-center gap-3 md:gap-4">
             
+            {/* Student & Faculty Portal Quick Link - ACLEDA Bank Style */}
+            <a
+              href="#portal"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) {
+                  onNavigate('portal', '#portal');
+                } else {
+                  window.location.hash = '#portal';
+                }
+              }}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] rounded-md text-xs font-bold uppercase tracking-wider shadow-xs transition-colors cursor-pointer"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>{lang === 'kh' ? 'ផតថលនិស្សិត' : 'Student Portal'}</span>
+            </a>
+
             {/* Language Switcher */}
             <div className="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200 text-xs font-semibold">
               <button

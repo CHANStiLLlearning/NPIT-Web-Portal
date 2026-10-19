@@ -65,7 +65,7 @@ export default function Navbar({
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     closeTimeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
-    }, 180);
+    }, 150);
   };
 
   const handleDropdownPanelEnter = () => {
@@ -77,9 +77,7 @@ export default function Navbar({
 
   // Click on top-level item
   const handleNavClick = (e, item) => {
-    // If it has sub-items, allow direct click to toggle or navigate
     if (item.dropdown || item.dropdownGroups) {
-      // If already active, navigate to parent page and close
       if (activeDropdown === item.id) {
         setActiveDropdown(null);
         if (onNavigate) {
@@ -89,13 +87,11 @@ export default function Navbar({
           window.location.hash = item.href;
         }
       } else {
-        // Toggle open
         setActiveDropdown(item.id);
       }
       return;
     }
 
-    // Direct link (e.g. Home, Contact)
     setActiveDropdown(null);
     if (onNavigate) {
       onNavigate(item.id, item.href);
@@ -132,23 +128,13 @@ export default function Navbar({
     }));
   };
 
-  // Helper to pick category icon
-  const getSubItemIcon = (parentId, subItem) => {
-    if (subItem.isCta) return <Sparkles className="w-4 h-4 text-amber-950 shrink-0" />;
-    if (parentId === 'programs') return <GraduationCap className="w-3.5 h-3.5 text-blue-300 shrink-0" />;
-    if (parentId === 'admissions') return <Award className="w-3.5 h-3.5 text-amber-400 shrink-0" />;
-    if (parentId === 'research') return <FlaskConical className="w-3.5 h-3.5 text-cyan-400 shrink-0" />;
-    if (parentId === 'news') return <Calendar className="w-3.5 h-3.5 text-emerald-400 shrink-0" />;
-    return <Compass className="w-3.5 h-3.5 text-blue-300 shrink-0" />;
-  };
-
   return (
-    <nav ref={navRef} className="bg-[#1b4b9b] text-white shadow-md relative z-40 select-none border-t border-blue-600/30">
+    <nav ref={navRef} className="bg-[#122133] text-white shadow-md relative z-40 select-none border-t border-[#1c304a] border-b border-[#0a1420]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center justify-between h-12">
-          <ul className="flex items-center space-x-1 lg:space-x-1.5 h-full">
+        {/* Desktop Menu - ACLEDA Bank Corporate Style */}
+        <div className="hidden md:flex items-center justify-between h-12 md:h-13">
+          <ul className="flex items-center space-x-1 lg:space-x-2 h-full">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               const hasDropdown = Boolean(item.dropdown || item.dropdownGroups);
@@ -165,89 +151,65 @@ export default function Navbar({
                     type="button"
                     onClick={(e) => handleNavClick(e, item)}
                     aria-expanded={isOpen}
-                    className={`inline-flex items-center gap-1.5 px-3 lg:px-3.5 py-1.5 text-xs lg:text-[13px] font-medium tracking-wide transition-all duration-150 rounded-md cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 px-3 lg:px-3.5 py-2 text-xs lg:text-[13px] font-bold tracking-wider uppercase transition-colors duration-150 cursor-pointer ${
                       isActive || isOpen
-                        ? 'bg-[#295eb8] text-white font-semibold shadow-xs'
-                        : 'text-white/90 hover:bg-[#2052a6] hover:text-white'
+                        ? 'text-[#C29A39]'
+                        : 'text-white hover:text-[#C29A39]'
                     }`}
                   >
                     <span>{item.label}</span>
                     {hasDropdown && (
                       <ChevronDown 
-                        className={`w-3.5 h-3.5 opacity-80 transition-transform duration-200 ${
-                          isOpen ? 'rotate-180 text-amber-300 opacity-100' : ''
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                          isOpen ? 'rotate-180 text-[#C29A39]' : 'text-slate-300'
                         }`} 
                       />
                     )}
                   </button>
 
-                  {/* Mega Menu Dropdown for Academic Programs */}
+                  {/* Mega Menu Dropdown for Academic Programs - ACLEDA Bank Solid Style */}
                   {hasDropdown && item.isMega && isOpen && (
                     <div 
                       onMouseEnter={handleDropdownPanelEnter}
                       onMouseLeave={handleMouseLeave}
-                      className="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/3 pt-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-150"
+                      className="absolute top-full left-0 lg:left-1/2 lg:-translate-x-1/3 pt-1 z-50 animate-in fade-in-0 duration-150"
                     >
-                      <div className="w-[740px] lg:w-[840px] bg-[#0c2049]/98 backdrop-blur-xl border border-blue-600/40 shadow-2xl rounded-2xl p-5 text-white overflow-hidden">
+                      <div className="w-[640px] lg:w-[720px] bg-[#122133] border border-[#284263] shadow-2xl rounded-lg overflow-hidden text-white">
                         
-                        {/* Top Highlights Banner */}
-                        <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-blue-700/50">
-                          <div className="flex items-center gap-2">
-                            <span className="p-1.5 bg-blue-500/20 text-blue-300 rounded-lg">
-                              <GraduationCap className="w-4 h-4" />
-                            </span>
-                            <div>
-                              <h4 className="text-sm font-bold text-white tracking-wide">
-                                {isKh ? 'កម្មវិធីសិក្សាផ្លូវការនៅ NPIT' : 'NPIT Official Academic Programs'}
-                              </h4>
-                              <p className="text-[11px] text-blue-200/80">
-                                {isKh 
-                                  ? 'សញ្ញាបត្រជាន់ខ្ពស់បច្ចេកទេស (អាហារូបករណ៍ ១០០%) & បរិញ្ញាបត្របច្ចេកទេស ៤ឆ្នាំ' 
-                                  : '2-Year Higher Diploma (100% Scholarship) & 4-Year Bachelor of Technology'}
-                              </p>
-                            </div>
-                          </div>
-
-                          <span className="text-[11px] font-semibold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
-                            {isKh ? 'ឆ្នាំសិក្សា ២០២៦-២០២៧' : 'Academic Year 2026-2027'}
-                          </span>
-                        </div>
-
-                        {/* 2 Main Columns */}
-                        <div className="grid grid-cols-12 gap-5">
+                        {/* 2 Solid Clean Columns */}
+                        <div className="grid grid-cols-2 divide-x divide-[#1c304a]">
                           
-                          {/* Left Column: Higher Diploma (7 cols) */}
-                          <div className="col-span-7 bg-blue-950/40 rounded-xl p-3 border border-blue-800/40">
-                            <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-blue-800/40">
-                              <span className="text-xs font-bold text-blue-200 flex items-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                          {/* Column 1: Higher Diploma (2 Years) */}
+                          <div className="flex flex-col">
+                            <div className="bg-[#0e1b2b] px-4 py-2.5 border-b border-[#1c304a] flex items-center justify-between">
+                              <span className="text-xs font-bold text-[#C29A39] uppercase tracking-wider">
                                 {item.dropdownGroups[0]?.title}
                               </span>
-                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${item.dropdownGroups[0]?.badgeColor}`}>
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-600/40">
                                 {item.dropdownGroups[0]?.badge}
                               </span>
                             </div>
 
-                            <div className="grid grid-cols-1 gap-1 max-h-[280px] overflow-y-auto pr-1">
+                            <div className="divide-y divide-[#1c304a] max-h-[300px] overflow-y-auto">
                               {item.dropdownGroups[0]?.items.map((sub, idx) => (
                                 <a
                                   key={idx}
                                   href={sub.href}
                                   onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                  className="group flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-blue-600/30 transition-colors text-left"
+                                  className="group flex items-center justify-between px-4 py-2 text-xs text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-150"
                                 >
                                   <div className="flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 group-hover:bg-amber-300 transition-colors"></span>
-                                    <span className="text-xs text-slate-100 group-hover:text-white group-hover:font-medium transition-colors">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#3b5980] group-hover:bg-[#C29A39] transition-colors"></span>
+                                    <span className="font-medium group-hover:pl-0.5 transition-all">
                                       {sub.label}
                                     </span>
                                   </div>
                                   <div className="flex items-center gap-1.5">
-                                    <span className="text-[10px] font-mono text-blue-300/80 group-hover:text-blue-200">
+                                    <span className="text-[10px] font-mono text-slate-400 group-hover:text-amber-200">
                                       {sub.code}
                                     </span>
                                     {sub.tag && (
-                                      <span className="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-medium">
+                                      <span className="text-[9px] bg-emerald-900/60 text-emerald-300 border border-emerald-500/40 px-1 py-0.2 rounded font-bold">
                                         {sub.tag}
                                       </span>
                                     )}
@@ -257,34 +219,33 @@ export default function Navbar({
                             </div>
                           </div>
 
-                          {/* Right Column: Bachelor of Technology (5 cols) */}
-                          <div className="col-span-5 bg-blue-950/40 rounded-xl p-3 border border-blue-800/40 flex flex-col justify-between">
+                          {/* Column 2: Bachelor of Technology (4 Years) */}
+                          <div className="flex flex-col justify-between">
                             <div>
-                              <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-blue-800/40">
-                                <span className="text-xs font-bold text-amber-200 flex items-center gap-1.5">
-                                  <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                              <div className="bg-[#0e1b2b] px-4 py-2.5 border-b border-[#1c304a] flex items-center justify-between">
+                                <span className="text-xs font-bold text-[#C29A39] uppercase tracking-wider">
                                   {item.dropdownGroups[1]?.title}
                                 </span>
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${item.dropdownGroups[1]?.badgeColor}`}>
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-600/40">
                                   {item.dropdownGroups[1]?.badge}
                                 </span>
                               </div>
 
-                              <div className="space-y-1">
+                              <div className="divide-y divide-[#1c304a]">
                                 {item.dropdownGroups[1]?.items.map((sub, idx) => (
                                   <a
                                     key={idx}
                                     href={sub.href}
                                     onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                    className="group flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-blue-600/30 transition-colors text-left"
+                                    className="group flex items-center justify-between px-4 py-2 text-xs text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-150"
                                   >
                                     <div className="flex items-center gap-2">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:bg-amber-300 transition-colors"></span>
-                                      <span className="text-xs text-slate-100 group-hover:text-white group-hover:font-medium transition-colors">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#3b5980] group-hover:bg-[#C29A39] transition-colors"></span>
+                                      <span className="font-medium group-hover:pl-0.5 transition-all">
                                         {sub.label}
                                       </span>
                                     </div>
-                                    <span className="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-medium">
+                                    <span className="text-[9px] bg-amber-900/60 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-bold">
                                       {sub.tag}
                                     </span>
                                   </a>
@@ -292,19 +253,21 @@ export default function Navbar({
                               </div>
                             </div>
 
-                            {/* Bachelor Shift Badge */}
-                            <div className="mt-3 pt-2.5 border-t border-blue-800/40 text-[10px] text-blue-200/90 leading-tight">
-                              <span className="font-semibold text-amber-300">
+                            {/* Class Shift Notice */}
+                            <div className="bg-[#0e1b2b] p-3 border-t border-[#1c304a] text-[11px] text-slate-300 leading-tight">
+                              <span className="font-bold text-[#C29A39]">
                                 {isKh ? 'វេនសិក្សា៖ ' : 'Class Shifts: '}
                               </span>
-                              {isKh ? 'វេនយប់ (ច័ន្ទ-សុក្រ) & វេនថ្ងៃសៅរ៍-អាទិត្យ' : 'Evening (Mon-Fri) & Weekend (Sat-Sun)'}
+                              <span>
+                                {isKh ? 'វេនយប់ (ច័ន្ទ-សុក្រ) & វេនថ្ងៃសៅរ៍-អាទិត្យ' : 'Evening (Mon-Fri) & Weekend (Sat-Sun)'}
+                              </span>
                             </div>
                           </div>
 
                         </div>
 
-                        {/* Footer Bar with View All Action */}
-                        <div className="mt-4 pt-3 border-t border-blue-700/50 flex items-center justify-between">
+                        {/* Bottom Action Bar */}
+                        <div className="bg-[#0a1523] px-4 py-2.5 border-t border-[#1c304a] flex items-center justify-between">
                           <a
                             href="#programs"
                             onClick={(e) => {
@@ -312,9 +275,9 @@ export default function Navbar({
                               setActiveDropdown(null);
                               onNavigate ? onNavigate('programs', '#programs') : (window.location.hash = '#programs');
                             }}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:text-amber-200 hover:underline transition-colors"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C29A39] hover:underline"
                           >
-                            <span>{item.footerLink?.label || (isKh ? 'មើលកម្មវិធីសិក្សាទាំងអស់' : 'Explore All Programs')}</span>
+                            <span>{item.footerLink?.label || (isKh ? 'មើលកម្មវិធីសិក្សាទាំងអស់' : 'Explore All 14 Programs')}</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </a>
 
@@ -325,10 +288,10 @@ export default function Navbar({
                               setActiveDropdown(null);
                               onNavigate ? onNavigate('admissions', '#admissions/scholarships') : (window.location.hash = '#admissions/scholarships');
                             }}
-                            className="text-[11px] text-blue-200 hover:text-white transition-colors flex items-center gap-1"
+                            className="text-[11px] text-slate-300 hover:text-white flex items-center gap-1"
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                            <span>{isKh ? 'ព័ត៌មានអាហារូបករណ៍ ១០០% របស់រដ្ឋ' : '100% Government Scholarship Details'}</span>
+                            <span>{isKh ? 'អាហារូបករណ៍ ១០០% របស់រដ្ឋ' : '100% State Scholarship Details'}</span>
                           </a>
                         </div>
 
@@ -336,15 +299,15 @@ export default function Navbar({
                     </div>
                   )}
 
-                  {/* Standard Dropdown for About, Admissions, Research, News */}
+                  {/* Standard Solid Dropdown for About, Admissions, Research, News - ACLEDA Bank Style */}
                   {hasDropdown && !item.isMega && isOpen && (
                     <div 
                       onMouseEnter={handleDropdownPanelEnter}
                       onMouseLeave={handleMouseLeave}
-                      className="absolute top-full left-0 pt-1.5 z-50 animate-in fade-in-0 zoom-in-95 duration-150"
+                      className="absolute top-full left-0 pt-1 z-50 animate-in fade-in-0 duration-150"
                     >
-                      <div className="w-80 sm:w-96 bg-[#0c2049]/98 backdrop-blur-xl border border-blue-600/40 shadow-2xl rounded-2xl p-2.5 text-white">
-                        <div className="space-y-1">
+                      <div className="w-72 lg:w-80 bg-[#122133] border border-[#284263] shadow-2xl rounded-lg overflow-hidden py-1 text-white">
+                        <div className="divide-y divide-[#1c304a]">
                           {item.dropdown?.map((sub, idx) => {
                             if (sub.isCta) {
                               return (
@@ -352,31 +315,23 @@ export default function Navbar({
                                   key={idx}
                                   href={sub.href}
                                   onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                  className="mt-2 block p-2.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold rounded-xl shadow-md transition-transform duration-150 transform hover:-translate-y-0.5 cursor-pointer"
+                                  className="block px-4 py-3 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] font-bold text-xs text-center uppercase tracking-wider transition-colors cursor-pointer"
                                 >
-                                  <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                      <Sparkles className="w-4 h-4 text-slate-950 shrink-0" />
-                                      <span className="text-xs font-extrabold">{sub.label}</span>
-                                    </div>
-                                    <ChevronRight className="w-3.5 h-3.5 text-slate-950" />
+                                  <div className="flex items-center justify-center gap-1.5">
+                                    <Sparkles className="w-4 h-4 text-[#122133]" />
+                                    <span>{sub.label}</span>
                                   </div>
-                                  {sub.desc && (
-                                    <p className="text-[10px] text-slate-900/80 font-medium mt-0.5 pl-6">
-                                      {sub.desc}
-                                    </p>
-                                  )}
                                 </a>
                               );
                             }
 
                             if (sub.isFullLink) {
                               return (
-                                <div key={idx} className="pt-1.5 mt-1 border-t border-blue-700/40">
+                                <div key={idx} className="bg-[#0e1b2b]">
                                   <a
                                     href={sub.href}
                                     onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                    className="flex items-center justify-between px-3 py-2 text-xs font-bold text-amber-300 hover:text-amber-200 hover:bg-blue-600/20 rounded-lg transition-colors cursor-pointer"
+                                    className="flex items-center justify-between px-4 py-2.5 text-xs font-bold text-[#C29A39] hover:bg-[#1a2f47] transition-colors cursor-pointer"
                                   >
                                     <span>{sub.label}</span>
                                     <ArrowRight className="w-3.5 h-3.5" />
@@ -390,27 +345,25 @@ export default function Navbar({
                                 key={idx}
                                 href={sub.href}
                                 onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                className="group flex items-start gap-2.5 p-2 rounded-xl hover:bg-blue-600/30 transition-colors text-left cursor-pointer"
+                                className="group flex items-center justify-between px-4 py-2.5 text-xs lg:text-[13px] text-white hover:text-[#C29A39] hover:bg-[#1a2f47] transition-all duration-150 cursor-pointer"
                               >
-                                <span className="mt-0.5 p-1 rounded-md bg-blue-800/60 group-hover:bg-blue-700 transition-colors shrink-0">
-                                  {getSubItemIcon(item.id, sub)}
-                                </span>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between gap-1">
-                                    <h5 className="text-xs font-semibold text-white group-hover:text-amber-300 transition-colors truncate">
-                                      {sub.label}
-                                    </h5>
-                                    {sub.badge && (
-                                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-200 border border-blue-400/30 shrink-0">
-                                        {sub.badge}
-                                      </span>
-                                    )}
+                                <div>
+                                  <div className="font-medium group-hover:pl-1 transition-all duration-150">
+                                    {sub.label}
                                   </div>
                                   {sub.desc && (
-                                    <p className="text-[11px] text-blue-200/70 group-hover:text-blue-100 line-clamp-1 mt-0.5 leading-tight">
+                                    <p className="text-[10px] text-slate-400 group-hover:text-amber-200/90 mt-0.5 line-clamp-1">
                                       {sub.desc}
                                     </p>
                                   )}
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                  {sub.badge && (
+                                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-900/60 text-blue-200 border border-blue-500/40 shrink-0">
+                                      {sub.badge}
+                                    </span>
+                                  )}
+                                  <ChevronRight className="w-3.5 h-3.5 text-[#C29A39] opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-150 shrink-0" />
                                 </div>
                               </a>
                             );
@@ -425,7 +378,7 @@ export default function Navbar({
             })}
           </ul>
 
-          {/* Quick Track Status Action */}
+          {/* Quick Track Status Action - ACLEDA Gold Accent */}
           <div className="flex items-center gap-2">
             <a
               href="#track"
@@ -434,7 +387,7 @@ export default function Navbar({
                 setActiveDropdown(null);
                 onNavigate ? onNavigate('track', '#track') : (window.location.hash = '#track');
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-md text-xs transition shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] font-bold rounded text-xs transition uppercase tracking-wider shadow-xs cursor-pointer"
             >
               <Search className="w-3.5 h-3.5" />
               <span>{isKh ? 'ពិនិត្យពាក្យ' : 'Track Status'}</span>
@@ -442,9 +395,9 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu Drawer (Accordion Style) */}
+        {/* Mobile Dropdown Menu Drawer (Accordion Style) - ACLEDA Bank Solid Style */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-3 border-t border-blue-600/40 animate-in fade-in slide-in-from-top-2 duration-200 max-h-[82vh] overflow-y-auto">
+          <div className="md:hidden py-3 bg-[#122133] border-t border-[#1c304a] animate-in fade-in duration-150 max-h-[82vh] overflow-y-auto">
             <ul className="space-y-1">
               {navItems.map((item) => {
                 const isActive = activeTab === item.id;
@@ -452,7 +405,7 @@ export default function Navbar({
                 const isExpanded = Boolean(mobileExpanded[item.id]);
 
                 return (
-                  <li key={item.id} className="rounded-lg overflow-hidden">
+                  <li key={item.id} className="border-b border-[#1c304a] last:border-b-0">
                     <div className="flex items-center justify-between">
                       <a
                         href={item.href}
@@ -464,10 +417,10 @@ export default function Navbar({
                             setMobileMenuOpen(false);
                           }
                         }}
-                        className={`flex-1 px-3.5 py-2.5 text-sm font-semibold transition-colors cursor-pointer flex items-center justify-between ${
+                        className={`flex-1 px-4 py-3 text-xs uppercase font-bold tracking-wider transition-colors cursor-pointer flex items-center justify-between ${
                           isActive
-                            ? 'bg-[#295eb8] text-white font-bold'
-                            : 'text-blue-100 hover:bg-blue-800 hover:text-white'
+                            ? 'text-[#C29A39] bg-[#1a2f47]'
+                            : 'text-white hover:text-[#C29A39]'
                         }`}
                       >
                         <span>{item.label}</span>
@@ -477,12 +430,12 @@ export default function Navbar({
                         <button
                           type="button"
                           onClick={(e) => toggleMobileSection(e, item.id)}
-                          className="px-3 py-2.5 text-blue-200 hover:text-white hover:bg-blue-800 rounded-r-lg transition-colors cursor-pointer"
+                          className="px-4 py-3 text-slate-300 hover:text-[#C29A39] transition-colors cursor-pointer"
                           aria-label={`Toggle ${item.label} submenu`}
                         >
                           <ChevronDown 
                             className={`w-4 h-4 transition-transform duration-200 ${
-                              isExpanded ? 'rotate-180 text-amber-300' : ''
+                              isExpanded ? 'rotate-180 text-[#C29A39]' : ''
                             }`} 
                           />
                         </button>
@@ -491,27 +444,27 @@ export default function Navbar({
 
                     {/* Accordion Content for Mega-Menu (Programs) */}
                     {hasDropdown && item.isMega && isExpanded && (
-                      <div className="pl-4 pr-2 py-2 bg-[#0c2049]/60 border-l-2 border-amber-400 ml-3 my-1 space-y-3 rounded-r-lg">
+                      <div className="bg-[#0e1b2b] border-l-2 border-[#C29A39] ml-4 my-1 space-y-3 p-3 rounded-r">
                         {item.dropdownGroups?.map((grp, gIdx) => (
                           <div key={gIdx} className="space-y-1">
-                            <div className="flex items-center justify-between py-1 text-[11px] font-bold text-blue-200 uppercase tracking-wider">
+                            <div className="flex items-center justify-between py-1 text-[11px] font-bold text-[#C29A39] uppercase tracking-wider border-b border-[#1c304a]">
                               <span>{grp.title}</span>
-                              <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-bold ${grp.badgeColor}`}>
+                              <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-emerald-950 text-emerald-300 border border-emerald-600/40">
                                 {grp.badge}
                               </span>
                             </div>
 
-                            <div className="space-y-0.5">
+                            <div className="divide-y divide-[#1c304a]">
                               {grp.items.map((sub, sIdx) => (
                                 <a
                                   key={sIdx}
                                   href={sub.href}
                                   onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                  className="block px-2.5 py-1.5 text-xs text-slate-200 hover:text-white hover:bg-blue-700/40 rounded transition-colors"
+                                  className="block py-2 px-1 text-xs text-slate-200 hover:text-[#C29A39] transition-colors"
                                 >
                                   <div className="flex items-center justify-between">
                                     <span>{sub.label}</span>
-                                    <span className="text-[10px] text-blue-300/80 font-mono">{sub.code}</span>
+                                    <span className="text-[10px] text-slate-400 font-mono">{sub.code}</span>
                                   </div>
                                 </a>
                               ))}
@@ -519,7 +472,7 @@ export default function Navbar({
                           </div>
                         ))}
 
-                        <div className="pt-2 border-t border-blue-800/40">
+                        <div className="pt-2 border-t border-[#1c304a]">
                           <a
                             href="#programs"
                             onClick={(e) => {
@@ -527,7 +480,7 @@ export default function Navbar({
                               setMobileMenuOpen(false);
                               onNavigate ? onNavigate('programs', '#programs') : (window.location.hash = '#programs');
                             }}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:underline"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C29A39] hover:underline"
                           >
                             <span>{item.footerLink?.label || (isKh ? 'មើលកម្មវិធីសិក្សាទាំងអស់' : 'View All 14 Programs')}</span>
                             <ArrowRight className="w-3.5 h-3.5" />
@@ -538,7 +491,7 @@ export default function Navbar({
 
                     {/* Accordion Content for Standard Dropdown */}
                     {hasDropdown && !item.isMega && isExpanded && (
-                      <div className="pl-4 pr-2 py-2 bg-[#0c2049]/60 border-l-2 border-blue-400 ml-3 my-1 space-y-1 rounded-r-lg">
+                      <div className="bg-[#0e1b2b] border-l-2 border-[#C29A39] ml-4 my-1 space-y-1 p-3 rounded-r">
                         {item.dropdown?.map((sub, sIdx) => {
                           if (sub.isCta) {
                             return (
@@ -546,7 +499,7 @@ export default function Navbar({
                                 key={sIdx}
                                 href={sub.href}
                                 onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                                className="block mt-2 p-2 bg-amber-400 text-slate-950 font-bold rounded-lg text-xs text-center"
+                                className="block mt-2 p-2.5 bg-[#C29A39] text-[#122133] font-bold rounded text-xs text-center uppercase tracking-wider"
                               >
                                 {sub.label}
                               </a>
@@ -558,12 +511,12 @@ export default function Navbar({
                               key={sIdx}
                               href={sub.href}
                               onClick={(e) => handleSubItemClick(e, item.id, sub)}
-                              className="block px-2 py-1.5 text-xs text-slate-200 hover:text-white hover:bg-blue-700/40 rounded transition-colors"
+                              className="block py-2 px-1 text-xs text-slate-200 hover:text-[#C29A39] border-b border-[#1c304a] last:border-b-0 transition-colors"
                             >
                               <div className="flex items-center justify-between">
                                 <span>{sub.label}</span>
                                 {sub.badge && (
-                                  <span className="text-[9px] px-1 bg-blue-500/20 text-blue-200 rounded">
+                                  <span className="text-[9px] px-1 bg-blue-900/60 text-blue-200 rounded">
                                     {sub.badge}
                                   </span>
                                 )}
@@ -578,8 +531,8 @@ export default function Navbar({
                 );
               })}
 
-              {/* Mobile Quick Action Buttons */}
-              <li className="pt-3 border-t border-blue-600/40 space-y-2">
+              {/* Mobile Quick Action Buttons in Solid ACLEDA Gold */}
+              <li className="pt-3 border-t border-[#1c304a] space-y-2 px-4">
                 <a
                   href="#apply"
                   onClick={(e) => {
@@ -588,7 +541,7 @@ export default function Navbar({
                     if (onOpenApply) onOpenApply();
                     else window.location.hash = '#apply';
                   }}
-                  className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-extrabold bg-amber-400 text-slate-950 hover:bg-amber-300 rounded-lg shadow-sm transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-wider bg-[#C29A39] hover:bg-[#d4af37] text-[#122133] rounded shadow-xs transition"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>{isKh ? 'ចុះឈ្មោះសិក្សាអនឡាញ' : 'Apply Online for 2026-2027'}</span>
@@ -601,7 +554,7 @@ export default function Navbar({
                     setMobileMenuOpen(false);
                     onNavigate ? onNavigate('track', '#track') : (window.location.hash = '#track');
                   }}
-                  className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-blue-200 hover:text-white bg-blue-800/60 rounded-lg transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white hover:text-[#C29A39] bg-[#1a2f47] border border-[#284263] rounded transition"
                 >
                   <Search className="w-3.5 h-3.5" />
                   <span>{isKh ? 'ពិនិត្យស្ថានភាពពាក្យស្នើសុំ' : 'Track Application Status'}</span>
