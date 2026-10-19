@@ -22,6 +22,8 @@ import {
   Layers,
   Image as ImageIcon
 } from 'lucide-react';
+import { getSiteNews } from '../services/siteContentService';
+
 
 export default function NewsPage({ lang, onNavigate, onSelectNews }) {
   const isKh = lang === 'kh';
@@ -309,14 +311,31 @@ export default function NewsPage({ lang, onNavigate, onSelectNews }) {
     document.body.removeChild(a);
   };
 
+  // Dynamic news merge
+  const dynamicNews = getSiteNews()
+    .filter(n => !['inauguration', 'mou', 'robotics', 'orientation', 'cooperation-summit', 'innovation-fair'].includes(n.id))
+    .map(n => ({
+      id: n.id,
+      title: isKh && n.titleKh ? n.titleKh : n.title,
+      category: n.category || 'Academic',
+      categoryLabel: isKh ? (n.categoryKh || 'ការសិក្សា') : (n.category || 'Academic'),
+      image: n.image || '/news-inauguration.jpg',
+      date: isKh && n.dateKh ? n.dateKh : n.date,
+      desc: isKh && n.descKh ? n.descKh : n.desc,
+      fullContent: n.summary || n.desc
+    }));
+
+  const fullNewsList = [...dynamicNews, ...newsList];
+
   // Filtering
-  const allArticles = [featuredNews, ...newsList];
-  const filteredList = newsList.filter(item => {
+  const allArticles = [featuredNews, ...fullNewsList];
+  const filteredList = fullNewsList.filter(item => {
     const matchCategory = activeCategory === 'All' || item.category === activeCategory;
     const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                         item.desc.toLowerCase().includes(searchQuery.toLowerCase());
     return matchCategory && matchSearch;
   });
+
 
   const featuredMatches = (activeCategory === 'All' || featuredNews.category === activeCategory) &&
     (featuredNews.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -71,10 +71,49 @@ service cloud.firestore {
     }
 
     // =========================================================================
-    // 4. Default Deny for all other collections
+    // 4. Campus News & Articles Collection
+    // =========================================================================
+    match /news/{newsId} {
+      // Anyone can read news articles
+      allow read: if true;
+
+      // Only administrators can create, update, or delete news articles
+      allow create, update, delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 5. Site Content (Banner announcements, Programs config)
+    // =========================================================================
+    match /site_content/{contentId} {
+      // Anyone can read active site banner and program configurations
+      allow read: if true;
+
+      // Only administrators can update site banners or program configs
+      allow create, update, delete: if isAdmin();
+    }
+
+    // =========================================================================
+    // 6. Administrator Audit Logs Collection
+    // =========================================================================
+    match /audit_logs/{logId} {
+      // Only authenticated admins can read and write audit logs
+      allow read, create: if isAdmin();
+      allow update, delete: if false; // Immutable audit log trail
+    }
+
+    // =========================================================================
+    // 7. System Health Check & Ping
+    // =========================================================================
+    match /health/{healthId} {
+      allow read, write: if true;
+    }
+
+    // =========================================================================
+    // 8. Default Deny for all other collections
     // =========================================================================
     match /{document=**} {
       allow read, write: if false;
     }
   }
 }
+

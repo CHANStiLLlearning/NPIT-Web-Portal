@@ -1,5 +1,6 @@
 import { newsArticles as defaultNews } from '../data/newsData';
 import { programsList as defaultPrograms } from '../data/programsData';
+import { db, isFirebaseConfigured } from './firebase';
 
 const STORAGE_KEYS = {
   BANNER: 'npit_site_banner',
@@ -20,7 +21,7 @@ const DEFAULT_BANNER = {
 };
 
 // ============================================================================
-// 1. Audit Logging
+// 1. Audit Logging with Cloud Sync
 // ============================================================================
 export function logAuditEvent(action, details, user = 'admin@npit.edu.kh') {
   try {
@@ -35,12 +36,21 @@ export function logAuditEvent(action, details, user = 'admin@npit.edu.kh') {
     };
     const updated = [newLog, ...logs].slice(0, 50); // keep last 50
     localStorage.setItem(STORAGE_KEYS.AUDIT_LOGS, JSON.stringify(updated));
+
+    // Async write to Cloud Firestore if available
+    if (isFirebaseConfigured && db) {
+      import('firebase/firestore').then(({ doc, setDoc }) => {
+        setDoc(doc(db, 'audit_logs', newLog.id), newLog).catch(() => {});
+      }).catch(() => {});
+    }
+
     return newLog;
   } catch (err) {
     console.warn('[SiteContentService] Failed to write audit log:', err);
     return null;
   }
 }
+
 
 export function getAuditLogs() {
   try {
@@ -96,6 +106,14 @@ export function saveSiteBanner(bannerConfig) {
     localStorage.setItem(STORAGE_KEYS.BANNER, JSON.stringify(payload));
     logAuditEvent('Updated Site Banner', `Banner status: ${payload.enabled ? 'Enabled' : 'Disabled'}`);
     window.dispatchEvent(new CustomEvent('npit-site-banner-updated', { detail: payload }));
+
+    // Async write to Cloud Firestore
+    if (isFirebaseConfigured && db) {
+      import('firebase/firestore').then(({ doc, setDoc }) => {
+        setDoc(doc(db, 'site_content', 'banner'), payload, { merge: true }).catch(() => {});
+      }).catch(() => {});
+    }
+
     return payload;
   } catch (err) {
     console.error('[SiteContentService] Failed to save banner:', err);
@@ -104,7 +122,7 @@ export function saveSiteBanner(bannerConfig) {
 }
 
 // ============================================================================
-// 3. News Articles CMS
+// 3. News Articles CMS with Cloud Firestore Sync
 // ============================================================================
 export function getSiteNews() {
   try {
@@ -136,8 +154,10 @@ export function saveNewsArticle(article) {
   try {
     const all = getSiteNews();
     let updated;
-    const isNew = !article.id || article.id.startsWith('new_');
-    const id = isNew ? `news-${Date.now()}` : article.id;
+    const exists = article.id && all.some(a => a.id === article.id);
+    const isNew = !exists;
+    const id = exists ? article.id : (article.id || `news-${Date.now()}`);
+
     
     const formatted = {
       ...article,
@@ -160,6 +180,16 @@ export function saveNewsArticle(article) {
 
     localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(updated));
     window.dispatchEvent(new CustomEvent('npit-news-updated', { detail: updated }));
+
+    // Async write to Cloud Firestore
+    if (isFirebaseConfigured && db) {
+      import('firebase/firestore').then(({ doc, setDoc }) => {
+        setDoc(doc(db, 'news', formatted.id), formatted, { merge: true }).catch((err) => {
+          console.warn('[SiteContentService] Firestore news sync warning:', err);
+        });
+      }).catch(() => {});
+    }
+
     return formatted;
   } catch (err) {
     console.error('[SiteContentService] Failed to save news article:', err);
@@ -175,6 +205,14 @@ export function deleteNewsArticle(id) {
     localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(updated));
     logAuditEvent('Deleted News Article', `Removed: ${target ? target.title.slice(0, 40) : id}`);
     window.dispatchEvent(new CustomEvent('npit-news-updated', { detail: updated }));
+
+    // Async delete from Cloud Firestore
+    if (isFirebaseConfigured && db) {
+      import('firebase/firestore').then(({ doc, deleteDoc }) => {
+        deleteDoc(doc(db, 'news', id)).catch(() => {});
+      }).catch(() => {});
+    }
+
     return true;
   } catch (err) {
     console.error('[SiteContentService] Failed to delete news article:', err);
@@ -224,9 +262,49 @@ export function updateProgramConfig(programId, updates) {
     localStorage.setItem(STORAGE_KEYS.PROGRAMS, JSON.stringify(updated));
     logAuditEvent('Updated Program Status', `Program ID: ${programId} -> Status: ${updates.status || 'Updated'}`);
     window.dispatchEvent(new CustomEvent('npit-programs-updated', { detail: updated }));
+
+    // Async sync to Cloud Firestore
+    if (isFirebaseConfigured && db) {
+      import('firebase/firestore').then(({ doc, setDoc }) => {
+        setDoc(doc(db, 'site_content', 'programs'), { list: updated }, { merge: true }).catch(() => {});
+      }).catch(() => {});
+    }
+
     return updated.find(p => p.id === programId);
   } catch (err) {
     console.error('[SiteContentService] Failed to update program config:', err);
     throw err;
   }
 }
+
+// Background sync from Cloud Firestore on page load
+if (typeof window !== 'undefined' && isFirebaseConfigured && db) {
+  import('firebase/firestore').then(async ({ collection, getDocs, doc, getDoc }) => {
+    try {
+      // 1. Fetch remote news
+      const newsSnap = await getDocs(collection(db, 'news'));
+      if (!newsSnap.empty) {
+        const cloudNews = newsSnap.docs.map(d => ({ ...d.data(), id: d.id }));
+        const local = getSiteNews();
+        // Merge cloud with local, cloud taking priority on collision
+        const map = new Map();
+        local.forEach(item => map.set(item.id, item));
+        cloudNews.forEach(item => map.set(item.id, item));
+        const merged = Array.from(map.values());
+        localStorage.setItem(STORAGE_KEYS.NEWS, JSON.stringify(merged));
+        window.dispatchEvent(new CustomEvent('npit-news-updated', { detail: merged }));
+      }
+
+      // 2. Fetch remote banner
+      const bannerSnap = await getDoc(doc(db, 'site_content', 'banner'));
+      if (bannerSnap.exists()) {
+        const cloudBanner = bannerSnap.data();
+        localStorage.setItem(STORAGE_KEYS.BANNER, JSON.stringify(cloudBanner));
+        window.dispatchEvent(new CustomEvent('npit-site-banner-updated', { detail: cloudBanner }));
+      }
+    } catch {
+      // Silent resilience
+    }
+  }).catch(() => {});
+}
+

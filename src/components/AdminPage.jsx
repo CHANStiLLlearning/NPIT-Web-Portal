@@ -58,7 +58,13 @@ import {
   logAuditEvent 
 } from '../services/siteContentService';
 
-import { auth } from '../services/firebase';
+import { 
+  auth, 
+  checkFirebaseHealth, 
+  uploadMediaFile, 
+  getFirebasePublicConfig, 
+  isAuthorizedAdmin 
+} from '../services/firebase';
 import { 
   signInWithEmailAndPassword, 
   signOut, 
@@ -77,12 +83,27 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   const [loginError, setLoginError] = useState('');
   const [isSubmittingAuth, setIsSubmittingAuth] = useState(false);
 
+  // Live Firebase Health & Cloud Sync State
+  const [firebaseHealth, setFirebaseHealth] = useState({ 
+    online: true, 
+    firestore: true, 
+    latencyMs: 0, 
+    projectId: 'npit-portal',
+    message: 'Checking Firebase status...' 
+  });
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  useEffect(() => {
+    checkFirebaseHealth().then(setFirebaseHealth).catch(() => {});
+  }, [isAuthenticated]);
+
   // Sidebar collapse state
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Active Main Dashboard View
   // 'home' | 'applications' | 'programs' | 'shifts' | 'calendar' | 'news' | 'banner' | 'security' | 'config'
   const [activeView, setActiveView] = useState('home');
+
 
   // Search in Home launchpad
   const [launcherSearch, setLauncherSearch] = useState('');
@@ -892,11 +913,26 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
         {/* Top White Header Bar (Matching screenshot) */}
         <header className="h-16 bg-white border-b border-slate-200 px-6 sm:px-8 flex items-center justify-between shrink-0 sticky top-0 z-20 shadow-xs">
           <div>
-            <h1 className="text-sm font-bold text-slate-900 leading-tight">Admin</h1>
-            <p className="text-xs text-slate-400">Jason Statham</p>
+            <div className="flex items-center gap-2">
+              <h1 className="text-sm font-bold text-slate-900 leading-tight">Admin Portal</h1>
+              <span 
+                id="firebase-status-badge"
+                title={firebaseHealth.message || 'Firebase Live Status'}
+                className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold tracking-tight ${
+                  firebaseHealth.online 
+                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs' 
+                    : 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs'
+                }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${firebaseHealth.online ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+                <span>{firebaseHealth.online ? `Firebase: npit-portal (${firebaseHealth.latencyMs}ms)` : 'Offline Fallback'}</span>
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 font-medium">{currentUser?.email || emailInput || 'admin@npit.edu.kh'}</p>
           </div>
 
           <div className="flex items-center gap-4">
+
             <a
               href="#home"
               target="_blank"
@@ -2016,25 +2052,38 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-500 mb-1">Or Upload from Computer</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 mb-1 flex items-center justify-between">
+                      <span>Or Upload to Storage</span>
+                      {isUploadingImage && <span className="text-[10px] text-blue-600 font-bold animate-pulse">Uploading...</span>}
+                    </label>
                     <input
                       type="file"
                       id="input-news-image-file"
                       accept="image/*"
-                      onChange={(e) => {
+                      disabled={isUploadingImage}
+                      onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            setNewsFormData(prev => ({ ...prev, image: reader.result }));
-                          };
-                          reader.readAsDataURL(file);
+                          setIsUploadingImage(true);
+                          try {
+                            const res = await uploadMediaFile(file, 'news');
+                            if (res.url) {
+                              setNewsFormData(prev => ({ ...prev, image: res.url }));
+                              showToast(res.isCloud ? 'Image uploaded to Firebase Storage!' : 'Image loaded locally.');
+                            }
+                          } catch (err) {
+                            console.warn('News image upload error:', err);
+                            showToast('Failed to upload image.');
+                          } finally {
+                            setIsUploadingImage(false);
+                          }
                         }
                       }}
                       className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
                     />
                   </div>
                 </div>
+
 
                 {/* Quick Presets / Campus Photography Gallery */}
                 <div className="pt-1.5">
@@ -2217,25 +2266,38 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-500 mb-1">Or Upload Image</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 mb-1 flex items-center justify-between">
+                      <span>Or Upload Image</span>
+                      {isUploadingImage && <span className="text-[10px] text-blue-600 font-bold animate-pulse">Uploading...</span>}
+                    </label>
                     <input
                       type="file"
                       id="input-program-image-file"
                       accept="image/*"
-                      onChange={(e) => {
+                      disabled={isUploadingImage}
+                      onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            setProgramFormData(prev => ({ ...prev, image: reader.result }));
-                          };
-                          reader.readAsDataURL(file);
+                          setIsUploadingImage(true);
+                          try {
+                            const res = await uploadMediaFile(file, 'programs');
+                            if (res.url) {
+                              setProgramFormData(prev => ({ ...prev, image: res.url }));
+                              showToast(res.isCloud ? 'Program image uploaded to Firebase Storage!' : 'Image loaded locally.');
+                            }
+                          } catch (err) {
+                            console.warn('Program upload error:', err);
+                            showToast('Failed to upload image.');
+                          } finally {
+                            setIsUploadingImage(false);
+                          }
                         }
                       }}
                       className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
                     />
                   </div>
                 </div>
+
 
                 {/* Image Live Preview */}
                 {programFormData.image && (

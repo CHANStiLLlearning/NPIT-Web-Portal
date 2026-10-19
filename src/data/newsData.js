@@ -249,8 +249,22 @@ export const newsArticles = [
 export function getNewsById(idOrSlug) {
   if (!idOrSlug) return newsArticles[0];
   const cleaned = String(idOrSlug).toLowerCase().replace('#news/', '').replace('#', '').trim();
+  
+  let currentArticles = newsArticles;
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem('npit_news_articles') : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        currentArticles = parsed;
+      }
+    }
+  } catch {
+    // fallback
+  }
+
   return (
-    newsArticles.find(a => 
+    currentArticles.find(a => 
       a.id.toLowerCase() === cleaned || 
       (a.slug && a.slug.toLowerCase() === cleaned) ||
       a.title.toLowerCase() === cleaned ||
@@ -259,4 +273,5 @@ export function getNewsById(idOrSlug) {
     ) || newsArticles[0]
   );
 }
+
 

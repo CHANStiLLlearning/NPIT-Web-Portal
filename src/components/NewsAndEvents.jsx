@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Search, ArrowUpRight, ArrowRight, X, Newspaper } from 'lucide-react';
-import { newsArticles } from '../data/newsData';
+import { getSiteNews } from '../services/siteContentService';
 
 export default function NewsAndEvents({ newsData, onSelectNews, lang = 'en', onNavigate }) {
   const isKh = lang === 'kh';
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [articles, setArticles] = useState(() => getSiteNews());
   const [featuredArticleId, setFeaturedArticleId] = useState('inauguration');
 
-  // Use the rich newsArticles dataset with fallback to newsData
-  const articles = newsArticles && newsArticles.length > 0 ? newsArticles : [];
+  useEffect(() => {
+    const handleNewsUpdate = (e) => {
+      if (e.detail) {
+        setArticles(e.detail);
+      } else {
+        setArticles(getSiteNews());
+      }
+    };
+    window.addEventListener('npit-news-updated', handleNewsUpdate);
+    return () => window.removeEventListener('npit-news-updated', handleNewsUpdate);
+  }, []);
 
   const categories = [
     { id: 'all', label: isKh ? 'ទាំងអស់' : 'All Stories' },
@@ -21,6 +31,7 @@ export default function NewsAndEvents({ newsData, onSelectNews, lang = 'en', onN
 
   // Current featured article
   const currentFeatured = articles.find(a => a.id === featuredArticleId) || articles[0];
+
 
   // Side list: other articles matching filter
   const sideList = articles.filter(a => a.id !== currentFeatured?.id);
