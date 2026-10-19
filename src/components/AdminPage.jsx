@@ -42,7 +42,8 @@ import {
   Sliders,
   ClipboardCheck,
   BookMarked,
-  Home
+  Home,
+  Image as ImageIcon
 } from 'lucide-react';
 
 import { getAllApplications, updateApplicationStatus } from '../services/admissionsService';
@@ -2046,36 +2047,214 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
               </button>
             </div>
 
-            <form onSubmit={handleSaveNews} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Title (English) *</label>
-                <input
-                  type="text"
-                  required
-                  value={newsFormData.title}
-                  onChange={(e) => setNewsFormData(prev => ({ ...prev, title: e.target.value }))}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                />
+            <form onSubmit={handleSaveNews} className="space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Title (English) *</label>
+                  <input
+                    type="text"
+                    required
+                    value={newsFormData.title}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, title: e.target.value }))}
+                    placeholder="e.g. Inauguration of New Advanced STEM Lab"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Title (Khmer)</label>
+                  <input
+                    type="text"
+                    value={newsFormData.titleKh}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, titleKh: e.target.value }))}
+                    placeholder="ការសម្ពោធដាក់ឱ្យដំណើរការមន្ទីរពិសោធន៍..."
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-khmer"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Category</label>
+                  <select
+                    value={newsFormData.category || 'Academic'}
+                    onChange={(e) => {
+                      const cat = e.target.value;
+                      const catKhMap = {
+                        'Academic': 'ការសិក្សា និងបច្ចេកវិទ្យា',
+                        'Campus Life': 'ជីវិតនិស្សិត និងសកម្មភាព',
+                        'Partnerships': 'កិច្ចសហការ និងដៃគូ',
+                        'Institute News': 'ព័ត៌មានវិទ្យាស្ថាន',
+                        'Exhibition': 'ពិព័រណ៍ និងការតាំងបង្ហាញ'
+                      };
+                      setNewsFormData(prev => ({
+                        ...prev,
+                        category: cat,
+                        categoryKh: catKhMap[cat] || prev.categoryKh
+                      }));
+                    }}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  >
+                    <option value="Academic">Academic</option>
+                    <option value="Campus Life">Campus Life</option>
+                    <option value="Partnerships">Partnerships</option>
+                    <option value="Institute News">Institute News</option>
+                    <option value="Exhibition">Exhibition</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Author</label>
+                  <input
+                    type="text"
+                    value={newsFormData.author || ''}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, author: e.target.value }))}
+                    placeholder="NPIT Media & Public Relations"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Read Time</label>
+                  <input
+                    type="text"
+                    value={newsFormData.readTime || '3 min read'}
+                    onChange={(e) => setNewsFormData(prev => ({ ...prev, readTime: e.target.value }))}
+                    placeholder="3 min read"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+
+              {/* Featured Article Image Input & Upload */}
+              <div className="space-y-2.5 p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-slate-700 uppercase flex items-center gap-1.5">
+                    <ImageIcon className="w-4 h-4 text-[#002b80]" />
+                    <span>Featured Article Image *</span>
+                  </label>
+                  {newsFormData.image && (
+                    <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Image Ready</span>
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-500 mb-1">Image URL / Path</label>
+                    <input
+                      type="text"
+                      id="input-news-image"
+                      value={newsFormData.image || ''}
+                      onChange={(e) => setNewsFormData(prev => ({ ...prev, image: e.target.value }))}
+                      placeholder="/news-inauguration.jpg or https://..."
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-500 mb-1">Or Upload from Computer</label>
+                    <input
+                      type="file"
+                      id="input-news-image-file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = () => {
+                            setNewsFormData(prev => ({ ...prev, image: reader.result }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+                    />
+                  </div>
+                </div>
+
+                {/* Quick Presets / Campus Photography Gallery */}
+                <div className="pt-1.5">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                    Campus Photography Presets:
+                  </label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      { label: 'Robotics Lab', src: '/news-inauguration.jpg' },
+                      { label: 'Conference', src: '/news-conference.jpg' },
+                      { label: 'MoU Signing', src: '/news-mou.jpg' },
+                      { label: 'Championship', src: '/news-robotics.jpg' },
+                      { label: 'Orientation', src: '/news-orientation.jpg' },
+                      { label: 'Innovation Fair', src: '/news-mini1.jpg' },
+                      { label: 'Campus Plaza', src: '/campus-round.jpg' },
+                      { label: 'Tech Lab', src: '/hero-lab.jpg' },
+                    ].map(preset => (
+                      <button
+                        key={preset.src}
+                        type="button"
+                        onClick={() => setNewsFormData(prev => ({ ...prev, image: preset.src }))}
+                        className={`px-2 py-1 rounded text-[11px] font-medium transition cursor-pointer border ${
+                          newsFormData.image === preset.src
+                            ? 'bg-[#002b80] text-white border-[#002b80] shadow-2xs font-bold'
+                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Live Image Preview */}
+                {newsFormData.image && (
+                  <div className="pt-2 border-t border-slate-200">
+                    <div className="relative h-36 bg-slate-900 rounded-xl overflow-hidden border border-slate-200">
+                      <img 
+                        src={newsFormData.image} 
+                        alt="News Article Preview" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => { e.currentTarget.src = '/news-inauguration.jpg'; }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20" />
+                      <span className="absolute top-2.5 left-2.5 bg-[#002b80] text-white text-[10px] font-extrabold uppercase px-2 py-0.5 rounded shadow-xs">
+                        {newsFormData.category || 'Academic'}
+                      </span>
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white text-xs">
+                        <span className="font-semibold truncate max-w-[70%]">
+                          {newsFormData.title || 'Article Title Preview'}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setNewsFormData(prev => ({ ...prev, image: '' }))}
+                          className="px-2 py-0.5 bg-red-600/80 hover:bg-red-600 text-white text-[10px] font-bold rounded cursor-pointer transition"
+                        >
+                          Clear
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Title (Khmer)</label>
-                <input
-                  type="text"
-                  value={newsFormData.titleKh}
-                  onChange={(e) => setNewsFormData(prev => ({ ...prev, titleKh: e.target.value }))}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-khmer"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Short Description *</label>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Short Description (English) *</label>
                 <textarea
                   required
                   rows="2"
                   value={newsFormData.desc}
                   onChange={(e) => setNewsFormData(prev => ({ ...prev, desc: e.target.value }))}
+                  placeholder="Summary of the announcement for public listing..."
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Short Description (Khmer)</label>
+                <textarea
+                  rows="2"
+                  value={newsFormData.descKh || ''}
+                  onChange={(e) => setNewsFormData(prev => ({ ...prev, descKh: e.target.value }))}
+                  placeholder="សេចក្តីសង្ខេបជាភាសាខ្មែរ..."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-khmer"
                 />
               </div>
 
@@ -2083,15 +2262,15 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                 <button
                   type="button"
                   onClick={() => setNewsModalOpen(false)}
-                  className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600"
+                  className="px-4 py-2 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs"
+                  className="px-5 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold text-xs rounded-lg shadow-xs transition cursor-pointer"
                 >
-                  Save
+                  {editingArticle ? 'Update Article' : 'Publish Article'}
                 </button>
               </div>
             </form>
