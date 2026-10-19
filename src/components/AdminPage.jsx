@@ -27,7 +27,6 @@ import {
   Edit2,
   Trash2,
   Megaphone,
-  BookOpen,
   Settings,
   Check,
   Layers,
@@ -46,7 +45,7 @@ import {
 } from 'lucide-react';
 
 import { getAllApplications, updateApplicationStatus } from '../services/admissionsService';
-import { getAllInquiries, getAllResearchInquiries } from '../services/inquiryService';
+import { getAllInquiries } from '../services/inquiryService';
 import { 
   getSiteBanner, 
   saveSiteBanner, 
@@ -82,7 +81,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Active Main Dashboard View
-  // 'home' | 'applications' | 'programs' | 'shifts' | 'exams' | 'calendar' | 'news' | 'research' | 'banner' | 'security' | 'config'
+  // 'home' | 'applications' | 'programs' | 'shifts' | 'exams' | 'calendar' | 'news' | 'banner' | 'security' | 'config'
   const [activeView, setActiveView] = useState('home');
 
   // Search in Home launchpad
@@ -91,7 +90,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   // Admissions & Inquiries Data
   const [applications, setApplications] = useState([]);
   const [inquiries, setInquiries] = useState([]);
-  const [researchInquiries, setResearchInquiries] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // CMS & Config Data
@@ -220,33 +218,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   const [batchModalOpen, setBatchModalOpen] = useState(false);
   const [batchFormData, setBatchFormData] = useState({ code: 'B3', name: '', startDate: '', deadline: '', notes: '' });
 
-  // Dynamic Applied Research Testbeds & Modal
-  const [researchTestbeds, setResearchTestbeds] = useState([
-    {
-      id: 'res-solar',
-      title: 'Solar Microgrids & Energy Storage',
-      desc: '40 kW industrial solar array with battery storage & IoT load monitoring.',
-      lead: 'Dr. Heng Buntheun',
-      status: 'Active Research'
-    },
-    {
-      id: 'res-robotics',
-      title: '6-Axis Industrial Robotics & AMR',
-      desc: 'Automated manufacturing conveyor sorting & computer vision inspection.',
-      lead: 'Dr. Chan Sokheng',
-      status: 'Active Research'
-    },
-    {
-      id: 'res-bim',
-      title: 'Concrete & BIM Digital Twins',
-      desc: 'Seismic structural stress testing and sustainable cementitious material analysis.',
-      lead: 'Eng. Keo Piseth',
-      status: 'Active Research'
-    }
-  ]);
-  const [researchModalOpen, setResearchModalOpen] = useState(false);
-  const [researchFormData, setResearchFormData] = useState({ title: '', desc: '', lead: '', status: 'Active Research' });
-
   // Listen for real Firebase Auth state changes
   useEffect(() => {
     if (!auth) {
@@ -277,14 +248,12 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
   const loadAllData = async () => {
     setLoading(true);
     try {
-      const [apps, inqs, resInqs] = await Promise.all([
+      const [apps, inqs] = await Promise.all([
         getAllApplications(),
-        getAllInquiries(),
-        getAllResearchInquiries()
+        getAllInquiries()
       ]);
       setApplications(apps || []);
       setInquiries(inqs || []);
-      setResearchInquiries(resInqs || []);
     } catch (err) {
       console.error('[AdminPage] Failed to fetch data:', err);
     } finally {
@@ -523,24 +492,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
     showToast(`Academic Batch "${newBatch.name}" registered!`);
   };
 
-  // Research Testbed Operations
-  const handleSaveResearch = (e) => {
-    e.preventDefault();
-    const newTestbed = {
-      id: `res-${Date.now()}`,
-      title: researchFormData.title,
-      desc: researchFormData.desc,
-      lead: researchFormData.lead,
-      status: researchFormData.status || 'Active Research'
-    };
-    setResearchTestbeds(prev => [newTestbed, ...prev]);
-    setResearchModalOpen(false);
-    setResearchFormData({ title: '', desc: '', lead: '', status: 'Active Research' });
-    logAuditEvent('Created Research Testbed', `Testbed: ${newTestbed.title}`);
-    setAuditLogs(getAuditLogs());
-    showToast(`Research Testbed "${newTestbed.title}" registered!`);
-  };
-
   // Export to CSV
   const exportToCSV = () => {
     const headers = ['Reference', 'Full Name', 'Phone', 'Email', 'Program', 'Degree', 'Bac II Grade', 'High School', 'Scholarship', 'Status', 'Date'];
@@ -635,13 +586,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
       subtitle: `${newsList.length} Press Releases`,
       gradient: 'from-[#66bb6a] to-[#43a047]',
       icon: <NewspaperIcon className="w-7 h-7 text-white" />
-    },
-    {
-      id: 'research',
-      title: 'Homework / Research',
-      subtitle: `${researchInquiries.length} Industry Testbeds`,
-      gradient: 'from-[#ab47bc] to-[#7b1fa2]',
-      icon: <BookOpen className="w-7 h-7 text-white" />
     },
     {
       id: 'banner',
@@ -923,24 +867,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
             {sidebarOpen && <span className="truncate">News</span>}
           </button>
 
-          {/* 8. Homework / Research */}
-          <button
-            type="button"
-            onClick={() => setActiveView('research')}
-            className={`w-full flex items-center gap-3.5 px-4 py-2.5 transition relative cursor-pointer ${
-              activeView === 'research'
-                ? 'bg-white/5 text-white font-semibold'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-            }`}
-          >
-            {activeView === 'research' && (
-              <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#0070f3] rounded-r" />
-            )}
-            <BookOpen className="w-4 h-4 text-[#ab47bc] shrink-0" />
-            {sidebarOpen && <span className="truncate">Homework</span>}
-          </button>
-
-          {/* 9. Settings / Banner */}
+          {/* 8. Settings / Banner */}
           <button
             type="button"
             onClick={() => setActiveView('banner')}
@@ -1559,47 +1486,7 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
           )}
 
           {/* =====================================================================
-              VIEW 8: RESEARCH & COLLABORATION
-             ===================================================================== */}
-          {activeView === 'research' && (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs">
-                  <button type="button" onClick={() => setActiveView('home')} className="text-slate-500 hover:text-slate-900 font-semibold cursor-pointer">Home</button>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="text-slate-900 font-bold">Applied Research & Industry Testbeds ({researchTestbeds.length})</span>
-                </div>
-                <button
-                  type="button"
-                  id="btn-create-research"
-                  onClick={() => setResearchModalOpen(true)}
-                  className="px-4 py-2 bg-[#0070f3] hover:bg-blue-600 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Add Research Testbed</span>
-                </button>
-              </div>
-
-              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
-                <h4 className="font-bold text-base text-slate-900">National Innovation & Applied Science Testbeds</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                  {researchTestbeds.map(res => (
-                    <div key={res.id} className="p-4 bg-slate-50 rounded-xl space-y-2 border border-slate-100">
-                      <div className="flex items-center justify-between">
-                        <h5 className="font-bold text-slate-900 text-sm">{res.title}</h5>
-                        <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded">{res.status}</span>
-                      </div>
-                      <p className="text-slate-600">{res.desc}</p>
-                      {res.lead && <p className="text-[11px] text-slate-500 font-medium">Lead: <strong>{res.lead}</strong></p>}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* =====================================================================
-              VIEW 9: SETTINGS & SITE-WIDE BANNER
+              VIEW 8: SETTINGS & SITE-WIDE BANNER
              ===================================================================== */}
           {activeView === 'banner' && (
             <div className="space-y-6 animate-in fade-in duration-200">
@@ -2580,66 +2467,6 @@ export default function AdminPage({ lang = 'en', onNavigate }) {
                 </button>
                 <button type="submit" id="btn-save-batch" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
                   Save Batch
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 7: RESEARCH TESTBED MODAL */}
-      {researchModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="font-bold text-base text-slate-900">Add Applied Research Testbed</h3>
-              <button type="button" onClick={() => setResearchModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <form onSubmit={handleSaveResearch} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Project / Facility Title *</label>
-                <input
-                  type="text"
-                  required
-                  id="input-research-title"
-                  value={researchFormData.title}
-                  onChange={(e) => setResearchFormData(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="e.g. AI Smart Grid & IoT Energy Monitoring"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Lead Researcher / Lab Head *</label>
-                <input
-                  type="text"
-                  required
-                  id="input-research-lead"
-                  value={researchFormData.lead}
-                  onChange={(e) => setResearchFormData(prev => ({ ...prev, lead: e.target.value }))}
-                  placeholder="Dr. Sok Rathana, Laboratory Director"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Testbed Scope & Industrial Equipment *</label>
-                <textarea
-                  required
-                  rows="2"
-                  id="input-research-desc"
-                  value={researchFormData.desc}
-                  onChange={(e) => setResearchFormData(prev => ({ ...prev, desc: e.target.value }))}
-                  placeholder="Real-time SCADA power telemetry, automated frequency stabilization testbed."
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs"
-                />
-              </div>
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                <button type="button" onClick={() => setResearchModalOpen(false)} className="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 cursor-pointer">
-                  Cancel
-                </button>
-                <button type="submit" id="btn-save-research" className="px-5 py-2 bg-[#0070f3] text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer">
-                  Save Testbed
                 </button>
               </div>
             </form>
