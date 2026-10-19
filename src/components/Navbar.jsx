@@ -192,7 +192,7 @@ export default function Navbar({
                               <span className="text-xs font-bold text-[#C29A39] uppercase tracking-wider">
                                 {item.dropdownGroups[0]?.title}
                               </span>
-                              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">
                                 {item.dropdownGroups[0]?.badge}
                               </span>
                             </div>
@@ -216,7 +216,7 @@ export default function Navbar({
                                       {sub.code}
                                     </span>
                                     {sub.tag && (
-                                      <span className="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-1 py-0.2 rounded font-bold transition-transform duration-200 group-hover:scale-105">
+                                      <span className="text-[9px] bg-slate-100 text-slate-700 border border-slate-200 px-1 py-0.2 rounded font-bold transition-transform duration-200 group-hover:scale-105">
                                         {sub.tag}
                                       </span>
                                     )}
@@ -301,7 +301,7 @@ export default function Navbar({
                             }}
                             className="text-[11px] text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition-colors duration-150"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#C29A39] animate-pulse"></span>
                             <span>{isKh ? 'អាហារូបករណ៍ ១០០% របស់រដ្ឋ' : '100% State Scholarship Details'}</span>
                           </a>
                         </div>
@@ -444,7 +444,7 @@ export default function Navbar({
                           <div key={gIdx} className="space-y-1">
                             <div className="flex items-center justify-between py-1 text-[11px] font-bold text-[#C29A39] uppercase tracking-wider border-b border-slate-200">
                               <span>{grp.title}</span>
-                              <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-50 text-amber-800 border border-amber-200">
                                 {grp.badge}
                               </span>
                             </div>

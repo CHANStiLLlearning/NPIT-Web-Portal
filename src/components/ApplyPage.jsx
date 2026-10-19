@@ -496,19 +496,19 @@ export default function ApplyPage({
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold ${
-                      uploadedDocsInfo.photoName ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-500'
+                      uploadedDocsInfo.photoName ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-500'
                     }`}>
                       <Camera className="w-3.5 h-3.5" />
                       {uploadedDocsInfo.photoName ? `Photo: ${uploadedDocsInfo.photoName}` : 'Photo: Submit in Person'}
                     </span>
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold ${
-                      uploadedDocsInfo.bacName ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-500'
+                      uploadedDocsInfo.bacName ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-500'
                     }`}>
                       <GraduationCap className="w-3.5 h-3.5" />
                       {uploadedDocsInfo.bacName ? `Bac II: ${uploadedDocsInfo.bacName}` : 'Bac II: Submit in Person'}
                     </span>
                     <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold ${
-                      uploadedDocsInfo.idName ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-500'
+                      uploadedDocsInfo.idName ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-500'
                     }`}>
                       <ShieldCheck className="w-3.5 h-3.5" />
                       {uploadedDocsInfo.idName ? `National ID: ${uploadedDocsInfo.idName}` : 'National ID: Submit in Person'}
@@ -1278,7 +1278,7 @@ export default function ApplyPage({
                       )}
 
                       {photoFile && (
-                        <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                        <div className="text-[11px] text-amber-800 font-semibold flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
                           <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
                           <span className="truncate">{photoFile.name}</span>
                         </div>
@@ -1337,7 +1337,7 @@ export default function ApplyPage({
                       )}
 
                       {bacFile && (
-                        <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                        <div className="text-[11px] text-amber-800 font-semibold flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
                           <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
                           <span className="truncate">{bacFile.name}</span>
                         </div>
@@ -1396,7 +1396,7 @@ export default function ApplyPage({
                       )}
 
                       {nationalIdFile && (
-                        <div className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                        <div className="text-[11px] text-amber-800 font-semibold flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
                           <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
                           <span className="truncate">{nationalIdFile.name}</span>
                         </div>
@@ -1485,13 +1485,13 @@ export default function ApplyPage({
                       <div className="sm:col-span-2 md:col-span-3 pt-2 border-t border-slate-200">
                         <span className="text-slate-400 text-xs block mb-1">Attached Documents for Cloud Upload:</span>
                         <div className="flex flex-wrap gap-2 text-xs font-semibold">
-                          <span className={`px-2.5 py-1 rounded-md ${photoFile ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500'}`}>
+                          <span className={`px-2.5 py-1 rounded-md ${photoFile ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-slate-200 text-slate-500'}`}>
                             📷 {photoFile ? `Photo: ${photoFile.name}` : 'Photo: None (In-Person)'}
                           </span>
-                          <span className={`px-2.5 py-1 rounded-md ${bacFile ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500'}`}>
+                          <span className={`px-2.5 py-1 rounded-md ${bacFile ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-slate-200 text-slate-500'}`}>
                             🎓 {bacFile ? `Bac II: ${bacFile.name}` : 'Bac II: None (In-Person)'}
                           </span>
-                          <span className={`px-2.5 py-1 rounded-md ${nationalIdFile ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-500'}`}>
+                          <span className={`px-2.5 py-1 rounded-md ${nationalIdFile ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-slate-200 text-slate-500'}`}>
                             🪪 {nationalIdFile ? `National ID: ${nationalIdFile.name}` : 'National ID: None (In-Person)'}
                           </span>
                         </div>

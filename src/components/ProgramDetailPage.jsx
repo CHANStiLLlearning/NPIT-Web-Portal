@@ -300,7 +300,7 @@ export default function ProgramDetailPage({
                 <Building2 className="w-3.5 h-3.5 text-amber-300" />
                 <span>{isKh ? (current.facultyKh || current.faculty || 'វិទ្យាស្ថាន NPIT') : (current.faculty || 'NPIT Faculty')}</span>
               </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-400/30">
                 <Check className="w-3.5 h-3.5" />
                 <span>{isKh ? (current.scholarshipKh || "អាហារូបករណ៍ ១០០%") : (current.scholarship || "100% Scholarship")}</span>
               </span>

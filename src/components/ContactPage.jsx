@@ -70,14 +70,14 @@ export default function ContactPage({ lang, onNavigate }) {
       {toastMessage && (
         <div 
           role="status"
-          className="fixed bottom-6 right-6 z-50 max-w-md bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-emerald-500/50 flex items-center justify-between gap-3 animate-in slide-in-from-bottom-5 duration-300"
+          className="fixed bottom-6 right-6 z-50 max-w-md bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-amber-500/50 flex items-center justify-between gap-3 animate-in slide-in-from-bottom-5 duration-300"
         >
           <div className="flex items-center gap-3">
-            <span className="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            <span className="w-9 h-9 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-5 h-5 text-amber-400" />
             </span>
             <div>
-              <p className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+              <p className="text-xs font-bold text-amber-400 uppercase tracking-wider">
                 {isKh ? "ជោគជ័យ" : "Inquiry Sent"}
               </p>
               <p className="text-sm font-medium text-slate-100">
@@ -320,18 +320,18 @@ export default function ContactPage({ lang, onNavigate }) {
               {/* Form Container */}
               <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
                 {submitted && (
-                  <div id="contact-feedback" role="alert" className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-start gap-3 shadow-xs animate-in fade-in duration-300 scroll-mt-32">
-                    <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
+                  <div id="contact-feedback" role="alert" className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-950 flex items-start gap-3 shadow-xs animate-in fade-in duration-300 scroll-mt-32">
+                    <CheckCircle2 className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-bold text-sm">
                         {isKh ? "សារត្រូវបានផ្ញើ និងកត់ត្រាជោគជ័យ!" : "Inquiry Dispatched Successfully!"}
                       </h4>
                       {refNum && (
-                        <p className="text-xs font-mono font-bold text-emerald-950 mt-1">
-                          Tracking Reference: <span className="bg-white px-2.5 py-0.5 rounded-md border border-emerald-300">{refNum}</span>
+                        <p className="text-xs font-mono font-bold text-amber-950 mt-1">
+                          Tracking Reference: <span className="bg-white px-2.5 py-0.5 rounded-md border border-amber-300">{refNum}</span>
                         </p>
                       )}
-                      <p className="text-xs text-emerald-800 mt-1">
+                      <p className="text-xs text-amber-900 mt-1">
                         {isKh 
                           ? "សូមអរគុណសម្រាប់ការទាក់ទងមកកាន់ NPIT។ ក្រុមការងារយើងខ្ញុំនឹងឆ្លើយតបមកកាន់លោកអ្នកវិញក្នុងពេលឆាប់ៗ។"
                           : "Thank you for contacting NPIT. Your message has been forwarded to our admissions desk."}
@@ -485,15 +485,7 @@ export default function ContactPage({ lang, onNavigate }) {
       </section>
 
       {/* Floating Toast Notification */}
-      {toastMessage && (
-        <div 
-          role="alert"
-          className="fixed bottom-6 right-6 z-50 bg-emerald-800 text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-4 duration-300 border border-emerald-500"
-        >
-          <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
+
 
     </div>
   );

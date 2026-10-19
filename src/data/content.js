@@ -26,7 +26,7 @@ export const contentData = {
           {
             title: "Higher Diploma (2 Years)",
             badge: "100% Scholarship",
-            badgeColor: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
             items: [
               { label: "Industrial Engineering", href: "#programs/industrial", code: "DIP-IE", tag: "Popular" },
               { label: "Electrical Engineering", href: "#programs/electrical", code: "ENG-EE" },
@@ -274,7 +274,7 @@ export const contentData = {
           {
             title: "កម្រិតសញ្ញាបត្រជាន់ខ្ពស់ (សិក្សា ២ឆ្នាំ)",
             badge: "អាហារូបករណ៍ ១០០%",
-            badgeColor: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+            badgeColor: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
             items: [
               { label: "វិស្វកម្មឧស្សាហកម្ម", code: "DIP-IE", href: "#programs/industrial", tag: "ពេញនិយម" },
               { label: "វិស្វកម្មអគ្គិសនី", code: "ENG-EE", href: "#programs/electrical" },

@@ -43,7 +43,7 @@ export default function AdmissionsSection({ lang, onSelectAdmissionDetail, onOpe
           ? 'សេចក្តីប្រកាសផ្លូវការរបស់ក្រសួង៖ សិស្សជាប់ ឬធ្លាក់បាក់ឌុប ទទួលបានអាហារូបករណ៍ ១០០% ឥតគិតថ្លៃសិក្សា ២ឆ្នាំពេញ លើ ៩ មុខជំនាញបច្ចេកទេស! ចូលរៀនលើកទី១: ១៣ វិច្ឆិកា ២០២៦ | លើកទី២: ០៤ មករា ២០២៧។'
           : 'Official MLVT Program: Candidates who passed or failed Bac II receive 100% free tuition for the 2-Year Higher Diploma across 9 technician majors. Batch 1: Nov 13, 2026 | Batch 2: Jan 04, 2027.',
         badge: '100% Government TVET Grant',
-        badgeColor: 'bg-emerald-600'
+        badgeColor: 'bg-[#C29A39]'
       };
     }
   };

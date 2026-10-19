@@ -117,7 +117,7 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
                 <p className="text-xs text-slate-600 font-mono">
                   012 216 169 / 011 674 567 • www.npit-edu.com
                 </p>
-                <span className="inline-block mt-1 text-[11px] text-emerald-700 font-semibold font-khmer">
+                <span className="inline-block mt-1 text-[11px] text-amber-800 font-semibold font-khmer">
                   {isKh ? '• ផ្តល់ការប្រឹក្សាអាហារូបករណ៍ ១០០% ដោយឥតគិតថ្លៃ' : '• Free 100% scholarship counseling'}
                 </span>
               </div>
@@ -269,9 +269,9 @@ export default function HomeContactSection({ lang = 'en', onNavigate }) {
       {toastMessage && (
         <div 
           role="alert"
-          className="fixed bottom-6 right-6 z-50 bg-emerald-800 text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-4 duration-300 border border-emerald-500"
+          className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-4 duration-300 border border-amber-500/40"
         >
-          <CheckCircle2 className="w-5 h-5 text-emerald-300 shrink-0" />
+          <CheckCircle2 className="w-5 h-5 text-amber-300 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}

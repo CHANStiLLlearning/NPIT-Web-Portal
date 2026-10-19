@@ -107,8 +107,8 @@ export default function LegalPage({ lang = 'en', initialTab = 'privacy', onBackH
           <div className="flex flex-wrap items-center justify-between text-xs text-slate-400 pb-4 border-b border-slate-100 gap-2">
             <span>Effective Date: Academic Cohort 2026–2027</span>
             <span>Document Ref: NPIT-LEGAL-2026-v2.4</span>
-            <span className="text-emerald-700 font-semibold flex items-center gap-1">
-              <CheckCircle className="w-3.5 h-3.5" /> Verified MLVT Standard
+            <span className="text-amber-800 font-semibold flex items-center gap-1">
+              <CheckCircle className="w-3.5 h-3.5 text-[#C29A39]" /> Verified MLVT Standard
             </span>
           </div>
 

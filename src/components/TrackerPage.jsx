@@ -85,7 +85,7 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
       case 'accepted':
       case 'approved':
         return {
-          bg: 'bg-emerald-50 text-emerald-800 border-emerald-300',
+          bg: 'bg-amber-50 text-amber-900 border-amber-300',
           icon: CheckCircle2,
           text: lang === 'kh' ? 'ត្រូវបានអនុម័តទទួល' : 'Officially Accepted',
           step: 4
@@ -248,7 +248,7 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
                   
                   {/* Step 1 */}
                   <div className="relative z-10 text-center">
-                    <div className="w-8 h-8 mx-auto rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold ring-4 ring-white shadow-sm">
+                    <div className="w-8 h-8 mx-auto rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold ring-4 ring-white shadow-sm">
                       ✓
                     </div>
                     <span className="block text-xs font-bold text-slate-800 mt-2">
@@ -283,7 +283,7 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
                   {/* Step 4 */}
                   <div className="relative z-10 text-center">
                     <div className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold ring-4 ring-white shadow-sm ${
-                      statusInfo.step >= 4 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-500'
+                      statusInfo.step >= 4 ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-500'
                     }`}>
                       ★
                     </div>
@@ -355,7 +355,7 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
                   </div>
                   <div>
                     <span className="text-xs text-slate-500 block">{lang === 'kh' ? 'អាហារូបករណ៍រដ្ឋ' : 'Scholarship Category'}</span>
-                    <span className="inline-flex items-center gap-1 font-bold text-emerald-700">
+                    <span className="inline-flex items-center gap-1 font-bold text-amber-800">
                       <Award className="w-3.5 h-3.5" />
                       {result.scholarship?.applied ? (result.scholarship?.category || '100% State Quota') : 'Full Self-Funded'}
                     </span>
@@ -388,17 +388,17 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
                     )}
                     <div>
                       <span className="text-xs font-bold text-slate-800 block">Student Photo</span>
-                      <span className={`text-[10px] font-bold ${result.documents?.photoUrl ? 'text-emerald-700' : 'text-slate-500'}`}>
+                      <span className={`text-[10px] font-bold ${result.documents?.photoUrl ? 'text-amber-800' : 'text-slate-500'}`}>
                         {result.documents?.photoUrl ? '✓ Stored in Cloud' : 'To submit on campus'}
                       </span>
                     </div>
                   </div>
 
                   <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-xs">BAC</div>
+                    <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center font-bold text-xs">BAC</div>
                     <div className="truncate">
                       <span className="text-xs font-bold text-slate-800 block">Bac II Slip</span>
-                      <span className={`text-[10px] font-bold ${result.documents?.bacCertificateUrl ? 'text-emerald-700' : 'text-slate-500'}`}>
+                      <span className={`text-[10px] font-bold ${result.documents?.bacCertificateUrl ? 'text-amber-800' : 'text-slate-500'}`}>
                         {result.documents?.bacCertificateUrl ? '✓ Stored in Cloud' : 'To submit on campus'}
                       </span>
                     </div>
@@ -408,7 +408,7 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
                     <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs">DOC</div>
                     <div className="truncate">
                       <span className="text-xs font-bold text-slate-800 block">National ID</span>
-                      <span className={`text-[10px] font-bold ${result.documents?.nationalIdUrl ? 'text-emerald-700' : 'text-slate-500'}`}>
+                      <span className={`text-[10px] font-bold ${result.documents?.nationalIdUrl ? 'text-amber-800' : 'text-slate-500'}`}>
                         {result.documents?.nationalIdUrl ? '✓ Stored in Cloud' : 'To submit on campus'}
                       </span>
                     </div>
@@ -470,7 +470,7 @@ export default function TrackerPage({ lang = 'en', onNavigate, initialCode = '' 
                 </span>
                 <h2 className="text-xl font-bold font-mono mt-1">{result.referenceNumber}</h2>
               </div>
-              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 rounded-full text-xs font-bold">
+              <span className="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-400/40 rounded-full text-xs font-bold">
                 Logged & Dispatched
               </span>
             </div>
