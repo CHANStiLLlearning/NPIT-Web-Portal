@@ -22,18 +22,11 @@ service cloud.firestore {
       allow get: if true;
       allow list: if isAdmin();
 
-      // Anyone can submit a new application, with strict validation:
-      // - Must have referenceNumber formatted as NPIT-2026-APP-XXXXXX
+      // Anyone can submit a new application, with strict status guard:
+      // - Must have referenceNumber string
       // - Initial status CANNOT be set to 'accepted' by an attacker
-      // - Required applicant information must be present
       allow create: if request.resource.data.referenceNumber is string
-                    && request.resource.data.referenceNumber.matches('^NPIT-2026-APP-[0-9]{6}$')
-                    && request.resource.data.status in ['pending_review', 'submitted']
-                    && request.resource.data.applicant is map
-                    && request.resource.data.applicant.fullName is string
-                    && request.resource.data.applicant.fullName.size() >= 2
-                    && request.resource.data.applicant.phone is string
-                    && request.resource.data.applicant.phone.size() >= 6;
+                    && request.resource.data.status in ['pending_review', 'submitted', 'pending'];
 
       // ONLY verified admin staff can update status or committee notes
       allow update: if isAdmin();

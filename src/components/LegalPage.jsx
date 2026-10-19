@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShieldCheck, FileText, ArrowLeft, Printer, Lock, CheckCircle, ExternalLink } from 'lucide-react';
 
 export default function LegalPage({ lang = 'en', initialTab = 'privacy', onBackHome }) {
   const isKh = lang === 'kh';
   const [activeTab, setActiveTab] = useState(initialTab); // 'privacy' | 'terms'
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab]);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    window.location.hash = `#${tab}`;
+  };
 
   const handlePrint = () => {
     window.print();
@@ -67,7 +78,7 @@ export default function LegalPage({ lang = 'en', initialTab = 'privacy', onBackH
           <div className="mt-8 flex gap-2 p-1 bg-white/10 rounded-xl max-w-sm border border-white/15">
             <button
               type="button"
-              onClick={() => setActiveTab('privacy')}
+              onClick={() => handleTabChange('privacy')}
               className={`flex-1 py-2 px-4 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
                 activeTab === 'privacy' ? 'bg-white text-[#002b80] shadow-sm' : 'text-blue-100 hover:text-white'
               }`}
@@ -77,7 +88,7 @@ export default function LegalPage({ lang = 'en', initialTab = 'privacy', onBackH
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab('terms')}
+              onClick={() => handleTabChange('terms')}
               className={`flex-1 py-2 px-4 rounded-lg text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
                 activeTab === 'terms' ? 'bg-white text-[#002b80] shadow-sm' : 'text-blue-100 hover:text-white'
               }`}

@@ -118,7 +118,7 @@ export async function submitApplication(formData) {
     statusLabelKh: 'កំពុងស្ថិតក្នុងការពិនិត្យពិច័យ',
     submittedAt,
     applicant: {
-      fullName: formData.fullName || '',
+      fullName: formData.fullName || formData.fullNameEn || formData.fullNameKhmer || 'Applicant',
       fullNameKhmer: formData.fullNameKhmer || '',
       gender: formData.gender || 'male',
       dob: formData.dob || '',

@@ -155,6 +155,11 @@ export default function AboutPage({ lang, onOpenApply }) {
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
                 href="#history"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('history')?.scrollIntoView({ behavior: 'smooth' });
+                  window.location.hash = '#history';
+                }}
                 className="bg-[#f59e0b] hover:bg-[#d97706] text-slate-950 font-bold px-7 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base cursor-pointer"
               >
                 {isKh ? "ប្រវត្តិវិទ្យាស្ថាន" : "Our History"}
@@ -162,6 +167,11 @@ export default function AboutPage({ lang, onOpenApply }) {
 
               <a
                 href="#milestones"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('milestones')?.scrollIntoView({ behavior: 'smooth' });
+                  window.location.hash = '#milestones';
+                }}
                 className="bg-black/40 hover:bg-black/60 text-white font-medium border border-white/50 px-7 py-3 rounded-full backdrop-blur-xs transition-all duration-200 transform hover:-translate-y-0.5 text-sm sm:text-base cursor-pointer"
               >
                 {isKh ? "ព្រឹត្តិការណ៍សំខាន់ៗ" : "View Milestones"}
@@ -466,7 +476,7 @@ export default function AboutPage({ lang, onOpenApply }) {
           </div>
 
           {/* Timeline Visualization Matching Screenshot */}
-          <div id="milestones" className="mt-12">
+          <div id="milestones" className="mt-12 scroll-mt-28">
             
             {/* Timeline Progress Track */}
             <div className="relative">

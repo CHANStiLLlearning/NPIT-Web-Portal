@@ -762,6 +762,10 @@ export default function NewsPage({ lang, onNavigate, onSelectNews }) {
                   src={img.src} 
                   alt={img.caption} 
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/hero-lab.jpg';
+                  }}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                 />
 
@@ -908,6 +912,10 @@ export default function NewsPage({ lang, onNavigate, onSelectNews }) {
                 <img 
                   src={currentImg.src} 
                   alt={currentImg.caption} 
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/hero-lab.jpg';
+                  }}
                   className="max-h-[62vh] sm:max-h-[66vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl border border-white/10 animate-in zoom-in-95 duration-200"
                 />
               </div>

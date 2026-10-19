@@ -8,7 +8,8 @@ import {
   CheckCircle2, 
   ExternalLink,
   ChevronRight,
-  Navigation
+  Navigation,
+  X
 } from 'lucide-react';
 
 import { submitGeneralInquiry } from '../services/inquiryService';
@@ -46,6 +47,9 @@ export default function ContactPage({ lang, onNavigate }) {
       setSubmitted(true);
       setToastMessage(isKh ? `✓ សារត្រូវបានផ្ញើជោគជ័យ! លេខយោង៖ ${res.referenceNumber}` : `✓ Message Dispatched Successfully! Reference: ${res.referenceNumber}`);
       setTimeout(() => setToastMessage(null), 8000);
+      setTimeout(() => {
+        document.getElementById('contact-feedback')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       setFormData({
         fullName: '',
         email: '',
@@ -60,7 +64,37 @@ export default function ContactPage({ lang, onNavigate }) {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white relative">
+
+      {/* Prominent Floating Feedback Toast */}
+      {toastMessage && (
+        <div 
+          role="status"
+          className="fixed bottom-6 right-6 z-50 max-w-md bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-emerald-500/50 flex items-center justify-between gap-3 animate-in slide-in-from-bottom-5 duration-300"
+        >
+          <div className="flex items-center gap-3">
+            <span className="w-9 h-9 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            </span>
+            <div>
+              <p className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                {isKh ? "ជោគជ័យ" : "Inquiry Sent"}
+              </p>
+              <p className="text-sm font-medium text-slate-100">
+                {toastMessage}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setToastMessage(null)}
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition cursor-pointer"
+            aria-label="Close notification"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* 1. Hero Banner Matching Reference Mockup */}
       <section className="relative w-full overflow-hidden bg-slate-900 min-h-[380px] md:min-h-[440px] flex items-center">
@@ -286,7 +320,7 @@ export default function ContactPage({ lang, onNavigate }) {
               {/* Form Container */}
               <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
                 {submitted && (
-                  <div role="alert" className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-start gap-3 shadow-xs animate-in fade-in duration-300">
+                  <div id="contact-feedback" role="alert" className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-start gap-3 shadow-xs animate-in fade-in duration-300 scroll-mt-32">
                     <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-bold text-sm">

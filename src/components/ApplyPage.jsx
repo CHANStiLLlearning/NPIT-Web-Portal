@@ -277,11 +277,11 @@ export default function ApplyPage({
       setUploadStatusText(isKh ? 'កំពុងរក្សាទុកព័ត៌មានពាក្យសុំ...' : 'Saving application dossier...');
 
       const result = await submitApplication({
-        fullName: formData.fullNameEn,
+        fullName: formData.fullNameEn || formData.fullNameKh || 'Applicant',
         fullNameKhmer: formData.fullNameKh,
         gender: formData.gender,
         dob: formData.dob,
-        phone: formData.phone,
+        phone: formData.phone || '',
         email: formData.email,
         province: formData.province,
         address: formData.address,

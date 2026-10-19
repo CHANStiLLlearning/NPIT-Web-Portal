@@ -54,11 +54,14 @@ export default function App() {
       if (hash !== '#portal') {
         setPortalModalOpen(false);
       }
-      if (hash === '#about' || hash.startsWith('#about/')) {
-        const sub = hash.replace('#about/', '');
+      const aboutAnchors = ['#about', '#history', '#milestones', '#who-we-are', '#vision-mission', '#leadership'];
+      if (hash.startsWith('#about/') || aboutAnchors.includes(hash)) {
+        const sub = hash.startsWith('#about/')
+          ? hash.replace('#about/', '')
+          : (hash !== '#about' ? hash.replace('#', '') : '');
         setCurrentPage('about');
         setActiveTab('about');
-        if (sub && sub !== '#about') {
+        if (sub) {
           setTimeout(() => {
             const el = document.getElementById(sub);
             if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -140,8 +143,6 @@ export default function App() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash === '#portal') {
         setPortalModalOpen(true);
-        setCurrentPage('home');
-        setActiveTab('home');
       } else if (hash === '#privacy') {
         setLegalTab('privacy');
         setCurrentPage('legal');
@@ -192,9 +193,12 @@ export default function App() {
   }, [currentPage]);
 
   const handleNavigate = (itemId, href) => {
-    if (itemId !== 'portal') {
-      setPortalModalOpen(false);
+    if (itemId === 'portal') {
+      setPortalModalOpen(true);
+      window.location.hash = '#portal';
+      return;
     }
+    setPortalModalOpen(false);
     
     // If a specific sub-route hash is provided (e.g. #programs/industrial, #admissions/scholarships)
     if (href && href.includes('/') && href.startsWith('#')) {
@@ -203,11 +207,19 @@ export default function App() {
       return;
     }
 
-    if (itemId === 'about') {
+    if (['about', 'history', 'milestones', 'who-we-are', 'vision-mission', 'leadership'].includes(itemId)) {
       setCurrentPage('about');
       setActiveTab('about');
-      window.location.hash = '#about';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.location.hash = '#' + (itemId === 'about' ? 'about' : itemId);
+      setTimeout(() => {
+        if (itemId !== 'about') {
+          const el = document.getElementById(itemId);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 150);
+      return;
     } else if (itemId === 'programs') {
       setCurrentPage('programs');
       setActiveTab('programs');
@@ -563,6 +575,10 @@ export default function App() {
         footerData={t.footer}
         instituteName={t.instituteName}
         instituteNameKhmer={t.instituteNameKhmer}
+        onOpenPortal={() => {
+          setPortalModalOpen(true);
+          window.location.hash = '#portal';
+        }}
       />
 
       {/* Integrated Student & Faculty Portal Modal */}
