@@ -24,37 +24,47 @@
   background: #94a3b8;
 }
 
-/* ACLEDA Bank Corporate Navigation & Dropdown Animations */
-@keyframes acledaDropdownFadeIn {
+/* ACLEDA Bank Corporate Navigation & Dropdown Animations - Authentic slideDown(200) */
+@keyframes acledaSlideDown {
   0% {
     opacity: 0;
-    transform: translateY(-8px) scale(0.99);
+    transform: translateY(-12px) scaleY(0.92);
+    clip-path: inset(0 0 100% 0);
+  }
+  50% {
+    opacity: 0.9;
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scaleY(1);
+    clip-path: inset(-40px -40px -40px -40px);
   }
 }
 
 @keyframes acledaAccordionDown {
   0% {
     opacity: 0;
-    transform: translateY(-6px);
+    max-height: 0;
+    transform: translateY(-8px);
+    clip-path: inset(0 0 100% 0);
   }
   100% {
     opacity: 1;
+    max-height: 800px;
     transform: translateY(0);
+    clip-path: inset(-20px -20px -20px -20px);
   }
 }
 
 .acleda-dropdown-animate {
-  animation: acledaDropdownFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: acledaSlideDown 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transform-origin: top center;
-  will-change: transform, opacity;
+  will-change: clip-path, transform, opacity;
 }
 
 .acleda-accordion-animate {
   animation: acledaAccordionDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity;
+  will-change: clip-path, transform, opacity, max-height;
 }
+
 
